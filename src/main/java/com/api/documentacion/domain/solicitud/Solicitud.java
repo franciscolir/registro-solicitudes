@@ -33,10 +33,11 @@ public class Solicitud {
     private LocalDateTime fechaIngresoSolicitud;
 
     private Estado estado;
+    private Boolean cerrado;
     private Boolean activo;
 
 
-    public Solicitud(Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado, Boolean activo) {
+    public Solicitud(Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {
         this.id = id;
         this.solicitudId = solicitudId;
         this.emisor = emisor;
@@ -45,7 +46,17 @@ public class Solicitud {
         this.fechaSolicitud = fechaSolicitud;
         this.fechaIngresoSolicitud = fechaIngresoSolicitud;
         this.estado = estado;
-        this.activo = activo;
+        this.cerrado = false;
+        this.activo = true;
+    }
+
+    public void actualizaSolicitud (Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud){
+        this.id = id;
+        this.solicitudId = solicitudId;
+        this.emisor = emisor;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fechaSolicitud = fechaSolicitud;
     }
 
     public void elimiarSolicitud (Long id , String comentario){
@@ -59,4 +70,12 @@ public class Solicitud {
         this.id = id;
         this.estado = estado;
     }
+
+    public void cierraSolicitud (Long id, Estado estado){
+        this.id = id;
+        this.estado = estado;
+        this.cerrado = true;
+    }
+
+
 }
