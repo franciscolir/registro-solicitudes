@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.solicitud;
 
+import com.api.documentacion.domain.respuesta.Respuesta;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,9 @@ public class Solicitud {
     private Estado estado;
     private Boolean cerrado;
     private Boolean activo;
+
+    @OneToOne(mappedBy = "solicitud")
+    private Respuesta respuesta;
 
 
     public Solicitud(Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {

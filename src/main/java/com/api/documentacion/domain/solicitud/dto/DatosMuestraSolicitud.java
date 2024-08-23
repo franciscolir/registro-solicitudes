@@ -21,7 +21,7 @@ public record DatosMuestraSolicitud(
         this(
                 solicitud.getId(),
                 solicitud.getSolicitudId(),
-                solicitud.getEmisor().getNombre(),
+                solicitud.getEmisor().getEstablecimiento().getNombreEstablecimineto(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
                 solicitud.getFechaSolicitud());

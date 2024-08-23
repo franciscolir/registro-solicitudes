@@ -1,6 +1,7 @@
 package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.solicitud.dto.DatosActualizaSolicitud;
+import com.api.documentacion.domain.solicitud.dto.DatosEliminaSolicitud;
 import com.api.documentacion.domain.solicitud.dto.DatosMuestraSolicitud;
 import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
 import com.api.documentacion.repository.EmisorRepository;
@@ -15,15 +16,12 @@ import java.time.LocalDateTime;
 @Service
 public class SolicitudService {
     @Autowired
-    Solicitud solicitud;
-    @Autowired
     SolicitudRepository solicitudRepository;
     @Autowired
     EmisorRepository emisorRepository;
 
 
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) {
-
 
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaIngresoSolicitud = LocalDateTime.now();
@@ -59,9 +57,16 @@ public class SolicitudService {
 
     public DatosMuestraSolicitud actualizaSolicitud (DatosActualizaSolicitud datos){
         validaSiExisteIdSolicitud(datos.solicitudId());
-        var id = solicitudRepository.findBySolicitudIdTrue(datos.solicitudId()).getId();
+        var id = obtieneIdConSolicitudId(datos.solicitudId());
         var emisor = emisorRepository.getReferenceById(datos.emisor());
-        solicitud.actualizaSolicitud(id, datos.solicitudId(), emisor, datos.titulo(), datos.descripcion(), datos.fechaSolicitud());
+        var solicitud = solicitudRepository.getReferenceById(id);
+        solicitud.actualizaSolicitud(id,
+                datos.solicitudId(),
+                emisor,
+                datos.titulo(),
+                datos.descripcion(),
+                datos.fechaSolicitud());
+
         var solicitudActializada = solicitudRepository.getReferenceById(id);
 
         return new DatosMuestraSolicitud(solicitudActializada);
@@ -69,24 +74,28 @@ public class SolicitudService {
 
     public void eliminarSolicitud (DatosEliminaSolicitud datos){
         validaSiExisteIdSolicitud(datos.solicitudId());
+        var id = obtieneIdConSolicitudId(datos.solicitudId());
+        var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.elimiarSolicitud(datos.solicitudId(), datos.comentario());
     }
 
     public void cambiaEstado (Long solicitudId, Estado estado) {
         var id = obtieneIdConSolicitudId(solicitudId);
         validaSiExisteIdSolicitud(id);
+        var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cambiaEstado(id,estado);
     }
 
     public void cierraSolicitud (Long solicitudId, Estado estado) {
         var id = obtieneIdConSolicitudId(solicitudId);
         validaSiExisteIdSolicitud(id);
+        var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cierraSolicitud(id, estado);
     }
 
     public void validaSiExisteIdSolicitud (Long solicitudId) {
         var id = obtieneIdConSolicitudId(solicitudId);
-        if(!solicitudRepository.existsByIdAndTrue(id)){
+        if(!solicitudRepository.existsByIdAndActivoTrue(id)){
             throw new RuntimeException("id de solicitud no existe");
         }
     }
@@ -100,7 +109,7 @@ public class SolicitudService {
 
     public Long obtieneIdConSolicitudId (Long solicitudId){
 
-        return solicitudRepository.findBySolicitudIdTrue(solicitudId).getId();
+        return solicitudRepository.findBySolicitudIdAndActivoTrue(solicitudId).getId();
     }
 
 }

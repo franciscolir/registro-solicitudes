@@ -1,12 +1,11 @@
 package com.api.documentacion.controller;
 
 
-import com.api.documentacion.domain.solicitud.DatosEliminaSolicitud;
+import com.api.documentacion.domain.solicitud.dto.DatosEliminaSolicitud;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.solicitud.dto.DatosActualizaSolicitud;
 import com.api.documentacion.domain.solicitud.dto.DatosMuestraSolicitud;
 import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
-import com.api.documentacion.repository.SolicitudRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class SolicitudController {
 
     @Autowired
     SolicitudService solicitudService;
-    @Autowired
-    SolicitudRepository solicitudRepository;
 
     //ingresar una solicitud
     @PostMapping
@@ -46,7 +43,6 @@ public class SolicitudController {
     //Obtener lista de solicitudes
     @GetMapping
     public ResponseEntity<Page<DatosMuestraSolicitud>> listaSolicitudes(Pageable paginacion){
-        //var listaSolicitudes = solicitudRepository.findByActivoTrue(paginacion).map(DatosMuestraSolicitud::new);
         var listaSolicitudes = solicitudService.listaDeSolicitudes(paginacion);
 
         return ResponseEntity.ok(listaSolicitudes);

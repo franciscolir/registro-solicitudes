@@ -1,4 +1,4 @@
-package com.api.documentacion.domain.solicitud;
+package com.api.documentacion.domain.solicitud.dto;
 
 import jakarta.validation.constraints.NotNull;
 

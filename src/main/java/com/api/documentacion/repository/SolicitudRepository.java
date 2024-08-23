@@ -13,9 +13,10 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Page<Solicitud> findByActivoTrue(Pageable paginacion);
 
-    Solicitud findBySolicitudIdTrue(Long aLong);
+    Solicitud findBySolicitudIdAndActivoTrue(Long aLong);
 
-    Boolean existsByIdAndTrue(Long id);
 
-    Boolean existsByIdAndCerradoTrue(Object id);
+    Boolean existsByIdAndCerradoTrue(Long id);
+
+    Boolean existsByIdAndActivoTrue(Long id);
 }
