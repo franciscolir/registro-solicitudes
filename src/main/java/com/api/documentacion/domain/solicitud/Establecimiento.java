@@ -20,6 +20,6 @@ public class Establecimiento {
     private Long id;
 
     private String nombreSolicitante;
-    private String nombreEstablecimineto;
+    private String nombreEstablecimiento;
     private String comentario;
     }

@@ -49,7 +49,7 @@ public class RespuestaService {
 
         //actualiza Solicitud, cambia su estado a RESUELTO y cerrado true.
         var estado = Estado.RESUELTO;
-        solicitudService.cierraSolicitud(datos.solicitudId(), estado);
+        solicitudService.cierraSolicitud(datos.solicitudId(),solicitud.getEmisor().getId(), estado);
 
         return new DatosMuestraRespuesta(respuesta);
     }

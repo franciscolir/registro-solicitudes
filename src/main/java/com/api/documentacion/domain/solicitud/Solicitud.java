@@ -33,6 +33,7 @@ public class Solicitud {
     private LocalDateTime fechaSolicitud;
     private LocalDateTime fechaIngresoSolicitud;
 
+    @Enumerated(EnumType.STRING)
     private Estado estado;
     private Boolean cerrado;
     private Boolean activo;
@@ -57,9 +58,13 @@ public class Solicitud {
     public void actualizaSolicitud (Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud){
         this.id = id;
         this.solicitudId = solicitudId;
+        if(emisor != null)
         this.emisor = emisor;
+        if(titulo != null)
         this.titulo = titulo;
+        if(descripcion != null)
         this.descripcion = descripcion;
+        if(fechaSolicitud != null)
         this.fechaSolicitud = fechaSolicitud;
     }
 

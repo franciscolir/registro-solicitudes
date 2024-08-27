@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class SolicitudService {
@@ -24,6 +25,8 @@ public class SolicitudService {
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) {
 
         var emisor = emisorRepository.getReferenceById(datos.emisor());
+
+        var fechaSolicitud = dateTimeFormatter(datos.fechaSolicitud());
         var fechaIngresoSolicitud = LocalDateTime.now();
         var estado = Estado.RECIBIDO;
 
@@ -32,7 +35,7 @@ public class SolicitudService {
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
-                datos.fechaSolicitud(),
+                fechaSolicitud,
                 fechaIngresoSolicitud,
                 estado,
                 false,
@@ -43,8 +46,9 @@ public class SolicitudService {
         return new DatosMuestraSolicitud(solicitud);
     }
 
-    public DatosMuestraSolicitud obtenerSolicitud(Long id) {
-        validaSiExisteIdSolicitud(id);
+    //obtiene una solicitud con el numero de solicitud
+    public DatosMuestraSolicitud obtenerSolicitud(Long solicitudId, Long emisorId) {
+        var id = validaSiExisteIdSolicitudYRetornaId(solicitudId,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
 
         return new DatosMuestraSolicitud(solicitud);
@@ -52,20 +56,22 @@ public class SolicitudService {
 
     public Page<DatosMuestraSolicitud> listaDeSolicitudes(Pageable paginacion) {
 
-    return solicitudRepository.findByActivoTrue(paginacion).map(DatosMuestraSolicitud::new);
-};
+        return solicitudRepository.findByActivoTrue(paginacion).map(DatosMuestraSolicitud::new);
+    };
 
     public DatosMuestraSolicitud actualizaSolicitud (DatosActualizaSolicitud datos){
-        validaSiExisteIdSolicitud(datos.solicitudId());
-        var id = obtieneIdConSolicitudId(datos.solicitudId());
-        var emisor = emisorRepository.getReferenceById(datos.emisor());
+        var id = validaSiExisteIdSolicitudYRetornaId(datos.solicitudId(),datos.emisorId());
+        var emisor = emisorRepository.getReferenceById(datos.emisorId());
+        var fechaSolicitud = dateTimeFormatter(datos.fechaSolicitud());
         var solicitud = solicitudRepository.getReferenceById(id);
-        solicitud.actualizaSolicitud(id,
+        solicitud.actualizaSolicitud(
+                id,
                 datos.solicitudId(),
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
-                datos.fechaSolicitud());
+                fechaSolicitud
+        );
 
         var solicitudActializada = solicitudRepository.getReferenceById(id);
 
@@ -73,43 +79,63 @@ public class SolicitudService {
     }
 
     public void eliminarSolicitud (DatosEliminaSolicitud datos){
-        validaSiExisteIdSolicitud(datos.solicitudId());
-        var id = obtieneIdConSolicitudId(datos.solicitudId());
+        validaSiExisteIdSolicitud(datos.solicitudId(),datos.emisorId());
+        var id = obtieneIdConSolicitudId(datos.solicitudId(),datos.emisorId());
         var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.elimiarSolicitud(datos.solicitudId(), datos.comentario());
     }
 
-    public void cambiaEstado (Long solicitudId, Estado estado) {
-        var id = obtieneIdConSolicitudId(solicitudId);
-        validaSiExisteIdSolicitud(id);
+    //cambia string a formato fecha
+    public LocalDateTime dateTimeFormatter (String fecha){
+        var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        return LocalDateTime.parse(fecha, formatter);
+    }
+
+
+    public void cambiaEstado (Long solicitudId, Long emisorId, Estado estado) {
+        var id = obtieneIdConSolicitudId(solicitudId,emisorId);
+        validaSiExisteIdSolicitud(id,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cambiaEstado(id,estado);
     }
 
-    public void cierraSolicitud (Long solicitudId, Estado estado) {
-        var id = obtieneIdConSolicitudId(solicitudId);
-        validaSiExisteIdSolicitud(id);
+    public void cierraSolicitud (Long solicitudId, Long emisorId, Estado estado) {
+        var id = obtieneIdConSolicitudId(solicitudId,emisorId);
+        validaSiExisteIdSolicitud(id,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cierraSolicitud(id, estado);
     }
 
-    public void validaSiExisteIdSolicitud (Long solicitudId) {
-        var id = obtieneIdConSolicitudId(solicitudId);
+    public void validaSiExisteIdSolicitud (Long solicitudId, Long emisorId) {
+        var id = obtieneIdConSolicitudId(solicitudId,emisorId);
         if(!solicitudRepository.existsByIdAndActivoTrue(id)){
             throw new RuntimeException("id de solicitud no existe");
         }
     }
 
-    public void validaSiSolicitudEstaCerrada (Long solicitudId){
-        var id = obtieneIdConSolicitudId(solicitudId);
+    public Long validaSiExisteIdSolicitudYRetornaId (Long solicitudId, Long emisorId) {
+        var id = obtieneIdConSolicitudId(solicitudId,emisorId);
+        if(!solicitudRepository.existsByIdAndActivoTrue(id)){
+            throw new RuntimeException("id de solicitud no existe");
+        }
+        return id;
+    }
+
+
+
+
+    public void validaSiSolicitudEstaCerrada (Long solicitudId, Long emisorId){
+        var id = obtieneIdConSolicitudId(solicitudId,emisorId);
         if(solicitudRepository.existsByIdAndCerradoTrue(id)){
             throw new RuntimeException("Solicitud se encuentra cerrada");
         }
     }
 
-    public Long obtieneIdConSolicitudId (Long solicitudId){
+    public Long obtieneIdConSolicitudId (Long solicitudId, Long emisorId){
 
-        return solicitudRepository.findBySolicitudIdAndActivoTrue(solicitudId).getId();
+        return solicitudRepository.findIdBySolicitudIdAndEmisorId(solicitudId,emisorId);
+        //return solicitudRepository.findBySolicitudIdAndActivoTrue(solicitudId).getId();
     }
 
 }

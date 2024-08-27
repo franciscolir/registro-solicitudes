@@ -19,7 +19,7 @@ public class Emisor {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "establecimineto_id")
+    @JoinColumn(name = "establecimiento_id")
     private Establecimiento establecimiento;
     private String comentario;
 
