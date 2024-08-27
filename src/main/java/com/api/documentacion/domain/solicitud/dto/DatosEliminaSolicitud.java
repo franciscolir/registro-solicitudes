@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotNull;
 public record DatosEliminaSolicitud(
 
         @NotNull(message = "id de Solicitud es obligatorio")
-        Long emisorId,
-        @NotNull(message = "id de Solicitud es obligatorio")
-        Long solicitudId,
-
+        Long id,
         String comentario
 ) {
 }

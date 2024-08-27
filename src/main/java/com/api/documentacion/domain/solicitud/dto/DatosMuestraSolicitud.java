@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 public record DatosMuestraSolicitud(
 
+        Long id,
         Long solicitudId,
         String emisor,
         String titulo,
@@ -20,6 +21,7 @@ public record DatosMuestraSolicitud(
 
     public DatosMuestraSolicitud(Solicitud solicitud) {
         this(
+                solicitud.getId(),
                 solicitud.getSolicitudId(),
                 solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),

@@ -8,7 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public record DatosActualizaSolicitud(
-
+        @NotNull(message = "Id es obligatorio")
+        Long id,
         @NotNull(message = "Numero de solicitud es obligatorio")
         Long emisorId,
         @NotNull(message = "Numero de solicitud es obligatorio")

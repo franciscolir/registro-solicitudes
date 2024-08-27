@@ -59,16 +59,16 @@ public class Solicitud {
         this.id = id;
         this.solicitudId = solicitudId;
         if(emisor != null)
-        this.emisor = emisor;
+            this.emisor = emisor;
         if(titulo != null)
-        this.titulo = titulo;
+            this.titulo = titulo;
         if(descripcion != null)
-        this.descripcion = descripcion;
+            this.descripcion = descripcion;
         if(fechaSolicitud != null)
-        this.fechaSolicitud = fechaSolicitud;
+            this.fechaSolicitud = fechaSolicitud;
     }
 
-    public void elimiarSolicitud (Long id , String comentario){
+    public void eliminarSolicitud (Long id , String comentario){
         this.id = id;
         this.comentario = comentario;
         this.activo = false;

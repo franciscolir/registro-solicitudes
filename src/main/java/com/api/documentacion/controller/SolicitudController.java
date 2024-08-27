@@ -34,9 +34,10 @@ public class SolicitudController {
 
     //Obtener una solicitud
     @GetMapping("/{solicitudId}/{emisorId}")
-    public ResponseEntity<DatosMuestraSolicitud> obtenerSolicitud(@PathVariable Long solicitudId, @PathVariable Long emisorId) {
+    public ResponseEntity<DatosMuestraSolicitud> obtenerSolicitud(@PathVariable("solicitudId") Long solicitudId, @PathVariable("emisorId") Long emisorId) {
+        System.out.println(solicitudId+ "solicitudId  "+ emisorId+ "  emisorId ######################");
         var solicitud  =  solicitudService.obtenerSolicitud(solicitudId,emisorId);
-
+        System.out.println(solicitud+ "despues del metodo obtener desde controller #####################");
         return ResponseEntity.ok(solicitud);
     }
 
