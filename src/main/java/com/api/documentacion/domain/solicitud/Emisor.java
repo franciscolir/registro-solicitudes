@@ -21,6 +21,6 @@ public class Emisor {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "establecimiento_id")
     private Establecimiento establecimiento;
-    private String comentario;
 
+    private String comentario;
 }

@@ -32,7 +32,7 @@ public class SolicitudService {
         var estado = Estado.RECIBIDO;
 
         var solicitud = new Solicitud(null,
-                datos.solicitudId(),
+                datos.numeroSolicitud(),
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
@@ -50,10 +50,9 @@ public class SolicitudService {
 
     //GET___________________________________________
         //obtiene una solicitud con el numero de solicitud
-    public DatosMuestraSolicitud obtenerSolicitud(Long solicitudId, Long emisorId) {
+    public DatosMuestraSolicitud obtenerSolicitud(Long numeroSolicitud, Long emisorId) {
 
-        var id = validaYObtieneIdConSolicitudId(solicitudId,emisorId);
-        System.out.println(id + "########################### id desde el metodo: validaSiExisteIdSolicitudYRetornaId");
+        var id = validaYObtieneIdConNumeroSolicitud(numeroSolicitud,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
 
         return new DatosMuestraSolicitud(solicitud);
@@ -80,7 +79,7 @@ public class SolicitudService {
         var solicitud = solicitudRepository.getReferenceById(datos.id());
         solicitud.actualizaSolicitud(
                 datos.id(),
-                datos.solicitudId(),
+                datos.numeroSolicitud(),
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
@@ -114,10 +113,10 @@ public class SolicitudService {
     }//__________
 
 
-        //valida solicitudId y emisorId. Obtiene id de registro y lo retorna
-    public Long validaYObtieneIdConSolicitudId (Long solicitudId, Long emisorId){
+        //valida numeroSolicitud y emisorId. Obtiene id de registro y lo retorna
+    public Long validaYObtieneIdConNumeroSolicitud (Long numeroSolicitud, Long emisorId){
 
-        if(!solicitudRepository.existsBySolicitudId(solicitudId)) {
+        if(!solicitudRepository.existsByNumeroSolicitud(numeroSolicitud)) {
             throw new RuntimeException("id solicitud no existe");
         }
 
@@ -125,11 +124,11 @@ public class SolicitudService {
             throw new RuntimeException("id emisor no existe");
         }
 
-        if(!solicitudRepository.existsIdBySolicitudIdAndEmisorIdAndActivoTrue(solicitudId,emisorId)){
+        if(!solicitudRepository.existsIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud,emisorId)){
             throw new RuntimeException("registro solicitud no existe");
         }
 
-        return solicitudRepository.findIdBySolicitudIdAndEmisorIdAndActivoTrue(solicitudId, emisorId).getId();
+        return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
     }
     //______________________________________________________
 

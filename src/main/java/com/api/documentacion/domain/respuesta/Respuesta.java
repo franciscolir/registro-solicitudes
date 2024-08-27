@@ -1,7 +1,5 @@
 package com.api.documentacion.domain.respuesta;
 
-
-import com.api.documentacion.domain.solicitud.Emisor;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -22,7 +20,7 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long respuestaId;
+    private Long numeroRespuesta;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
@@ -42,12 +40,17 @@ public class Respuesta {
     private Solicitud solicitud;
 
 
-    public void actualizaRespuesta (Long id, Long respuestaId, String titulo, String descripcion, LocalDateTime fechaRespuesta){
+    public void actualizaRespuesta (Long id, Long numeroRespuesta, String titulo, String descripcion, LocalDateTime fechaRespuesta){
+
         this.id = id;
-        this.respuestaId = respuestaId;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fechaRespuesta = fechaRespuesta;
+        if(numeroRespuesta != null)
+            this.numeroRespuesta = numeroRespuesta;
+        if(titulo != null)
+            this.titulo = titulo;
+        if(descripcion != null)
+            this.descripcion = descripcion;
+        if(fechaRespuesta != null)
+            this.fechaRespuesta = fechaRespuesta;
     }
 
     public void elimiarRespuesta (Long id , String comentario){

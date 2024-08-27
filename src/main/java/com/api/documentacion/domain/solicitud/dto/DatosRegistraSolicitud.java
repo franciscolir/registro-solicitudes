@@ -14,7 +14,7 @@ public record DatosRegistraSolicitud(
         @NotNull(message = "Emisor es obligatorio")
         Long emisor,
         @NotNull(message = "Numero de solicitud es obligatorio")
-        Long solicitudId,
+        Long numeroSolicitud,
         @NotBlank(message = "Titulo es obligatorio")
         String titulo,
         String descripcion,

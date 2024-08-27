@@ -1,6 +1,5 @@
 package com.api.documentacion.controller;
 
-
 import com.api.documentacion.domain.solicitud.dto.DatosEliminaSolicitud;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.solicitud.dto.DatosActualizaSolicitud;
@@ -35,9 +34,7 @@ public class SolicitudController {
     //Obtener una solicitud
     @GetMapping("/{solicitudId}/{emisorId}")
     public ResponseEntity<DatosMuestraSolicitud> obtenerSolicitud(@PathVariable("solicitudId") Long solicitudId, @PathVariable("emisorId") Long emisorId) {
-        System.out.println(solicitudId+ "solicitudId  "+ emisorId+ "  emisorId ######################");
         var solicitud  =  solicitudService.obtenerSolicitud(solicitudId,emisorId);
-        System.out.println(solicitud+ "despues del metodo obtener desde controller #####################");
         return ResponseEntity.ok(solicitud);
     }
 

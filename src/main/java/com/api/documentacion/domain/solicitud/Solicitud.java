@@ -20,7 +20,7 @@ public class Solicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long solicitudId;//numero asignado al documento por emisor. Ingreso manual
+    private Long numeroSolicitud;//numero asignado al documento por emisor. Ingreso manual
     private Long providenciaId;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "emisor_id")
@@ -42,9 +42,9 @@ public class Solicitud {
     private Respuesta respuesta;
 
 
-    public Solicitud(Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {
+    public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {
         this.id = id;
-        this.solicitudId = solicitudId;
+        this.numeroSolicitud = numeroSolicitud;
         this.emisor = emisor;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -55,9 +55,9 @@ public class Solicitud {
         this.activo = true;
     }
 
-    public void actualizaSolicitud (Long id, Long solicitudId, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud){
+    public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud){
         this.id = id;
-        this.solicitudId = solicitudId;
+        this.numeroSolicitud = numeroSolicitud;
         if(emisor != null)
             this.emisor = emisor;
         if(titulo != null)
@@ -74,7 +74,6 @@ public class Solicitud {
         this.activo = false;
     }
 
-
     public void cambiaEstado (Long id, Estado estado){
         this.id = id;
         this.estado = estado;
@@ -85,6 +84,5 @@ public class Solicitud {
         this.estado = estado;
         this.cerrado = true;
     }
-
 
 }

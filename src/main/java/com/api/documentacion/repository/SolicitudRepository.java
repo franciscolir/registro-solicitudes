@@ -15,11 +15,11 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Boolean existsByIdAndActivoTrue(Long id);
 
-    Boolean existsBySolicitudId(Long solicitudId);
+    Boolean existsByNumeroSolicitud(Long numeroSolicitud);
 
     Boolean existsByEmisorId(Long emisorId);
 
-    Boolean existsIdBySolicitudIdAndEmisorIdAndActivoTrue(Long solicitudId, Long emisorId);
+    Boolean existsIdByNumeroSolicitudAndEmisorIdAndActivoTrue(Long numeroSolicitud, Long emisorId);
 
-    Solicitud findIdBySolicitudIdAndEmisorIdAndActivoTrue(Long solicitudId, Long emisorId);
+    Solicitud findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(Long numeroSolicitud, Long emisorId);
 }

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record DatosEliminaRespuesta(
         @NotNull(message = "id de Respuesta es obligatorio")
-        Long respuestaId,
+        Long id,
         String comentario
 ) {
 }

@@ -1,6 +1,5 @@
 package com.api.documentacion.domain.respuesta;
 
-
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class RespuestaService {
@@ -33,14 +33,15 @@ public class RespuestaService {
 
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         var solicitud = solicitudRepository.getReferenceById(datos.solicitudId());
+        var fechaRespuesta = dateTimeFormatter(datos.fechaRespuesta());
         var fechaEnvioRespuesta = LocalDateTime.now();
         var respuesta = new Respuesta(null,
-                datos.respuestaId(),
+                datos.numeroRespuesta(),
                 usuario,
                 datos.titulo(),
                 datos.descripcion(),
                 datos.comentario(),
-                datos.fechaRespuesta(),
+                fechaRespuesta,
                 fechaEnvioRespuesta,
                 true,
                 solicitud
@@ -70,20 +71,26 @@ public class RespuestaService {
 
 //actualiza respuesta Respuesta
     public DatosMuestraRespuesta actualizaRespuesta (DatosActualizaRespuesta datos){
-        validaSiExisteIdRespuesta(datos.solicitudId());
-        var id = respuestaRepository.findByRespuestaIdAndActivoTrue(datos.respuestaId()).getId();
-        var respuesta = respuestaRepository.getReferenceById(id);
-        respuesta.actualizaRespuesta(id, datos.respuestaId(), datos.titulo(), datos.descripcion(), datos.fechaRespuesta());
-        var respuestaActualizada = respuestaRepository.getReferenceById(id);
+        //validaSiExisteIdRespuesta(datos.id());
+        validaSiExisteIdAndActivoTrue(datos.id());
+        var respuesta = respuestaRepository.getReferenceById(datos.id());
+        respuesta.actualizaRespuesta(datos.id(), datos.respuestaId(), datos.titulo(), datos.descripcion(), datos.fechaRespuesta());
+        var respuestaActualizada = respuestaRepository.getReferenceById(datos.id());
 
         return new DatosMuestraRespuesta(respuestaActualizada);
     }
 
     public void eliminarRespuesta (DatosEliminaRespuesta datos){
-        validaSiExisteIdRespuesta(datos.respuestaId());
-        var id = respuestaRepository.findByRespuestaIdAndActivoTrue(datos.respuestaId()).getId();
-        var respuesta = respuestaRepository.getReferenceById(id);
-        respuesta.elimiarRespuesta(datos.respuestaId(), datos.comentario());
+        //validaSiExisteIdRespuesta(datos.id());
+        validaSiExisteIdAndActivoTrue(datos.id());
+        var respuesta = respuestaRepository.getReferenceById(datos.id());
+        respuesta.elimiarRespuesta(datos.id(), datos.comentario());
+    }
+
+    public void validaSiExisteIdAndActivoTrue (Long id) {
+        if(!respuestaRepository.existsByIdAndActivoTrue(id)){
+            throw new RuntimeException("id no existe");
+        }
     }
 
 
@@ -96,6 +103,14 @@ public class RespuestaService {
 
     public Long obtieneIdConRespuestaId (Long respuestaId){
 
-        return respuestaRepository.findByRespuestaIdAndActivoTrue(respuestaId).getId();
+        return respuestaRepository.findByNumeroRespuestaAndActivoTrue(respuestaId).getId();
     }
+
+    //MODIFICADORES_ESTADO_FORMATO_FECHA____________________
+    //cambia string a formato fecha
+    public LocalDateTime dateTimeFormatter (String fecha){
+        var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        return LocalDateTime.parse(fecha, formatter);
+    }//__________
 }

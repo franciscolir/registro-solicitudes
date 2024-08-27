@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public record DatosMuestraRespuesta(
 
         Long id,
-        Long respuestaId,
+        Long numeroRespuesta,
         String usuario,
         String titulo,
         String descripcion,
@@ -17,7 +17,7 @@ public record DatosMuestraRespuesta(
 
     public DatosMuestraRespuesta (Respuesta respuesta){
         this(respuesta.getId(),
-                respuesta.getRespuestaId(),
+                respuesta.getNumeroRespuesta(),
                 respuesta.getUsuario().getNombre(),
                 respuesta.getTitulo(),
                 respuesta.getDescripcion(),
