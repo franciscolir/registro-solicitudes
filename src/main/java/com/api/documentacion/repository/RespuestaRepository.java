@@ -19,4 +19,6 @@ public interface RespuestaRepository extends JpaRepository<Respuesta,Long> {
     Boolean existsByIdAndActivoTrue(Long id);
 
     Respuesta findByNumeroRespuestaAndActivoTrue(Long numeroRespuesta);
+
+    Boolean existsByNumeroRespuestaAndActivoTrue(Long numeroRespuesta);
 }

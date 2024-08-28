@@ -32,6 +32,7 @@ public class RespuestaService {
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {
 
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
+        solicitudService.validaSiSolicitudFueRespondida(datos.solicitudId());
         var solicitud = solicitudRepository.getReferenceById(datos.solicitudId());
         var fechaRespuesta = dateTimeFormatter(datos.fechaRespuesta());
         var fechaEnvioRespuesta = LocalDateTime.now();
@@ -50,28 +51,37 @@ public class RespuestaService {
 
         //actualiza Solicitud, cambia su estado a RESUELTO y cerrado true.
         var estado = Estado.RESUELTO;
-        solicitudService.cierraSolicitud(datos.solicitudId(), estado);
+        solicitudService.cerrarSolicitud(datos.solicitudId(), estado);
 
         return new DatosMuestraRespuesta(respuesta);
     }
 
-    //obtiene respuesta
-    public DatosMuestraRespuesta obtenerRespuesta(Long id) {
-        validaSiExisteIdRespuesta(id);
+    //GET___________________________________________
+        //obtiene respuesta con el numero de respuesta
+
+    public DatosMuestraRespuesta obtenerRespuesta(Long numeroRespuesta) {
+        var id = validaSiExisteYObtieneIdConNumeroRespuesta(numeroRespuesta);
         var respuesta = respuestaRepository.getReferenceById(id);
 
         return new DatosMuestraRespuesta(respuesta);
     }
+    //___________________________________________________
 
-    //obtiene lista de respuesta
+
+    //GET_LISTA__________________________________________
+        //obtiene lista de respuestas
     public Page<DatosMuestraRespuesta> listaDeRespuestas(Pageable paginacion) {
 
         return respuestaRepository.findByActivoTrue(paginacion).map(DatosMuestraRespuesta::new);
     }
+    //___________________________________________________
 
-//actualiza respuesta Respuesta
+
+
+    //PUT________________________________________________
+        //actualiza respuesta Respuesta
     public DatosMuestraRespuesta actualizaRespuesta (DatosActualizaRespuesta datos){
-        //validaSiExisteIdRespuesta(datos.id());
+
         validaSiExisteIdAndActivoTrue(datos.id());
         var respuesta = respuestaRepository.getReferenceById(datos.id());
         respuesta.actualizaRespuesta(datos.id(), datos.respuestaId(), datos.titulo(), datos.descripcion(), datos.fechaRespuesta());
@@ -79,38 +89,44 @@ public class RespuestaService {
 
         return new DatosMuestraRespuesta(respuestaActualizada);
     }
+    //______________________________________________________
 
+
+    //DELETE________________________________________________
+        //elimina una solicitud (delete logico)
     public void eliminarRespuesta (DatosEliminaRespuesta datos){
-        //validaSiExisteIdRespuesta(datos.id());
+
         validaSiExisteIdAndActivoTrue(datos.id());
         var respuesta = respuestaRepository.getReferenceById(datos.id());
         respuesta.elimiarRespuesta(datos.id(), datos.comentario());
     }
+    //______________________________________________________
 
+
+    //VALIDADORES____________________________________________
+        //valida id de registro
     public void validaSiExisteIdAndActivoTrue (Long id) {
         if(!respuestaRepository.existsByIdAndActivoTrue(id)){
             throw new RuntimeException("id no existe");
         }
-    }
+    }   //__________
 
 
-    public void validaSiExisteIdRespuesta (Long respuestaId) {
-        var id = obtieneIdConRespuestaId(respuestaId);
-        if(!respuestaRepository.existsByIdAndActivoTrue(id)){
+        //valida numeroRespuesta. Obtiene id de registro y lo retorna
+    public Long validaSiExisteYObtieneIdConNumeroRespuesta (Long numeroRespuesta) {
+        if(!respuestaRepository.existsByNumeroRespuestaAndActivoTrue(numeroRespuesta)){
             throw new RuntimeException("id de respuesta no existe");
         }
+        return respuestaRepository.findByNumeroRespuestaAndActivoTrue(numeroRespuesta).getId();
     }
+    //______________________________________________________
 
-    public Long obtieneIdConRespuestaId (Long respuestaId){
 
-        return respuestaRepository.findByNumeroRespuestaAndActivoTrue(respuestaId).getId();
-    }
-
-    //MODIFICADORES_ESTADO_FORMATO_FECHA____________________
-    //cambia string a formato fecha
+    //MODIFICADOR_FORMATO_FECHA____________________
+        //cambia string a formato fecha
     public LocalDateTime dateTimeFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
         return LocalDateTime.parse(fecha, formatter);
-    }//__________
+    }   //__________
 }

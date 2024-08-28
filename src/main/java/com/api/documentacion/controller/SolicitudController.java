@@ -1,10 +1,7 @@
 package com.api.documentacion.controller;
 
-import com.api.documentacion.domain.solicitud.dto.DatosEliminaSolicitud;
+import com.api.documentacion.domain.solicitud.dto.*;
 import com.api.documentacion.domain.solicitud.SolicitudService;
-import com.api.documentacion.domain.solicitud.dto.DatosActualizaSolicitud;
-import com.api.documentacion.domain.solicitud.dto.DatosMuestraSolicitud;
-import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +48,15 @@ public class SolicitudController {
     @Transactional
     public ResponseEntity actualizaSolicitud (@RequestBody @Valid DatosActualizaSolicitud datos){
         var response = solicitudService.actualizaSolicitud(datos);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //Declinar solicitud
+    @PutMapping("/declinar")
+    @Transactional
+    public ResponseEntity declinarSolicitud (@RequestBody @Valid DatosDeclinarSolicitud datos){
+        var response = solicitudService.declinarSolicitud(datos);
 
         return ResponseEntity.ok(response);
     }

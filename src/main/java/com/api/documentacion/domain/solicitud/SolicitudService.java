@@ -1,9 +1,6 @@
 package com.api.documentacion.domain.solicitud;
 
-import com.api.documentacion.domain.solicitud.dto.DatosActualizaSolicitud;
-import com.api.documentacion.domain.solicitud.dto.DatosEliminaSolicitud;
-import com.api.documentacion.domain.solicitud.dto.DatosMuestraSolicitud;
-import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
+import com.api.documentacion.domain.solicitud.dto.*;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +66,6 @@ public class SolicitudService {
     //___________________________________________________
 
 
-
     //PUT________________________________________________
         //actualiza datos de una solicitud
     public DatosMuestraSolicitud actualizaSolicitud (DatosActualizaSolicitud datos){
@@ -85,6 +81,24 @@ public class SolicitudService {
                 datos.descripcion(),
                 fechaSolicitud
         );
+        var solicitudActializada = solicitudRepository.getReferenceById(datos.id());
+
+        return new DatosMuestraSolicitud(solicitudActializada);
+    }   //__________
+
+
+        //declinar una solicitud
+    public DatosMuestraSolicitud declinarSolicitud (DatosDeclinarSolicitud datos){
+        validaSiExisteIdAndActivoTrue(datos.id());
+        var fechaDeclinacion = LocalDateTime.now();
+        var estado = Estado.DECLINADO;
+        var solicitud = solicitudRepository.getReferenceById(datos.id());
+        solicitud.declinarSolicitud(
+                datos.id(),
+                datos.comentario(),
+                fechaDeclinacion
+        );
+        cerrarSolicitud(datos.id(),estado);
         var solicitudActializada = solicitudRepository.getReferenceById(datos.id());
 
         return new DatosMuestraSolicitud(solicitudActializada);
@@ -130,6 +144,16 @@ public class SolicitudService {
 
         return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
     }
+
+    //valida si solicitud ya fue respondida
+    public void validaSiSolicitudFueRespondida(Long id) {
+        validaSiExisteIdAndActivoTrue(id);
+        if(solicitudRepository.existsByIdAndCerradoTrue(id)){
+            throw new RuntimeException("Solicitud se encuentra cerrada");
+        }
+    }//__________
+
+
     //______________________________________________________
 
 
@@ -144,22 +168,9 @@ public class SolicitudService {
     }//__________
 
 
-        //cambia estado segun lista de enum
-    public void cambiaEstado (Long id, Estado estado) {
 
-        validaSiExisteIdAndActivoTrue(id);
-        var solicitud = solicitudRepository.getReferenceById(id);
-        solicitud.cambiaEstado(id,estado);
-    }//__________
-
-
-        //cierra solicitud una vez respondida y cambia su estado
-    public void cierraSolicitud (Long id, Estado estado) {
-
-        validaSiExisteIdAndActivoTrue(id);
-        if(solicitudRepository.existsByIdAndCerradoTrue(id)){
-            throw new RuntimeException("Solicitud se encuentra cerrada");
-        }
+        //cerrar solicitud una vez respondida o declinada y cambia su estado
+    public void cerrarSolicitud (Long id, Estado estado) {
         var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cierraSolicitud(id, estado);
     }

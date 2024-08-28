@@ -44,7 +44,6 @@ public class RespuestaController {
     //Obtener lista de respuestaes
     @GetMapping
     public ResponseEntity<Page<DatosMuestraRespuesta>> listaRespuestas(Pageable paginacion) {
-        //var listaRespuestas = respuestaRepository.findByActivoTrue(paginacion).map(DatosMuestraRespuesta::new);
         var listaRespuestas = respuestaService.listaDeRespuestas(paginacion);
 
         return ResponseEntity.ok(listaRespuestas);

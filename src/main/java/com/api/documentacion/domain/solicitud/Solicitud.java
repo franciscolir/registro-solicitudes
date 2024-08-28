@@ -32,6 +32,7 @@ public class Solicitud {
 
     private LocalDateTime fechaSolicitud;
     private LocalDateTime fechaIngresoSolicitud;
+    private LocalDateTime fechaDeclinacion;
 
     @Enumerated(EnumType.STRING)
     private Estado estado;
@@ -68,16 +69,20 @@ public class Solicitud {
             this.fechaSolicitud = fechaSolicitud;
     }
 
+
+    public void declinarSolicitud (Long id, String comentario, LocalDateTime fechaDeclinacion){
+        this.id = id;
+        this.comentario = comentario;
+        this.fechaDeclinacion = fechaDeclinacion;
+    }
+
+
     public void eliminarSolicitud (Long id , String comentario){
         this.id = id;
         this.comentario = comentario;
         this.activo = false;
     }
 
-    public void cambiaEstado (Long id, Estado estado){
-        this.id = id;
-        this.estado = estado;
-    }
 
     public void cierraSolicitud (Long id, Estado estado){
         this.id = id;
