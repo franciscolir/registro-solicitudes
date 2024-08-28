@@ -2,6 +2,7 @@ package com.api.documentacion.domain.respuesta.dto;
 
 import com.api.documentacion.domain.respuesta.Respuesta;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record DatosMuestraRespuesta(
 
@@ -10,10 +11,11 @@ public record DatosMuestraRespuesta(
         String usuario,
         String titulo,
         String descripcion,
-        LocalDateTime fechaRespuesta,
-        LocalDateTime fechaEnvio,
+        String fechaRespuesta,
+        String fechaEnvio,
         Long solicitudId
 ) {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public DatosMuestraRespuesta (Respuesta respuesta){
         this(respuesta.getId(),
@@ -21,9 +23,13 @@ public record DatosMuestraRespuesta(
                 respuesta.getUsuario().getNombre(),
                 respuesta.getTitulo(),
                 respuesta.getDescripcion(),
-                respuesta.getFechaRespuesta(),
-                respuesta.getFechaEnvio(),
+                formatDate(respuesta.getFechaRespuesta()),
+                formatDate(respuesta.getFechaEnvio()),
                 respuesta.getSolicitud().getId()
         );
+    }
+
+    private static String formatDate(LocalDateTime dateTime) {
+        return dateTime.format(DATE_TIME_FORMATTER);
     }
 }

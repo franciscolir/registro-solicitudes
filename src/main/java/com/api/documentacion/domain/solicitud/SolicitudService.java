@@ -51,8 +51,18 @@ public class SolicitudService {
 
         var id = validaYObtieneIdConNumeroSolicitud(numeroSolicitud,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
+        var fechaSolicitud = stringFormatter(solicitud.getFechaSolicitud());
+        var fechaIngreso = stringFormatter(solicitud.getFechaIngresoSolicitud());
 
-        return new DatosMuestraSolicitud(solicitud);
+        return new DatosMuestraSolicitud(
+                solicitud.getId(),
+                solicitud.getNumeroSolicitud(),
+                solicitud.getEmisor().toString(),
+                solicitud.getTitulo(),
+                solicitud.getDescripcion(),
+                fechaSolicitud,
+                fechaIngreso,
+                solicitud.getEstado().toString());
     }
     //___________________________________________________
 
@@ -167,6 +177,12 @@ public class SolicitudService {
         return LocalDateTime.parse(fecha, formatter);
     }//__________
 
+    //cambia formato fecha a string
+    public String stringFormatter (LocalDateTime fecha){
+        var outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        return fecha.format(outputFormatter);
+    }//__________
 
 
         //cerrar solicitud una vez respondida o declinada y cambia su estado
