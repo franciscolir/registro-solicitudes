@@ -70,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </h2>
                                 <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        ${item.content}
+                                        - id ${item.id} <br>
+                                        - numero de solicitud ${item.numeroSolicitud}
                                     </div>
                                 </div>
                             </div>
