@@ -43,6 +43,60 @@ function getButtom (url) {
 
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const loadDataButton = document.getElementById('loadData');
+    const accordionContainer = document.getElementById('accordionExample');
+
+    loadDataButton.addEventListener('click', () => {
+        axios.get('http://localhost:8080/solicitudes')  // Reemplaza con tu URL de API
+            .then(response => {
+                // Asegúrate de que los datos son un objeto y contiene `items`
+                const data = response.data;
+                console.log('Datos recibidos:', data);
+
+                // Accede al array `items` dentro del objeto
+                const items = data.content;
+
+                if (Array.isArray(items)) {
+                    accordionContainer.innerHTML = '';
+
+                    items.forEach((item, index) => {
+                        const accordionItem = `
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading${index}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
+                                        ${item.titulo}
+                                    </button>
+                                </h2>
+                                <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        ${item.content}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        accordionContainer.innerHTML += accordionItem;
+                    });
+                } else {
+                    console.error('La propiedad `items` no es un array.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+            });
+    });
+});
+
+
+
+
+
+
+
+
+
 function buildTable(data) {
             if (!Array.isArray(data) || data.length === 0) {
                 return '<p>No hay datos para mostrar.</p>';

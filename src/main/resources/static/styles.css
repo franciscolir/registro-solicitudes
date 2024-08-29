@@ -1,13 +1,21 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    margin: 0;
-    background-color: #f0f0f0;
+
+
+.navbar {
+    padding: 1rem;
+    margin: 2rem;
+    background-color: #f5f6f7 ;
 }
 
+
+.nav-item{
+
+    padding: 15px;
+    font: 17px Tahoma, sans-serif;
+}
+
+.container-fluid{
+    background-color: #ececec;
+}
 .container {
     width: 90%;
     text-align: center;
