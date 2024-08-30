@@ -79,3 +79,11 @@ tr:hover {
     background-color: #e0e0e0; /* Color de fondo cuando el ratón pasa sobre la fila */
     cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
 }
+
+.pendientes {
+    border-color: red ;
+}
+
+.eventos {
+    border-color: red solid;
+}

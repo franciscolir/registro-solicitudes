@@ -25,7 +25,7 @@ var urlSolicitudes = 'solicitudes';
 
 
 document.getElementById('fetchButton1').addEventListener('click', function() { getButtom ( url + urlRespuestas)});
-document.getElementById('fetchButton2').addEventListener('click', function() { getButtom(url+urlSolicitudes)});
+document.getElementById('fetchButtonAgendar').addEventListener('click', function() { getButtom(url+urlSolicitudes)});
 
 
 
@@ -44,10 +44,10 @@ function getButtom (url) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loadDataButton = document.getElementById('loadData');
     const accordionContainer = document.getElementById('accordionExample');
 
-    loadDataButton.addEventListener('click', () => {
+
+   const loadData = () => {
         axios.get('http://localhost:8080/solicitudes')  // Reemplaza con tu URL de API
             .then(response => {
                 // Asegúrate de que los datos son un objeto y contiene `items`
@@ -68,12 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${item.titulo}
                                     </button>
                                 </h2>
-                                <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        - id ${item.id} <br>
-                                        - numero de solicitud ${item.numeroSolicitud}
+                                <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">    
+                                <div class="accordion-body">
+                                        - Id ${item.id} <br>
+                                        - Numero de solicitud ${item.numeroSolicitud}<br>
+                                        - Emisor ${item.emisor} <br>
+                                        - Descripcion: ${item.descripcion} <br>
+                                        - Fecha Solicitud ${item.fechaSolicitud} <br>
                                     </div>
-                                </div>
+                                    <button id="responderButton">Responder Solicitud</button>
+                                <button id="declinarButton">Rechazar Solicitud</button>
+                                    </div>
                             </div>
                         `;
 
@@ -87,12 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error:', error);
                 alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
             });
+        }
+    
+        loadData();
+
     });
-});
 
 
-
-
+        
 
 
 
