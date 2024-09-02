@@ -72,6 +72,14 @@ public class SolicitudService {
     public Page<DatosMuestraSolicitud> listaDeSolicitudes(Pageable paginacion) {
 
         return solicitudRepository.findByActivoTrue(paginacion).map(DatosMuestraSolicitud::new);
+    }//_______
+
+
+    //GET_LISTA__________________________________________
+    //obtiene una lista con todas las solicitudes
+    public Page<DatosMuestraSolicitud> listaDeSolicitudesPendientes(Pageable paginacion) {
+
+        return solicitudRepository.findByCerradoFalseOrderByFechaIngresoSolicitudDesc(paginacion).map(DatosMuestraSolicitud::new);
     };
     //___________________________________________________
 
@@ -190,6 +198,8 @@ public class SolicitudService {
         var solicitud = solicitudRepository.getReferenceById(id);
         solicitud.cierraSolicitud(id, estado);
     }
+
+
     //______________________________________________________
 
 }

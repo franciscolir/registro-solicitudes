@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
@@ -22,4 +24,8 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
     Boolean existsIdByNumeroSolicitudAndEmisorIdAndActivoTrue(Long numeroSolicitud, Long emisorId);
 
     Solicitud findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(Long numeroSolicitud, Long emisorId);
+
+    Page<Solicitud> findByCerradoFalse(Pageable paginacion);
+
+    Page<Solicitud> findByCerradoFalseOrderByFechaIngresoSolicitudDesc(Pageable paginacion);
 }

@@ -31,7 +31,7 @@ document.getElementById('fetchButtonAgendar').addEventListener('click', function
 
 
 function getButtom (url) {
-    axios.get(url) // Cambia la URL si tu backend está en otro lugar
+    axios.get('http://localhost:8080/eventos') // Cambia la URL si tu backend está en otro lugar
     .then(response => {
         const data = response.data.content; // Extraer el array 'content'
         const tableHtml = buildTable(data);
@@ -48,11 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    const loadData = () => {
-        axios.get('http://localhost:8080/solicitudes')  // Reemplaza con tu URL de API
+        axios.get('http://localhost:8080/solicitudes/pendientes')  // Reemplaza con tu URL de API
             .then(response => {
                 // Asegúrate de que los datos son un objeto y contiene `items`
                 const data = response.data;
-                console.log('Datos recibidos:', data);
+               // console.log('Datos recibidos:', data);
 
                 // Accede al array `items` dentro del objeto
                 const items = data.content;
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading${index}">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
-                                        ${item.titulo}
+                                        ${item.titulo}  ---  ${item.fechaSolicitud}
                                     </button>
                                 </h2>
                                 <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">    
@@ -98,8 +98,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const tableBody = document.querySelector('#registros-table tbody');
+    
+        const loadData2 = () => {
+        // Reemplaza esta URL con la URL de tu API
+        const apiUrl = 'http://localhost:8080/eventos?size=5';
+    
+        // Solicitar datos usando Axios
+        axios.get(apiUrl)
+            .then(response => {
+                // La respuesta contiene los datos en response.data
+                const registros = response.data.content;
+                console.log('Datos recibidos tabla:', response);
 
-        
+                // Limpiar el cuerpo de la tabla
+                tableBody.innerHTML = '';
+    
+                // Crear filas para cada registro
+                registros.forEach(registro => {
+                    console.log(registro)
+                    const row = document.createElement('tr');
+    
+                    row.innerHTML = `
+                    
+                        <td>${registro.descripcion}</td>
+                        <td>${registro.fecha}</td>
+                        <td>${registro.establecimiento}</td>
+                    `;
+    
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+    }
+
+    loadData2();
+});
+    
+document.addEventListener('DOMContentLoaded', () => {
+    const divMemo = document.querySelector('#ultimo-memo');
+    const divMemoInfo = document.querySelector('#ultimo-memo-info');
+
+    const loadData2 = () => {
+    // Reemplaza esta URL con la URL de tu API
+    const apiUrl = 'http://localhost:8080/respuestas?size=1';
+
+    // Solicitar datos usando Axios
+    axios.get(apiUrl)
+        .then(response => {
+            // La respuesta contiene los datos en response.data
+            const registros = response.data.content;
+            console.log('Datos recibidos memo:', response);
+
+            divMemo.innerHTML = registros[0].numeroRespuesta;
+            divMemoInfo.innerHTML = registros[0].fechaRespuesta + registros[0].titulo;
+
+            // "id": 1,
+            // "numeroRespuesta": 3001,
+            // "usuario": "Ana López",
+            // "titulo": "Respuesta a Solicitud de Adición",
+            // "descripcion": "Descripción detallada de la respuesta a la solicitud de adición.",
+            // "fechaRespuesta": "06/08/2024",
+            // "fechaEnvio": "06/08/2024",
+            // "solicitudId": 5
+           
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
+}
+
+loadData2();
+});
+
 
 
 

@@ -50,7 +50,7 @@
     <section class="hero container-fluid">
         <div class="row mt-3 1">
             <div class="col-md-7 ">
-                <div class="p-3 bg-danger text-white pendientes">Columna 1
+                <div class="p-3 bg-danger text-dark pendientes">Columna 1
                     <h2>Solicitudes Pendientes</h2>
                     <div class="accordion" id="accordionExample">
                      <div class="accordion-item">
@@ -72,9 +72,24 @@
             <div class="col-md-5 justify-content-center align-item-center">
                 <div class="p-3 bg-warning text-dark eventos">Columna 2
                     <h2 class="justify-content-center align-item-center ">Eventos</h2>
-                    <div id="result"></div>
-                    <table class="table table-striped table-bordered table-hover"></table>
                     <button class="agendarButton " id="fetchButtonAgendar">agendar</button>
+                    <table id="registros-table">
+                        <thead>
+                            <tr>
+                                
+                                <th>Descripción</th>
+                                <th>Fecha</th>
+                                <th>Establecimiento</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los registros se llenarán aquí -->
+                        </tbody>
+                    </table>
+                  
+                    <table class="table table-striped table-bordered table-hover"></table>
+                    
                 </div>
             </div>
         </div>
@@ -84,6 +99,12 @@
             </div>
             <div class="col-md-5">
                 <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
+<div id="ultimo-memo">
+
+</div>
+<div id="ultimo-memo-info">
+
+</div>
             </div>
     </section>
 

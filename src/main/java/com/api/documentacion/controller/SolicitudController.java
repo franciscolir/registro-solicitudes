@@ -43,6 +43,16 @@ public class SolicitudController {
         return ResponseEntity.ok(listaSolicitudes);
     }
 
+    //Obtener lista de solicitudes pendientes de respuesta
+    @GetMapping("/{pendientes}")
+    public ResponseEntity<Page<DatosMuestraSolicitud>> listaSolicitudesPendientes(Pageable paginacion){
+        var listaSolicitudes = solicitudService.listaDeSolicitudesPendientes(paginacion);
+
+        return ResponseEntity.ok(listaSolicitudes);
+    }
+
+
+
     //Actualizar solicitud
     @PutMapping
     @Transactional
