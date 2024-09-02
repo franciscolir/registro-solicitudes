@@ -137,12 +137,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadData2();
 });
-    
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('#solicitudes-table tbody');
+
+    const loadData3 = () => {
+    // Reemplaza esta URL con la URL de tu API
+    const apiUrl = 'http://localhost:8080/solicitudes?size=10';
+
+    // Solicitar datos usando Axios
+    axios.get(apiUrl)
+        .then(response => {
+            // La respuesta contiene los datos en response.data
+            const registros = response.data.content;
+            console.log('Datos recibidos tabla:', response);
+
+            // Limpiar el cuerpo de la tabla
+            tableBody.innerHTML = '';
+
+            // Crear filas para cada registro
+            registros.forEach(registro => {
+                console.log(registro)
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                
+                    <td>${registro.numeroSolicitud}</td>
+                    <td>${registro.providenciaId}</td>
+                    <td>${registro.emisorId}</td>
+                    <td>${registro.titulo}</td>
+                    <td>${registro.descripcion}</td>
+                    <td>${registro.comentario}</td>
+                    <td>${registro.fechaSolicitud}</td>
+                    <td>${registro.fechaIngresoSolicitud}</td>
+                    <td>${registro.estado}</td>
+                    <td>${registro.fechaSolicitud}</td>
+                    <td>${registro.fechaDeclinacion}</td>
+                    <td>${registro.estado}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
+}
+
+loadData3();
+});
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const divMemo = document.querySelector('#ultimo-memo');
-    const divMemoInfo = document.querySelector('#ultimo-memo-info');
+     const divMemoInfo = document.querySelector('#ultimo-memo-info');
 
-    const loadData2 = () => {
+    const loadData4 = () => {
     // Reemplaza esta URL con la URL de tu API
     const apiUrl = 'http://localhost:8080/respuestas?size=1';
 
@@ -171,43 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 }
 
-loadData2();
+loadData4();
 });
 
 
 
-
-
-
-function buildTable(data) {
-            if (!Array.isArray(data) || data.length === 0) {
-                return '<p>No hay datos para mostrar.</p>';
-            }
-        
-            // Crear la tabla HTML
-            let table = '<table><thead><tr>';
-        
-            // Crear encabezados de la tabla basados en las claves del primer objeto
-            const headers = Object.keys(data[0]);
-            headers.forEach(header => {
-                table += `<th>${capitalizeFirstLetter(header)}</th>`;
-            });
-        
-            table += '</tr></thead><tbody>';
-        
-            // Crear filas de la tabla basadas en los objetos del array
-            data.forEach(item => {
-                table += '<tr>';
-                headers.forEach(header => {
-                    table += `<td>${item[header]}</td>`;
-                });
-                table += '</tr>';
-            });
-        
-            table += '</tbody></table>';
-            return table;
-        }
-        
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
