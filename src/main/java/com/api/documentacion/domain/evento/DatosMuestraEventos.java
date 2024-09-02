@@ -1,10 +1,12 @@
 package com.api.documentacion.domain.evento;
 
 import com.api.documentacion.domain.solicitud.Establecimiento;
+import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 public record DatosMuestraEventos(Long id,
                                   String tipo,
@@ -21,7 +23,7 @@ public record DatosMuestraEventos(Long id,
          this(evento.getId(),
                  evento.getTipo().toString(),
                  evento.getDescripcion(),
-                 evento.getInvitado(),
+                 evento.getInvitado().stream().map(Usuario::getNombre).toList().toString(),
                  formatDate(evento.getFecha()),
                  evento.getEstablecimiento().getNombreEstablecimiento());
      }
