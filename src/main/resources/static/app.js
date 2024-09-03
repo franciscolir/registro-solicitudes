@@ -59,11 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
                                                     - Fecha Solicitud ${item.fechaSolicitud} <br>
                                             </div>
                                             <div class="accordion-buttoms">
-                                            <div class = "buttom">
-                                                <button class = "buttom" id="responderButton">Aceptar</button>
+                                                <div class = "buttom">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                                        Aceptar
+                                                    </button>
                                                 </div>
                                                 <div class = "buttom">
-                                                <button class = "buttom" id="declinarButton">Rechazar</button>
+                                                    <button class = "buttom" id="declinarButton">
+                                                        Rechazar
+                                                    </button>
                                                 </div>
                                             </div>
                                     </div>

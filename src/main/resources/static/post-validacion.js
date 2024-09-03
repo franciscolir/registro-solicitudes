@@ -1,4 +1,4 @@
-document.getElementById('solicitudForm').addEventListener('submit', function(event) {
+document.getElementById('myForm').addEventListener('submit', function(event) {
     let valid = true;
 
     // Limpiar mensajes de error
@@ -7,6 +7,7 @@ document.getElementById('solicitudForm').addEventListener('submit', function(eve
     });
 
     // Validación de Emisor
+    
     const emisor = document.getElementById('emisor').value;
     if (!emisor) {
         document.getElementById('emisorError').textContent = 'Emisor es obligatorio';
@@ -46,9 +47,11 @@ document.getElementById('solicitudForm').addEventListener('submit', function(eve
 });
 
 
+
+
 function enviarFormularioComoJson() {
     // Obtener el formulario
-    const form = document.getElementById('solicitudForm');
+    const form = document.getElementById('myForm');
 
     // Crear un objeto a partir de los datos del formulario
     const formData = {
@@ -76,7 +79,7 @@ function enviarFormularioComoJson() {
         console.error('Error al registrar la solicitud:', error.response.data);
         alert('Hubo un error al registrar la solicitud');
     });
-    document.getElementById('solicitudForm').removeAttribute;
+    document.getElementById('myForm').removeAttribute;
 }
 
 function mostrarDatosEnTabla(datos) {
