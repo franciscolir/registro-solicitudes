@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
    const loadData = () => {
-        axios.get('http://localhost:8080/solicitudes/pendientes')  // Reemplaza con tu URL de API
+        axios.get('http://localhost:8080/solicitudes/pendientes?size=10')  // Reemplaza con tu URL de API
             .then(response => {
                 // Asegúrate de que los datos son un objeto y contiene `items`
                 const data = response.data;
@@ -258,4 +258,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 loadData5();
 });
+
+
+
+
+
+
+$('#solicitudModal').on('show.bs.modal', function (e) {
+    axios.get('http://localhost:8080/emisores')
+        .then(function(response) {
+            if (response && Array.isArray(response.data.content)) {
+                llenarSelectEmisores(response.data.content);
+            } else {
+                console.error('Datos inesperados del servidor:', response.data);
+                alert('Hubo un problema con los datos recibidos del servidor.');
+            }
+        })
+        .catch(function(error) {
+            console.error('Error al obtener emisores:', error);
+            alert('No se pudo obtener la lista de emisores. Intenta nuevamente.');
+        });
+});
+
+function llenarSelectEmisores(emisores) {
+    const select = document.getElementById('emisor');
+    select.innerHTML = '<option value="" disabled selected>Seleccione un emisor</option>';
+    emisores.forEach(emisor => {
+        const option = document.createElement('option');
+        option.value = emisor.id;
+        option.textContent = emisor.establecimiento;
+        select.appendChild(option);
+    });
+}
+
+
 

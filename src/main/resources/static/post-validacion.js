@@ -1,3 +1,8 @@
+
+
+
+/*
+>>>>>>> 0720322b545361af44f13d49e8a3a8b119e42044
 document.getElementById('myForm').addEventListener('submit', function(event) {
     let valid = true;
 
@@ -44,6 +49,57 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
         event.preventDefault();
     }
   
+});*/
+
+
+
+
+
+
+document.getElementById('solicitudForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Extraer datos del formulario
+    const solicitudData = {
+        emisor: document.getElementById('emisor').value,
+        numeroSolicitud: document.getElementById('numeroSolicitud').value,
+        titulo: document.getElementById('titulo').value,
+        descripcion: document.getElementById('descripcion').value,
+        fechaSolicitud: document.getElementById('fechaSolicitud').value
+    };
+
+    // Elemento de alerta
+    const alertMessage = document.getElementById('alertMessage');
+
+    // Enviar los datos como JSON
+    axios.post('http://localhost:8080/solicitudes', JSON.stringify(solicitudData), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(function(response) {
+        alertMessage.className = 'alert alert-success'; // Cambiar estilo a éxito
+        alertMessage.textContent = 'Solicitud enviada exitosamente';
+        alertMessage.style.display = 'block'; // Mostrar la alerta
+
+        // Ocultar el mensaje después de 3 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+            $('#solicitudModal').modal('hide');
+            document.getElementById('solicitudForm').reset();
+            location.reload(); // Recargar la página
+        }, 2000);
+    })
+    .catch(function(error) {
+        alertMessage.className = 'alert alert-danger'; // Cambiar estilo a error
+        alertMessage.textContent = 'Hubo un error al enviar la solicitud. Intenta nuevamente.';
+        alertMessage.style.display = 'block'; // Mostrar la alerta
+
+        // Ocultar el mensaje después de 3 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+        }, 2000);
+    });
 });
 
 
