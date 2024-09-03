@@ -52,7 +52,7 @@ button:hover {
 table  {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px auto;
+    margin: 10px auto;
     max-width: 1000px;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -89,6 +89,7 @@ tr:hover {
 }
 
 .accordion-body {
+    margin-top: 20px auto;
     display: grid;
     grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
     gap: 10px; /* Espacio entre columnas */
@@ -107,6 +108,12 @@ tr:hover {
 #declinarButton{
 color: #000;
 }
-#responderButton{
+.encabezado-pendientes , .encabezado-eventos, .encabezado-ultimoMemo{
 
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+    padding: 10px; 
+    margin-bottom: 10px;
 }
+

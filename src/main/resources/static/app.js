@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                             </div>
                                             <div class="accordion-buttoms">
                                                 <div class = "buttom">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                                    <button type="button" class = "buttom" id="aceptarButton">
                                                         Aceptar
                                                     </button>
                                                 </div>
                                                 <div class = "buttom">
-                                                    <button class = "buttom" id="declinarButton">
+                                                    <button type="button" class = "buttom" id="declinarButton">
                                                         Rechazar
                                                     </button>
                                                 </div>
@@ -193,6 +193,7 @@ loadData3();
 document.addEventListener('DOMContentLoaded', () => {
     const divMemo = document.querySelector('#ultimo-memo');
      const divMemoInfo = document.querySelector('#ultimo-memo-info');
+     const espaccio = "<br>";
 
     const loadData4 = () => {
     // Reemplaza esta URL con la URL de tu API
@@ -203,10 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => {
             // La respuesta contiene los datos en response.data
             const registros = response.data.content;
-            console.log('Datos recibidos memo:', response);
+            console.log('Datos recibidos memo:', response); espaccio
 
             
-            divMemo.innerHTML = registros[0].numeroRespuesta;
+            divMemo.innerHTML = registros[0].numeroRespuesta; 
+            
             divMemoInfo.innerHTML = registros[0].fechaRespuesta  +  registros[0].titulo;
         })
         .catch(error => {

@@ -51,11 +51,16 @@
         <div class="row mt-3 1">
             <div class="col-md-8 ">
                 <div class="p-3 bg-danger text-dark pendientes">
-                    <h2>Solicitudes Pendientes</h2>
-                       <!-- Botón para abrir el modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#solicitudModal">
-                        Ingresar Solicitud
-                    </button>
+                    <div class="encabezado-pendientes">
+                        <h2>Solicitudes Pendientes</h2>
+                    
+                        <!-- Botón para abrir el modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                         Ingresar Solicitud
+                     </button>
+
+                    </div>
+                    
                     <div class="accordion" id="accordionExample">
                      <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -71,9 +76,12 @@
             </div>
             </div>
             <div class="col-md-4 justify-content-center align-item-center">
-                <div class="p-3 bg-warning text-dark eventos">Columna 2
-                    <h2 class="justify-content-center align-item-center ">Eventos</h2>
-                    <button class="agendarButton " id="fetchButtonAgendar">agendar</button>
+                <div class="p-3 bg-warning text-dark eventos">
+                    <div class="encabezado-eventos">
+                        <h2 class="justify-content-center align-item-center ">Eventos</h2>
+                        <button class="agendarButton " id="fetchButtonAgendar">agendar</button>
+                    </div>
+                    
                     <table id="registros-table">
                         <thead>
                          
@@ -92,11 +100,17 @@
             <div class="col-md-8">
                 <div class="p-3 bg-danger text-white">Proyectos</div>
             </div>
+
             <div class="col-md-4">
                 <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
-<div id="ultimo-memo">
-</div> <div id="ultimo-memo-info"></div>
+                    <div class="encabezado-ultimoMemo">
+                        <div id="ultimo-memo"></div> 
+                        <div id="ultimo-memo-info"></div>
+                    </div>
+                </div>
             </div>
+        </div>
+                
     </section>
 
     <!-- Memos -->
