@@ -23,7 +23,7 @@ public record DatosMuestraEventos(Long id,
          this(evento.getId(),
                  evento.getTipo().toString(),
                  evento.getDescripcion(),
-                 evento.getInvitado().stream().map(Usuario::getNombre).toList().toString(),
+                 evento.getInvitados().stream().map(Usuario::getNombre).toList().toString(),
                  formatDate(evento.getFecha()),
                  evento.getEstablecimiento().getNombreEstablecimiento());
      }

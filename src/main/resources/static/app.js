@@ -1,31 +1,8 @@
-/*
-document.getElementById('fetchButton').addEventListener('click', function() {
-    fetch('http://localhost:8080/respuestas') // Cambia la URL si tu backend está en otro lugar
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            return response.json();
-        })
-        .then(data => {
 
-             // Convertir el objeto JSON a una cadena JSON formateada
-             const jsonFormatted = JSON.stringify(data, null, 2);
-             document.getElementById('result').textContent = jsonFormatted;
-        })
-        .catch(error => {
-            document.getElementById('result').innerHTML = `<p>Error: ${error.message}</p>`;
-        });
-});
-*/
 
 var urlRespuestas = 'respuestas';
 var urlSolicitudes = 'solicitudes';
   var url ='http://localhost:8080/';  
-
-
-document.getElementById('fetchButton1').addEventListener('click', function() { getButtom ( url + urlRespuestas)});
-document.getElementById('fetchButtonAgendar').addEventListener('click', function() { getButtom(url+urlSolicitudes)});
 
 
 
@@ -43,6 +20,9 @@ function getButtom (url) {
 
 }
 
+
+
+//SOLICITUDES PENDIENTES
 document.addEventListener('DOMContentLoaded', () => {
     const accordionContainer = document.getElementById('accordionExample');
 
@@ -69,16 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </button>
                                 </h2>
                                 <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">    
-                                <div class="accordion-body">
-                                        - Id ${item.id} <br>
-                                        - Numero de solicitud ${item.numeroSolicitud}<br>
-                                        - Emisor ${item.emisor} <br>
-                                        - Descripcion: ${item.descripcion} <br>
-                                        - Fecha Solicitud ${item.fechaSolicitud} <br>
+                                    
+                                    <div class="accordion-body">
+                                            <div class="accordion-items">
+                                                    - Id ${item.id} <br>
+                                                    - Numero de solicitud ${item.numeroSolicitud}<br>
+                                                    - Emisor ${item.emisor} <br>
+                                                    - Descripcion: ${item.descripcion} <br>
+                                                    - Fecha Solicitud ${item.fechaSolicitud} <br>
+                                            </div>
+                                            <div class="accordion-buttoms">
+                                            <div class = "buttom">
+                                                <button class = "buttom" id="responderButton">Aceptar</button>
+                                                </div>
+                                                <div class = "buttom">
+                                                <button class = "buttom" id="declinarButton">Rechazar</button>
+                                                </div>
+                                            </div>
                                     </div>
-                                    <button id="responderButton">Responder Solicitud</button>
-                                <button id="declinarButton">Rechazar Solicitud</button>
-                                    </div>
+                                </div>
                             </div>
                         `;
 
@@ -98,12 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
+    //RESUMEN EVENTOS
     document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#registros-table tbody');
     
         const loadData2 = () => {
         // Reemplaza esta URL con la URL de tu API
-        const apiUrl = 'http://localhost:8080/eventos?size=5';
+        const apiUrl = 'http://localhost:8080/eventos?size=3';
     
         // Solicitar datos usando Axios
         axios.get(apiUrl)
@@ -118,13 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Crear filas para cada registro
                 registros.forEach(registro => {
                     console.log(registro)
-                    const row = document.createElement('tr');
+                    const row = document.createElement('table');
     
                     row.innerHTML = `
                     
-                        <td>${registro.descripcion}</td>
-                        <td>${registro.fecha}</td>
-                        <td>${registro.establecimiento}</td>
+                    
+                            <th>
+                            ${registro.tipo}  |  ${registro.fecha}<th>
+                            <tr> 
+                           
+                            ${registro.descripcion}<br>
+                            ${registro.establecimiento}<br>
+                            ${registro.invitado}</tr>
+                        
+                        
+                    
                     `;
     
                     tableBody.appendChild(row);
@@ -164,16 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 row.innerHTML = `
                 
                     <td>${registro.numeroSolicitud}</td>
-                    <td>${registro.providenciaId}</td>
-                    <td>${registro.emisorId}</td>
+                   
+                    <td>${registro.emisor}</td>
                     <td>${registro.titulo}</td>
                     <td>${registro.descripcion}</td>
-                    <td>${registro.comentario}</td>
                     <td>${registro.fechaSolicitud}</td>
-                    <td>${registro.fechaIngresoSolicitud}</td>
-                    <td>${registro.estado}</td>
-                    <td>${registro.fechaSolicitud}</td>
-                    <td>${registro.fechaDeclinacion}</td>
+                    <td>${registro.fechaIngresoDepartamento}</td>
                     <td>${registro.estado}</td>
                 `;
 
@@ -207,18 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const registros = response.data.content;
             console.log('Datos recibidos memo:', response);
 
+            
             divMemo.innerHTML = registros[0].numeroRespuesta;
-            divMemoInfo.innerHTML = registros[0].fechaRespuesta + registros[0].titulo;
-
-            // "id": 1,
-            // "numeroRespuesta": 3001,
-            // "usuario": "Ana López",
-            // "titulo": "Respuesta a Solicitud de Adición",
-            // "descripcion": "Descripción detallada de la respuesta a la solicitud de adición.",
-            // "fechaRespuesta": "06/08/2024",
-            // "fechaEnvio": "06/08/2024",
-            // "solicitudId": 5
-           
+            divMemoInfo.innerHTML = registros[0].fechaRespuesta  +  registros[0].titulo;
         })
         .catch(error => {
             console.error('Error al obtener los datos:', error);
@@ -228,5 +213,45 @@ document.addEventListener('DOMContentLoaded', () => {
 loadData4();
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('#eventos-table tbody');
 
+    const loadData5 = () => {
+    // Reemplaza esta URL con la URL de tu API
+    const apiUrl = 'http://localhost:8080/eventos?size=10';
+
+    // Solicitar datos usando Axios
+    axios.get(apiUrl)
+        .then(response => {
+            // La respuesta contiene los datos en response.data
+            const registros = response.data.content;
+            console.log('Datos recibidos tabla:', response);
+
+            // Limpiar el cuerpo de la tabla
+            tableBody.innerHTML = '';
+
+            // Crear filas para cada registro
+            registros.forEach(registro => {
+                console.log(registro)
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                
+                            <td>${registro.tipo}</td>
+                            <td>${registro.establecimiento}</td>
+                            <td>${registro.descripcion}</td>
+                            <td>${registro.fecha}</td>
+                            <td>${registro.invitado}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
+}
+
+loadData5();
+});
 

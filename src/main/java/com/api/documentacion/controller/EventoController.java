@@ -24,7 +24,7 @@ public class EventoController {
     //Obtener lista de eventos
     @GetMapping
     public ResponseEntity<Page<DatosMuestraEventos>> listaEventos(Pageable paginacion) {
-        var listaEventos = eventoService.listaDeEventoss(paginacion);
+        var listaEventos = eventoService.listaDeEventos(paginacion);
 
         return ResponseEntity.ok(listaEventos);
     }

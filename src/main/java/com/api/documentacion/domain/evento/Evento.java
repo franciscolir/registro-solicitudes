@@ -44,5 +44,5 @@ public class Evento {
             joinColumns = @JoinColumn(name = "evento_id"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
-    private Set<Usuario> invitado = new HashSet<>();
+    private Set<Usuario> invitados = new HashSet<>();
 }

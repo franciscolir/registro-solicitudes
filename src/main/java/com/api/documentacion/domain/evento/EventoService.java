@@ -14,10 +14,12 @@ public class EventoService {
 
 
     //GET_LISTA__________________________________________
-    //obtiene lista de eventos
-    public Page<DatosMuestraEventos> listaDeEventoss(Pageable paginacion) {
+    //obtiene lista de eventos con invitados
+    public Page<DatosMuestraEventos> listaDeEventos(Pageable paginacion) {
 
-        return eventoRepository.findAllByOrderByFechaDesc(paginacion).map(DatosMuestraEventos::new);
+        //return eventoRepository.findAllByOrderByFechaDesc(paginacion).map(DatosMuestraEventos::new);
+        return eventoRepository.findAllWithInvitados(paginacion).map(DatosMuestraEventos::new);
     }
-    //___________________________________________________
+
+
 }

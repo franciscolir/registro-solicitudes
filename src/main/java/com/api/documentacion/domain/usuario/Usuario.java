@@ -37,7 +37,7 @@ public class Usuario {
 
     private LocalDateTime fechaIngresoSistema;
 
-    @ManyToMany(mappedBy = "invitado")
+    @ManyToMany(mappedBy = "invitados")
     private Set<Evento> eventos = new HashSet<>();
 
 

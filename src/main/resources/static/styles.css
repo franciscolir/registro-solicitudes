@@ -87,3 +87,26 @@ tr:hover {
 .eventos {
     border-color: red solid;
 }
+
+.accordion-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+}
+.box {
+    height: 100px;
+}
+
+.buttom{
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 90px;
+    height: 40px;
+}
+
+#declinarButton{
+color: #000;
+}
+#responderButton{
+
+}

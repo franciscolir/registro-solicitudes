@@ -49,8 +49,8 @@
     <!-- Resumen -->
     <section class="hero container-fluid">
         <div class="row mt-3 1">
-            <div class="col-md-7 ">
-                <div class="p-3 bg-danger text-dark pendientes">Columna 1
+            <div class="col-md-8 ">
+                <div class="p-3 bg-danger text-dark pendientes">
                     <h2>Solicitudes Pendientes</h2>
                     <div class="accordion" id="accordionExample">
                      <div class="accordion-item">
@@ -59,29 +59,20 @@
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <div id="fetchButton2"></div>
-                               <div id="fetchButton1"></div>
-                            </div>
-                            <button id="responderButton">Responder Solicitud</button>
-                            <button id="declinarButton">Rechazar Solicitud</button>
+                                
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
-            <div class="col-md-5 justify-content-center align-item-center">
+            <div class="col-md-4 justify-content-center align-item-center">
                 <div class="p-3 bg-warning text-dark eventos">Columna 2
                     <h2 class="justify-content-center align-item-center ">Eventos</h2>
                     <button class="agendarButton " id="fetchButtonAgendar">agendar</button>
                     <table id="registros-table">
                         <thead>
-                            <tr>
-                                
-                                <th>Descripción</th>
-                                <th>Fecha</th>
-                                <th>Establecimiento</th>
-
-                            </tr>
+                         
                         </thead>
                         <tbody>
                             <!-- Los registros se llenarán aquí -->
@@ -94,17 +85,13 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="p-3 bg-danger text-white">Proyectos</div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
 <div id="ultimo-memo">
-
-</div>
-<div id="ultimo-memo-info">
-
-</div>
+</div> <div id="ultimo-memo-info"></div>
             </div>
     </section>
 
@@ -120,47 +107,18 @@
                 <thead>
                     <tr>
                         
-                        <th>Descripción</th>
-                        <th>emisor_id</th>
-                        <th>Fecha</th>
-                        <th>numero_solicitud</th>
-                        <th>providencia_id</th>
-                        <th>estado</th>
-                        <th>titulo</th>   
-                        <th>Descripción</th>
-                        <th>comentario</th>
-                        <th>fecha_solicitud</th>   
-                        <th>fecha_ingreso_solicitud</th>
-                        <th>fecha_declinacion</th>
+                        <th>N° Solicitud</th>
+                        
+                        <th>Emisor</th>
+                        <th>Titulo</th>
+                        <th>Descripcion</th>
+                        
+                        <th>Fecha Solicitud</th>   
+                        <th>Fecha Ingreso</th>
+                        <th>Estado</th>  
+                       
                         
 
-                        descripcion
-
-descripcion
-: 
-"Descripción de la solicitud de cancelación."
-emisor
-: 
-"Jardín Infantil A"
-estado
-: 
-"recibido"
-fechaIngresoDepartamento
-: 
-"10/08/2024"
-fechaSolicitud
-: 
-"10/08/2024"
-id
-: 
-10
-numeroSolicitud
-: 
-1010
-titulo
-: 
-"Solicitud de Cancelación"
-                 
                     </tr>
                 </thead>
                 <tbody>
@@ -191,6 +149,20 @@ titulo
                 <h2>Lista de Eventos</h2>
                         TABLA CON LISTADO 
             </div>
+            <table id="eventos-table">
+                <thead>
+                    <tr>
+                        <th>Evento</th> 
+                        <th>Descripcion</th>
+                        <th>Establecimiento</th>
+                        <th>Fecha</th>
+                        <th>Invitado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los registros se llenarán aquí -->
+                </tbody>
+            </table>
         </div>    
     </section>
 
