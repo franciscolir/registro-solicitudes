@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "solicitudes")
@@ -30,7 +31,7 @@ public class Solicitud {
     private String descripcion;
     private String comentario;
 
-    private LocalDateTime fechaSolicitud;
+    private LocalDate fechaSolicitud;
     private LocalDateTime fechaIngresoSolicitud;
     private LocalDateTime fechaDeclinacion;
 
@@ -43,7 +44,7 @@ public class Solicitud {
     private Respuesta respuesta;
 
 
-    public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {
+    public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {
         this.id = id;
         this.numeroSolicitud = numeroSolicitud;
         this.emisor = emisor;
@@ -56,7 +57,7 @@ public class Solicitud {
         this.activo = true;
     }
 
-    public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDateTime fechaSolicitud){
+    public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud){
         this.id = id;
         this.numeroSolicitud = numeroSolicitud;
         if(emisor != null)

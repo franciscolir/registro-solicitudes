@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -24,7 +25,7 @@ public class SolicitudService {
 
         var emisor = emisorRepository.getReferenceById(datos.emisor());
 
-        var fechaSolicitud = dateTimeFormatter(datos.fechaSolicitud());
+        var fechaSolicitud = dateTimeFormatter2(datos.fechaSolicitud());
         var fechaIngresoSolicitud = LocalDateTime.now();
         var estado = Estado.RECIBIDO;
 
@@ -51,7 +52,7 @@ public class SolicitudService {
 
         var id = validaYObtieneIdConNumeroSolicitud(numeroSolicitud,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
-        var fechaSolicitud = stringFormatter(solicitud.getFechaSolicitud());
+        var fechaSolicitud = stringFormatter2(solicitud.getFechaSolicitud());
         var fechaIngreso = stringFormatter(solicitud.getFechaIngresoSolicitud());
 
         return new DatosMuestraSolicitud(
@@ -89,7 +90,7 @@ public class SolicitudService {
     public DatosMuestraSolicitud actualizaSolicitud (DatosActualizaSolicitud datos){
         validaSiExisteIdAndActivoTrue(datos.id());
         var emisor = emisorRepository.getReferenceById(datos.emisorId());
-        var fechaSolicitud = dateTimeFormatter(datos.fechaSolicitud());
+        var fechaSolicitud = dateTimeFormatter2(datos.fechaSolicitud());
         var solicitud = solicitudRepository.getReferenceById(datos.id());
         solicitud.actualizaSolicitud(
                 datos.id(),
@@ -188,6 +189,21 @@ public class SolicitudService {
     //cambia formato fecha a string
     public String stringFormatter (LocalDateTime fecha){
         var outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        return fecha.format(outputFormatter);
+    }//__________
+
+    //cambia string a formato fecha
+    public LocalDate dateTimeFormatter2 (String fecha){
+        var formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        //var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        return LocalDate.parse(fecha, formatter);
+    }//__________
+
+    //cambia formato fecha a string
+    public String stringFormatter2 (LocalDate fecha){
+        var outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         return fecha.format(outputFormatter);
     }//__________
