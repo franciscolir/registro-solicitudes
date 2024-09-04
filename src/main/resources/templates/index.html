@@ -283,6 +283,7 @@
                     <div class="form-group">
                         <label for="invitados">Invitados:</label>
                         <select id="invitados" name="invitados" class="form-control" multiple required>
+                            <option value="" disabled selected></option>
                             <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
                         </select>
                         <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples invitados.</small>
@@ -309,7 +310,7 @@
     <!-- Javascript -->
     <script src="/static/app.js"></script>
     <script src="/static/post-validacion.js"></script>
-    <script scr="/static/modal-evento.js"></script>
+    <script src="/static/modal-evento.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

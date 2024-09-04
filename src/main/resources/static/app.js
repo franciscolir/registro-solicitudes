@@ -5,8 +5,6 @@ var urlSolicitudes = 'solicitudes';
   var url ='http://localhost:8080/';  
 
 
-
-
 function getButtom (url) {
     axios.get('http://localhost:8080/eventos') // Cambia la URL si tu backend está en otro lugar
     .then(response => {
@@ -19,7 +17,6 @@ function getButtom (url) {
     });
 
 }
-
 
 
 //SOLICITUDES PENDIENTES
@@ -89,10 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
         loadData();
 
-    });
+});
 
-    //RESUMEN EVENTOS
-    document.addEventListener('DOMContentLoaded', () => {
+//RESUMEN EVENTOS
+document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#registros-table tbody');
     
         const loadData2 = () => {
@@ -192,9 +189,6 @@ loadData3();
 });
 
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const divMemo = document.querySelector('#ultimo-memo');
      const divMemoInfo = document.querySelector('#ultimo-memo-info');
@@ -265,10 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 loadData5();
 });
-
-
-
-
 
 $('#myModal').on('show.bs.modal', function (e) {
     axios.get('http://localhost:8080/emisores')

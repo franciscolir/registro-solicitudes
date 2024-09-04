@@ -1,123 +1,45 @@
-/*
-const url = 'http://localhost:8080'
+//SELECT de tipos de eventos
 
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar opciones para el campo "tipo"
-    axios.get(url+'/eventos')
-        .then(response => response.json())
-        .then(data => {
-            const tipoSelect = document.getElementById('tipo');
-            data.forEach(tipo => {
-                const option = document.createElement('option');
-                option.value = tipo.id;
-                option.textContent = tipo.nombre;
-                tipoSelect.appendChild(option);
-            });
+$('#eventModal').on('show.bs.modal', function (e) {
+    axios.get('http://localhost:8080/tipo')
+        .then(function(response) {
+            if (response && Array.isArray(response.data)) {
+                llenarSelectTipos(response.data);
+            } else {
+                console.error('Datos inesperados del servidor:', response.data);
+                alert('Hubo un problema con los datos tipos recibidos del servidor.');
+            }
         })
-        .catch(error => console.error('Error:', error));
-    // Cargar opciones para el campo "establecimiento"
-    
-    axios.get(url+'/emisores')
-        .then(response => response.json())
-        .then(data => {
-            const establecimientoSelect = document.getElementById('establecimiento');
-            data.forEach(establecimiento => {
-                const option = document.createElement('option');
-                option.value = establecimiento.id;
-                option.textContent = establecimiento.nombre;
-                establecimientoSelect.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-
-    // Cargar opciones para el campo "invitados"
-    fetch(url+'/usuarios')
-        .then(response => response.json())
-        .then(data => {
-            const invitadosSelect = document.getElementById('invitados');
-            data.forEach(usuario => {
-                const option = document.createElement('option');
-                option.value = usuario.id;
-                option.textContent = usuario.nombre;
-                invitadosSelect.appendChild(option);
-            });
+        .catch(function(error) {
+            console.error('Error al obtener tipos:', error);
+            alert('No se pudo obtener la lista de tipos. Intenta nuevamente.');
         });
 });
 
-function registrarEvento() {
-    const eventoData = {
-        tipo: document.getElementById('tipo').value,
-        descripcion: document.getElementById('descripcion').value,
-        fecha: document.getElementById('fecha').value,
-        establecimiento: document.getElementById('establecimiento').value
-    };
+function llenarSelectTipos(tipos) {
+    const select = document.getElementById('tipo');
+    select.innerHTML = '<option value="" disabled selected>Seleccione un tipo de evento</option>';
+    tipos.forEach(tipo => {
 
-    // Elemento de alerta
-    const alertMessage = document.getElementById('eventAlertMessage');
+        const tipoFormatted = tipo.tipoEvento
+        .toLowerCase()                  // Convierte todo el texto a minúsculas
+        .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+        .replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
 
-    // Enviar el evento al servidor
-    axios.post(url+'/eventos', eventoData, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response) {
-        const eventoId = response.data.id; // Extraer el ID del evento registrado
-        const invitados = Array.from(document.getElementById('invitados').selectedOptions).map(option => option.value);
-
-            })
-        
-    .then(function(data) {
-        alertMessage.className = 'alert alert-success';
-        alertMessage.textContent = 'Evento registrado exitosamente';
-        alertMessage.style.display = 'block';
-
-        // Ocultar el mensaje después de 2 segundos
-        setTimeout(function() {
-            alertMessage.style.display = 'none';
-            $('#eventModal').modal('hide'); // Cerrar modal
-            document.getElementById('eventForm').reset(); // Limpiar formulario
-        }, 2000);
-    })
-    .catch(function(error) {
-        alertMessage.className = 'alert alert-danger';
-        alertMessage.textContent = 'Hubo un error al registrar el evento. Intenta nuevamente.';
-        alertMessage.style.display = 'block';
-
-        // Ocultar el mensaje después de 2 segundos
-        setTimeout(function() {
-            alertMessage.style.display = 'none';
-        }, 2000);
+        const option = document.createElement('option');
+        option.value = tipo.tipoEvento; // Usa `tipo.tipoEvento` para el valor del option
+        option.textContent = tipoFormatted; // Usa `tipo.tipoEvento` para el texto del option
+        select.appendChild(option);
     });
-}*/
+}
 
-
+//SELECT de establecimientos
 
 $('#eventModal').on('show.bs.modal', function (e) {
     axios.get('http://localhost:8080/emisores')
         .then(function(response) {
             if (response && Array.isArray(response.data.content)) {
-                const elementoById = "establecimiento";
-                const descripcionSelect = " recinto";
-                llenarSelect(response.data.content,elementoById,descripcionSelect);
-            } else {
-                console.error('Datos inesperados del servidor:', response.data);
-                alert('Hubo un problema con los datos recibidos del servidor.');
-            }
-        })
-        .catch(function(error) {
-            console.error('Error al obtener emisores:', error);
-            alert('No se pudo obtener la lista de emisores. Intenta nuevamente.');
-        });
-        axios.get('http://localhost:8080/tipo')
-        .then(function(response) {
-            if (response && Array.isArray(response.data.content)) {
-                const elementoById = "tipo";
-                const descripcionSelect = " tipo de evento";
-                llenarSelect(response.data.content,elementoById,descripcionSelect);
-               
+                llenarSelectEstablecimiento(response.data.content);
             } else {
                 console.error('Datos inesperados del servidor:', response.data);
                 alert('Hubo un problema con los datos recibidos del servidor.');
@@ -129,13 +51,44 @@ $('#eventModal').on('show.bs.modal', function (e) {
         });
 });
 
-function llenarSelect(dato, elementoById, descripcionSelect) {
-    const select = document.getElementById(elementoById);
-    select.innerHTML = `<option value="" disabled selected>Seleccione un ${descripcionSelect} </option>`;
-    emisores.forEach(dato => {
+function  llenarSelectEstablecimiento(emisores) {
+    const select = document.getElementById('establecimiento');
+    select.innerHTML = '<option value="" disabled selected>Seleccione un establecimiento </option>';
+    emisores.forEach(emisor => {
         const option = document.createElement('option');
-        option.value = dato.id;
-        option.textContent = dato.establecimiento;
+        option.value = emisor.id;
+        option.textContent = emisor.establecimiento;
+        select.appendChild(option);
+    });
+}
+
+//SELECT de usuarios
+
+$('#eventModal').on('show.bs.modal', function (e) {
+    axios.get('http://localhost:8080/usuarios')
+        .then(function(response) {
+            if (response && Array.isArray(response.data.content)) {
+                llenarSelectInvitados(response.data.content);
+           
+            } else {
+                console.error('Datos inesperados del servidor:', response.data);
+                alert('Hubo un problema con los datos-usuario recibidos del servidor.');
+            }
+        })
+        .catch(function(error) {
+            console.error('Error al obtener usuarios:', error);
+            alert('No se pudo obtener la lista de usuarios. Intenta nuevamente.');
+        });
+});
+
+function llenarSelectInvitados(usuarios) {
+    const select = document.getElementById('invitados');
+    select.innerHTML = '<option value="" disabled selected>Seleccione un invitado(s)</option>';
+    usuarios.forEach(usuario => {
+     
+        const option = document.createElement('option');
+        option.value = usuario.id;
+        option.textContent = usuario.nombre;
         select.appendChild(option);
     });
 }
