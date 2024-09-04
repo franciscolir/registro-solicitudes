@@ -55,12 +55,9 @@ document.getElementById('myForm').addEventListener('submit', function(event) {
 
 
 
-
-document.getElementById('solicitudForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    // Extraer datos del formulario
-    const solicitudData = {
+function enviarFormulario() {
+    // Obtener datos del formulario
+    const formData = {
         emisor: document.getElementById('emisor').value,
         numeroSolicitud: document.getElementById('numeroSolicitud').value,
         titulo: document.getElementById('titulo').value,
@@ -71,73 +68,42 @@ document.getElementById('solicitudForm').addEventListener('submit', function(eve
     // Elemento de alerta
     const alertMessage = document.getElementById('alertMessage');
 
-    // Enviar los datos como JSON
-    axios.post('http://localhost:8080/solicitudes', JSON.stringify(solicitudData), {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response) {
-        alertMessage.className = 'alert alert-success'; // Cambiar estilo a éxito
-        alertMessage.textContent = 'Solicitud enviada exitosamente';
-        alertMessage.style.display = 'block'; // Mostrar la alerta
-
-        // Ocultar el mensaje después de 3 segundos
-        setTimeout(function() {
-            alertMessage.style.display = 'none';
-            $('#solicitudModal').modal('hide');
-            document.getElementById('solicitudForm').reset();
-            location.reload(); // Recargar la página
-        }, 2000);
-    })
-    .catch(function(error) {
-        alertMessage.className = 'alert alert-danger'; // Cambiar estilo a error
-        alertMessage.textContent = 'Hubo un error al enviar la solicitud. Intenta nuevamente.';
-        alertMessage.style.display = 'block'; // Mostrar la alerta
-
-        // Ocultar el mensaje después de 3 segundos
-        setTimeout(function() {
-            alertMessage.style.display = 'none';
-        }, 2000);
-    });
-});
-
-
-
-
-function enviarFormularioComoJson() {
-    // Obtener el formulario
-    const form = document.getElementById('myForm');
-
-    // Crear un objeto a partir de los datos del formulario
-    const formData = {
-        emisor: document.getElementById('emisor').value,
-        numeroSolicitud: document.getElementById('numeroSolicitud').value,
-        titulo: document.getElementById('titulo').value,
-        descripcion: document.getElementById('descripcion').value,
-        fechaSolicitud: document.getElementById('fechaSolicitud').value
-    };
-
-    // Enviar la solicitud POST con Axios
+    // Enviar datos al servidor
     axios.post('http://localhost:8080/solicitudes', formData, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(function (response) {
+    .then(function(response) {
         // Manejar la respuesta exitosa
-        console.log('Respuesta del servidor:', response.data);
-        alert('Solicitud registrada exitosamente',mostrarDatosEnTabla(response.data));
-        mostrarDatosEnTabla(response.data)
+        alertMessage.className = 'alert alert-success';
+        alertMessage.textContent = 'Solicitud enviada exitosamente';
+        alertMessage.style.display = 'block';
+
+        // Mostrar los datos en la tabla
+        mostrarDatosEnTabla(response.data);
+
+        // Ocultar el mensaje después de 2 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+            $('#myModal').modal('hide'); // Cerrar modal si existe
+            document.getElementById('myForm').reset(); // Limpiar formulario
+        }, 2000);
     })
-    .catch(function (error) {
+    .catch(function(error) {
         // Manejar el error
-        console.error('Error al registrar la solicitud:', error.response.data);
-        alert('Hubo un error al registrar la solicitud');
+        alertMessage.className = 'alert alert-danger';
+        alertMessage.textContent = 'Hubo un error al enviar la solicitud. Intenta nuevamente.';
+        alertMessage.style.display = 'block';
+
+        // Ocultar el mensaje después de 2 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+        }, 2000);
     });
-    document.getElementById('myForm').removeAttribute;
 }
 
+// Función para mostrar los datos en la tabla
 function mostrarDatosEnTabla(datos) {
     const tbody = document.querySelector('#datosTable tbody');
     tbody.innerHTML = '';
@@ -165,41 +131,4 @@ function mostrarDatosEnTabla(datos) {
 
         tbody.appendChild(fila);
     });
-    document.getElementById('solicitudForm').reset();
 }
-
-// cambiar funcion de archivo cuando se haga push dede equipo daem
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Obtener la lista de emisores cuando el documento esté listo
-    axios.get('http://localhost:8080/emisores')
-        .then(function(response) {
-            // Verifica que `response` y `response.data` están definidos
-            if (response && response.data.content) {
-                llenarSelectEmisores(response.data.content);
-            } else {
-                console.error('Respuesta inesperada del servidor:', response);
-                alert('Hubo un problema con la respuesta del servidor.');
-            }
-        })
-        .catch(function(error) {
-            console.error('Error al obtener emisores:', error);
-            alert('No se pudo obtener la lista de emisores. Intenta nuevamente.');
-        });
-});
-
-function llenarSelectEmisores(emisores) {
-    const select = document.getElementById('emisor');
-    
-    // Limpia las opciones existentes (excepto la primera opción de selección)
-    select.innerHTML = '<option value="" disabled selected>Seleccione un emisor</option>';
-    
-    // Añade nuevas opciones
-    emisores.forEach(emisor => {
-        const option = document.createElement('option');
-        option.value = emisor.id;  // o emisor.id si es el valor del emisor
-        option.textContent = emisor.establecimiento;  // o emisor.nombre si es el nombre del emisor
-        select.appendChild(option);
-    });
-}
-

@@ -113,20 +113,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 registros.forEach(registro => {
                     console.log(registro)
                     const row = document.createElement('table');
+                    const tipoFormatted = registro.tipo
+                        .toLowerCase()                  // Convierte todo el texto a minúsculas
+                        .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                        .replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+
+                    const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
     
                     row.innerHTML = `
                     
                     
                             <th>
-                            ${registro.tipo}  |  ${registro.fecha}<th>
+                            ${tipoFormatted}  |  ${registro.fecha}
+                            <th>
                             <tr> 
-                           
                             ${registro.descripcion}<br>
-                            ${registro.establecimiento}<br>
-                            ${registro.invitado}</tr>
-                        
-                        
-                    
+                            Recinto: ${registro.establecimiento}<br>
+                            Invitados: ${invitadosString}
+                            </tr>
+          
                     `;
     
                     tableBody.appendChild(row);
@@ -265,8 +270,7 @@ loadData5();
 
 
 
-
-$('#solicitudModal').on('show.bs.modal', function (e) {
+$('#myModal').on('show.bs.modal', function (e) {
     axios.get('http://localhost:8080/emisores')
         .then(function(response) {
             if (response && Array.isArray(response.data.content)) {

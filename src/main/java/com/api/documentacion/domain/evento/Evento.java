@@ -1,12 +1,10 @@
 package com.api.documentacion.domain.evento;
 
+import com.api.documentacion.domain.evento.dto.DatosRegistraEvento;
 import com.api.documentacion.domain.solicitud.Establecimiento;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -15,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "eventos")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -30,7 +29,6 @@ public class Evento {
 
     private String descripcion;
 
-    //private String invitado;
 
     private LocalDateTime fecha;
 
@@ -45,4 +43,16 @@ public class Evento {
             inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
     private Set<Usuario> invitados = new HashSet<>();
+
+    public Evento(Long id, TipoEvento tipo, String descripcion, LocalDateTime fecha, Establecimiento establecimiento) {
+        this.id = id;
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.establecimiento = establecimiento;
+    }
+
+
+    public void setUsuarios(Set<Usuario> usuarios) {
+    }
 }
