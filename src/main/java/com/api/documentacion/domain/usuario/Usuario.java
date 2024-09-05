@@ -2,10 +2,7 @@ package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.evento.Evento;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -39,6 +37,7 @@ public class Usuario {
 
     @ManyToMany(mappedBy = "invitados")
     private Set<Evento> eventos = new HashSet<>();
+
 
 
     public Usuario(Long id, String nombre, String correoElectronico, String contraseña, Perfil perfil, Boolean activo, LocalDateTime fecha, String comentario) {

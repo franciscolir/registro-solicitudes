@@ -1,12 +1,10 @@
-package com.api.documentacion.domain.evento;
+package com.api.documentacion.domain.evento.dto;
 
-import com.api.documentacion.domain.solicitud.Establecimiento;
+import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.usuario.Usuario;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
 public record DatosMuestraEventos(Long id,
                                   String tipo,

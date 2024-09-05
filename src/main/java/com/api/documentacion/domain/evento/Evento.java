@@ -1,7 +1,6 @@
 package com.api.documentacion.domain.evento;
 
-import com.api.documentacion.domain.evento.dto.DatosRegistraEvento;
-import com.api.documentacion.domain.solicitud.Establecimiento;
+import com.api.documentacion.domain.emisor.Establecimiento;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,5 +53,17 @@ public class Evento {
 
 
     public void setUsuarios(Set<Usuario> usuarios) {
+    }
+
+    @Override
+    public String toString() {
+        return "Evento{" +
+                "id=" + id +
+                ", tipo=" + tipo +
+                ", descripcion='" + descripcion + '\'' +
+                ", fecha=" + fecha +
+                ", establecimiento=" + establecimiento +
+                ", invitados=" + invitados +
+                '}';
     }
 }

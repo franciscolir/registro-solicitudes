@@ -1,4 +1,6 @@
-package com.api.documentacion.domain.evento;
+package com.api.documentacion.domain.evento.dto;
+
+import com.api.documentacion.domain.evento.TipoEvento;
 
 public class DatosMuestraTipoEvento{
 

@@ -257,7 +257,7 @@
                 <div id="eventAlertMessage" class="alert" style="display:none;"></div>
 
                 <!-- Formulario -->
-                <form id="eventForm" class="needs-validation" onsubmit="event.preventDefault(); registrarEvento();">
+                <form id="eventForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioEvent();">
                     <div class="form-group">
                         <label for="tipo">Tipo:</label>
                         <select id="tipo" name="tipo" class="form-control" required>
@@ -267,7 +267,7 @@
                     </div>
                     <div class="form-group">
                         <label for="descripcion">Descripción:</label>
-                        <input type="text" id="descripcion" name="descripcion" class="form-control" required>
+                        <input type="text" id="descripcionEvent" name="descripcion" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fecha">Fecha y Hora:</label>
@@ -290,7 +290,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
                     </div>
                 </form>
             </div>

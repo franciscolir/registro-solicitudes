@@ -1,6 +1,8 @@
 package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.respuesta.Respuesta;
+import com.api.documentacion.domain.emisor.Emisor;
+import com.api.documentacion.domain.emisor.Estado;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

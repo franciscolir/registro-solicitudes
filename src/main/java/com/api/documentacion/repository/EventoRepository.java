@@ -1,5 +1,6 @@
-package com.api.documentacion.domain.evento;
+package com.api.documentacion.repository;
 
+import com.api.documentacion.domain.evento.Evento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

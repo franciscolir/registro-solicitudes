@@ -94,3 +94,79 @@ function llenarSelectInvitados(usuarios) {
 }
 
 
+//Enviar formulario GET
+
+
+function enviarFormularioEvent() {
+
+    const descripcion = document.getElementById('descripcionEvent').value;
+    console.log(descripcion+"  descripcion")
+    console.log(typeof descripcion)
+
+      // Obtener los valores seleccionados en el select
+      const select = document.getElementById('invitados');
+      const selectedOptions = Array.from(select.selectedOptions);
+
+    // Convertir los valores a números y asegurarse de que sea un array
+      const selectedValues = selectedOptions.map(option => parseInt(option.value, 10));
+
+      const valuesArray = Object.values(selectedValues);
+
+   // Crear objeto de datos para enviar
+   const formData = {
+    tipo: document.getElementById('tipo').value,
+   // descripcion: document.getElementById('descripcion').value,
+   descripcion : descripcion,
+    fecha: document.getElementById('fecha').value,
+    establecimiento: document.getElementById('establecimiento').value,
+    //invitados: selectedValues // Lista de IDs seleccionados
+    invitados: valuesArray
+    };
+
+  
+    console.log(formData.invitados+"  fromData.invitados antes")
+    console.log(typeof formData.invitados)
+    console.log(formData.descripcion+"  descripcion")
+    console.log(typeof formData.descripcion)
+
+    // Elemento de alerta
+    const alertMessage = document.getElementById('eventAlertMessage');
+
+    // Enviar datos al servidor
+    axios.post('http://localhost:8080/eventos', formData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        
+    })
+     
+    .then(function(response) {
+     
+        // Manejar la respuesta exitosa
+        alertMessage.className = 'alert alert-success';
+        alertMessage.textContent = 'Solicitud enviada exitosamente';
+        alertMessage.style.display = 'block';
+
+        // Mostrar los datos en la tabla
+        mostrarDatosEnTabla(response.data);
+
+        // Ocultar el mensaje después de 2 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+            $('#eventModal').modal('hide'); // Cerrar modal si existe
+            document.getElementById('eventForm').reset(); // Limpiar formulario
+        }, 2000);
+    })
+    .catch(function(error) {
+      
+        // Manejar el error
+        alertMessage.className = 'alert alert-danger';
+        alertMessage.textContent = 'Hubo un error al enviar la solicitud. Intenta nuevamente.';
+        alertMessage.style.display = 'block';
+
+        // Ocultar el mensaje después de 2 segundos
+        setTimeout(function() {
+            alertMessage.style.display = 'none';
+        }, 2000);
+    });
+}

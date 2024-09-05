@@ -1,6 +1,6 @@
 package com.api.documentacion.controller;
 
-import com.api.documentacion.domain.evento.DatosMuestraTipoEvento;
+import com.api.documentacion.domain.evento.dto.DatosMuestraTipoEvento;
 import com.api.documentacion.domain.evento.TipoEvento;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,6 @@
 package com.api.documentacion.controller;
 
-import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
-import com.api.documentacion.domain.usuario.DatosMuestraListaUsuarios;
+import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

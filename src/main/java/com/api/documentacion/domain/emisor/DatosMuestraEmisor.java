@@ -1,4 +1,4 @@
-package com.api.documentacion.domain.solicitud;
+package com.api.documentacion.domain.emisor;
 
 
 public record DatosMuestraEmisor(

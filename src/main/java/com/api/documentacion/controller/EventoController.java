@@ -1,7 +1,6 @@
 package com.api.documentacion.controller;
 
-import com.api.documentacion.domain.evento.DatosMuestraEventos;
-import com.api.documentacion.domain.evento.Evento;
+import com.api.documentacion.domain.evento.dto.DatosMuestraEventos;
 import com.api.documentacion.domain.evento.EventoService;
 import com.api.documentacion.domain.evento.dto.DatosRegistraEvento;
 import jakarta.validation.Valid;
@@ -26,8 +25,9 @@ public class EventoController {
 
     @PostMapping
     public ResponseEntity<DatosMuestraEventos> crearEvento(@RequestBody @Valid DatosRegistraEvento datos) {
+        System.out.println(datos);
         var evento = eventoService.crearEvento(datos);
-        return ResponseEntity.ok(evento);
+        return ResponseEntity.ok().build();
     }
 
     //Obtener lista de eventos

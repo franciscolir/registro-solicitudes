@@ -1,5 +1,7 @@
-package com.api.documentacion.domain.usuario;
+package com.api.documentacion.domain.usuario.dto;
 
+
+import com.api.documentacion.domain.usuario.Usuario;
 
 public record DatosMuestraListaUsuarios(
         Long id,

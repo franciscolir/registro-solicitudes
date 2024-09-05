@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.usuario;
 
+import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
 import com.api.documentacion.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.solicitud.dto.*;
+import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
