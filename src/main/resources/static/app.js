@@ -62,11 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                                         Aceptar
                                                     </button>
 
-                                                      
-                   
                                                 </div>
                                                 <div class = "buttom">
-                                                    <button type="button" class = "buttom" id="declinarButton">
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rechazarModal">
                                                         Rechazar
                                                     </button>
                                                 </div>
