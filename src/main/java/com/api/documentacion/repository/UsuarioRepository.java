@@ -12,4 +12,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
 
     Page<Usuario> findByActivoTrue(Pageable paginacion);
+
+    Boolean existsByIdAndActivoTrue(Long id);
 }

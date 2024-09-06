@@ -6,6 +6,8 @@ import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosRegistraRespuesta;
 import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.domain.solicitud.SolicitudService;
+import com.api.documentacion.domain.usuario.UsuarioService;
+import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.RespuestaRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import com.api.documentacion.repository.UsuarioRepository;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -27,14 +30,16 @@ public class RespuestaService {
     SolicitudRepository solicitudRepository;
     @Autowired
     SolicitudService solicitudService;
+    @Autowired
+    UsuarioService usuarioService;
 
 
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {
-
+        usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         solicitudService.validaSiSolicitudFueRespondida(datos.solicitudId());
         var solicitud = solicitudRepository.getReferenceById(datos.solicitudId());
-        var fechaRespuesta = dateTimeFormatter(datos.fechaRespuesta());
+        var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
         var fechaEnvioRespuesta = LocalDateTime.now();
         var respuesta = new Respuesta(null,
                 datos.numeroRespuesta(),
@@ -84,7 +89,8 @@ public class RespuestaService {
 
         validaSiExisteIdAndActivoTrue(datos.id());
         var respuesta = respuestaRepository.getReferenceById(datos.id());
-        respuesta.actualizaRespuesta(datos.id(), datos.respuestaId(), datos.titulo(), datos.descripcion(), datos.fechaRespuesta());
+        var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
+        respuesta.actualizaRespuesta(datos.id(), datos.respuestaId(), datos.titulo(), datos.descripcion(), fechaRespuesta);
         var respuestaActualizada = respuestaRepository.getReferenceById(datos.id());
 
         return new DatosMuestraRespuesta(respuestaActualizada);
@@ -107,7 +113,7 @@ public class RespuestaService {
         //valida id de registro
     public void validaSiExisteIdAndActivoTrue (Long id) {
         if(!respuestaRepository.existsByIdAndActivoTrue(id)){
-            throw new RuntimeException("id no existe");
+            throw new ValidacionDeIntegridad("id no existe");
         }
     }   //__________
 
@@ -115,18 +121,25 @@ public class RespuestaService {
         //valida numeroRespuesta. Obtiene id de registro y lo retorna
     public Long validaSiExisteYObtieneIdConNumeroRespuesta (Long numeroRespuesta) {
         if(!respuestaRepository.existsByNumeroRespuestaAndActivoTrue(numeroRespuesta)){
-            throw new RuntimeException("id de respuesta no existe");
+            throw new ValidacionDeIntegridad("id de respuesta no existe");
         }
         return respuestaRepository.findByNumeroRespuestaAndActivoTrue(numeroRespuesta).getId();
     }
     //______________________________________________________
 
 
-    //MODIFICADOR_FORMATO_FECHA____________________
+    //MODIFICADOR_FORMATO_FECHA-dia-hora____________________
         //cambia string a formato fecha
     public LocalDateTime dateTimeFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
         return LocalDateTime.parse(fecha, formatter);
     }   //__________
+    //cambia string a formato fecha solo dia
+    public LocalDate dateFormatter (String fecha){
+        var formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        //var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        return LocalDate.parse(fecha, formatter);
+    }//__________
 }

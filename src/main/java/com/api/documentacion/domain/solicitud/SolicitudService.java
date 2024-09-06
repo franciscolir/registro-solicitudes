@@ -2,6 +2,7 @@ package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.solicitud.dto.*;
 import com.api.documentacion.domain.emisor.Estado;
+import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class SolicitudService {
 
         var emisor = emisorRepository.getReferenceById(datos.emisor());
 
-        var fechaSolicitud = dateTimeFormatter2(datos.fechaSolicitud());
+        var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
         var fechaIngresoSolicitud = LocalDateTime.now();
         var estado = Estado.RECIBIDO;
 
@@ -91,7 +92,7 @@ public class SolicitudService {
     public DatosMuestraSolicitud actualizaSolicitud (DatosActualizaSolicitud datos){
         validaSiExisteIdAndActivoTrue(datos.id());
         var emisor = emisorRepository.getReferenceById(datos.emisorId());
-        var fechaSolicitud = dateTimeFormatter2(datos.fechaSolicitud());
+        var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
         var solicitud = solicitudRepository.getReferenceById(datos.id());
         solicitud.actualizaSolicitud(
                 datos.id(),
@@ -142,7 +143,7 @@ public class SolicitudService {
         //valida id de registro
     public void validaSiExisteIdAndActivoTrue(Long id) {
         if(!solicitudRepository.existsByIdAndActivoTrue(id)){
-            throw new RuntimeException("id de solicitud no existe");
+            throw new ValidacionDeIntegridad("id de solicitud no existe");
         }
     }//__________
 
@@ -151,15 +152,15 @@ public class SolicitudService {
     public Long validaYObtieneIdConNumeroSolicitud (Long numeroSolicitud, Long emisorId){
 
         if(!solicitudRepository.existsByNumeroSolicitud(numeroSolicitud)) {
-            throw new RuntimeException("id solicitud no existe");
+            throw new ValidacionDeIntegridad("id solicitud no existe");
         }
 
         if(!solicitudRepository.existsByEmisorId(emisorId)) {
-            throw new RuntimeException("id emisor no existe");
+            throw new ValidacionDeIntegridad("id emisor no existe");
         }
 
         if(!solicitudRepository.existsIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud,emisorId)){
-            throw new RuntimeException("registro solicitud no existe");
+            throw new ValidacionDeIntegridad("registro solicitud no existe");
         }
 
         return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
@@ -169,7 +170,7 @@ public class SolicitudService {
     public void validaSiSolicitudFueRespondida(Long id) {
         validaSiExisteIdAndActivoTrue(id);
         if(solicitudRepository.existsByIdAndCerradoTrue(id)){
-            throw new RuntimeException("Solicitud se encuentra cerrada");
+            throw new ValidacionDeIntegridad("Solicitud se encuentra cerrada");
         }
     }//__________
 
@@ -195,7 +196,7 @@ public class SolicitudService {
     }//__________
 
     //cambia string a formato fecha
-    public LocalDate dateTimeFormatter2 (String fecha){
+    public LocalDate dateFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         //var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 

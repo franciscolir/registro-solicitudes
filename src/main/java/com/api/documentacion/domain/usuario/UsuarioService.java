@@ -1,6 +1,7 @@
 package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
+import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,14 @@ public class UsuarioService {
 
         return usuarioRepository.findByActivoTrue(paginacion).map(DatosMuestraListaUsuarios::new);
     }//_______
+
+
+    //valida id de usuario
+    public void validaSiExisteIdAndActivoTrue (Long id) {
+        if(!usuarioRepository.existsByIdAndActivoTrue(id)){
+            throw new ValidacionDeIntegridad("usuario no existe");
+        }
+    }   //__________
+
 
 }

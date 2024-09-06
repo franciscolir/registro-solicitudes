@@ -22,10 +22,10 @@ public class SolicitudController {
     //ingresar una solicitud
     @PostMapping
     @Transactional
-    public ResponseEntity<DatosMuestraSolicitud> ingresarSolicitudUsuario(@RequestBody @Valid DatosRegistraSolicitud datos) {
+    public ResponseEntity<?> ingresarSolicitudUsuario(@RequestBody @Valid DatosRegistraSolicitud datos) {
         var registroSolicitud = solicitudService.registrar(datos);
 
-        return ResponseEntity.ok(registroSolicitud);
+        return ResponseEntity.ok().build();
     }
 
     //Obtener una solicitud

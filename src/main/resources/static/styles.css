@@ -1,8 +1,4 @@
 
-.nav{
-    position: fixed;
-    height: 10%;
-}
 
 .navbar {
     padding: 1rem;
@@ -38,9 +34,8 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-.resumenSeccion{
-    padding-top: 15%;
-}
+
+
 
 #result {
     margin-top: 20px;

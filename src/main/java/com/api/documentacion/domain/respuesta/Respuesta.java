@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "respuestas")
@@ -30,7 +31,7 @@ public class Respuesta {
     private String descripcion;
     private String comentario;
 
-    private LocalDateTime fechaRespuesta;
+    private LocalDate fechaRespuesta;
     private LocalDateTime fechaEnvio;
 
     private Boolean activo;
@@ -40,7 +41,7 @@ public class Respuesta {
     private Solicitud solicitud;
 
 
-    public void actualizaRespuesta (Long id, Long numeroRespuesta, String titulo, String descripcion, LocalDateTime fechaRespuesta){
+    public void actualizaRespuesta (Long id, Long numeroRespuesta, String titulo, String descripcion, LocalDate fechaRespuesta){
 
         this.id = id;
         if(numeroRespuesta != null)

@@ -1,6 +1,8 @@
 package com.api.documentacion.domain.respuesta.dto;
 
 import com.api.documentacion.domain.respuesta.Respuesta;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -24,12 +26,15 @@ public record DatosMuestraRespuesta(
                 respuesta.getTitulo(),
                 respuesta.getDescripcion(),
                 formatDate(respuesta.getFechaRespuesta()),
-                formatDate(respuesta.getFechaEnvio()),
+                formatDateTime(respuesta.getFechaEnvio()),
                 respuesta.getSolicitud().getId()
         );
     }
 
-    private static String formatDate(LocalDateTime dateTime) {
+    private static String formatDateTime(LocalDateTime dateTime) {
+        return dateTime.format(DATE_TIME_FORMATTER);
+    }
+    private static String formatDate(LocalDate dateTime) {
         return dateTime.format(DATE_TIME_FORMATTER);
     }
 }
