@@ -63,10 +63,12 @@ public class SolicitudController {
     }
 
     //Declinar solicitud
-    @PutMapping("/declinar")
+    @PutMapping("/{declinar}")
     @Transactional
     public ResponseEntity declinarSolicitud (@RequestBody @Valid DatosDeclinarSolicitud datos){
+        System.out.println(datos+"#################");
         var response = solicitudService.declinarSolicitud(datos);
+
 
         return ResponseEntity.ok(response);
     }

@@ -13,14 +13,14 @@ $('#rechazarModal').on('show.bs.modal', function (e) {
         })
         .catch(function(error) {
             console.error('Error al obtener solicitudes:', error);
-            alert('No se pudo obtener la lista de emisores. Intenta nuevamente.');
+            alert('No se pudo obtener la lista de solicitudes. Intenta nuevamente.');
         });
 });
 
-function llenarSelect(solicitude) {
+function llenarSelect(solicitudes) {
     const select = document.getElementById('numeroRechazar');
     select.innerHTML = '<option value="" disabled selected></option>';
-    solicitude.forEach(solicitud => {
+    solicitudes.forEach(solicitud => {
         const option = document.createElement('option');
         option.value = solicitud.id;
         option.textContent = solicitud.numeroSolicitud;
@@ -32,19 +32,19 @@ function llenarSelect(solicitude) {
 
 
 function enviarFormularioRechazar() {
+
     // Obtener datos del formulario
     const formData = {
-
-        solicitudId: document.getElementById('numeroRechazar').value,
+        id: document.getElementById('numeroRechazar').value,
+        //id: solicitudId,
         comentario: document.getElementById('comentarioRechazar').value,
-      
     };
 
     // Elemento de alerta
     const alertMessage = document.getElementById('alertMessageRechazar');
 
     // Enviar datos al servidor
-    axios.post('http://localhost:8080/declinar', formData, {
+    axios.put('http://localhost:8080/solicitudes/declinar', formData, {
         headers: {
             'Content-Type': 'application/json'
         }
