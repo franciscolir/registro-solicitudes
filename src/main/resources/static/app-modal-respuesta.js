@@ -1,32 +1,32 @@
 //SELECT de solicitudes pendientes
 
-$('#respuestaModal').on('show.bs.modal', function (e) {
-    axios.get('http://localhost:8080/solicitudes/pendientes')
-        .then(function(response) {
+// $('#respuestaModal').on('show.bs.modal', function (e) {
+//     axios.get('http://localhost:8080/solicitudes/pendientes')
+//         .then(function(response) {
         
-            if (response && Array.isArray(response.data.content)) {
-                llenarSelectSolicitudes(response.data.content);
-            } else {
-                console.error('Datos inesperados del servidor:', response.data);
-                alert('Hubo un problema con los datos recibidos del servidor.');
-            }
-        })
-        .catch(function(error) {
-            console.error('Error al obtener solicitudes:', error);
-            alert('No se pudo obtener la lista de solicitudes. Intenta nuevamente.');
-        });
-});
+//             if (response && Array.isArray(response.data.content)) {
+//                 llenarSelectSolicitudes(response.data.content);
+//             } else {
+//                 console.error('Datos inesperados del servidor:', response.data);
+//                 alert('Hubo un problema con los datos recibidos del servidor.');
+//             }
+//         })
+//         .catch(function(error) {
+//             console.error('Error al obtener solicitudes:', error);
+//             alert('No se pudo obtener la lista de solicitudes. Intenta nuevamente.');
+//         });
+// });
 
-function llenarSelectSolicitudes(solicitudes) {
-    const select = document.getElementById('numeroSolicitudR');
-    select.innerHTML = '<option value="" disabled selected></option>';
-    solicitudes.forEach(solicitud => {
-        const option = document.createElement('option');
-        option.value = solicitud.id;
-        option.textContent = solicitud.numeroSolicitud;
-        select.appendChild(option);
-    });
-}
+// function llenarSelectSolicitudes(solicitudes) {
+//     const select = document.getElementById('numeroSolicitudR');
+//     select.innerHTML = '<option value="" disabled selected></option>';
+//     solicitudes.forEach(solicitud => {
+//         const option = document.createElement('option');
+//         option.value = solicitud.id;
+//         option.textContent = solicitud.numeroSolicitud;
+//         select.appendChild(option);
+//     });
+// }
 
 //SELECT de usuarios
 
@@ -61,17 +61,21 @@ function llenarSelectInvitados(usuarios) {
 
 function enviarFormularioRespuesta() {
     // Obtener datos del formulario
+
+
     const formData = {
 
-        solicitudId: document.getElementById('numeroSolicitudR').value,
+        solicitudId: document.getElementById('inputId').value,
         numeroRespuesta: document.getElementById('numeroRespuesta').value,
         usuario: document.getElementById('funcionario').value,
         titulo: document.getElementById('tituloRespuesta').value,
         descripcion: document.getElementById('descripcionRespuesta').value,
         comentario: document.getElementById('comentarioRespuesta').value,
         fechaRespuesta: document.getElementById('fechaRespuesta').value
+        
     };
 
+    console.log(formData,"##############################");
     // Elemento de alerta
     const alertMessage = document.getElementById('alertMessageRespuesta');
 
@@ -93,7 +97,7 @@ function enviarFormularioRespuesta() {
             alertMessage.style.display = 'none';
             $('#respuestaModal').modal('hide'); // Cerrar modal si existe
             window.location.reload();
-        }, 1800)
+        }, 111800)
     } else {
         console.error('Error:', response.status, response.statusText);
         // Handle non-200 status codes here
@@ -117,7 +121,7 @@ function enviarFormularioRespuesta() {
         // Ocultar el mensaje después de 2 segundos
         setTimeout(function() {
             alertMessage.style.display = 'none';
-        }, 3000);
+        }, 113000);
     });
 }
 

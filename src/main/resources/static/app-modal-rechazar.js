@@ -1,3 +1,6 @@
+
+var idGlobal = captar;
+/*
 //SELECT de solicitudes pendientes
 
 $('#rechazarModal').on('show.bs.modal', function (e) {
@@ -27,16 +30,14 @@ function llenarSelect(solicitudes) {
         select.appendChild(option);
     });
 }
-
-
-
+*/
 
 function enviarFormularioRechazar() {
 
     // Obtener datos del formulario
     const formData = {
-        id: document.getElementById('numeroRechazar').value,
-        //id: solicitudId,
+
+        id: document.getElementById('inputId').value,
         comentario: document.getElementById('comentarioRechazar').value,
     };
 
@@ -89,3 +90,4 @@ function enviarFormularioRechazar() {
     });
 }
 
+a();

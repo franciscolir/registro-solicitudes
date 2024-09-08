@@ -19,6 +19,30 @@ function getButtom (url) {
 
 }
 
+function captarParametros(id,numeroSolicitud,nombreModal,nombreDiv) {
+
+   // nombreModal = "respuestaModal";
+    //nombreDiv = "numeroSolicitudR";
+
+    console.log(id,numeroSolicitud,nombreModal,nombreDiv,"##############################");
+   
+   let $respuestaModal = document.getElementById(nombreModal);
+  
+    let $numeroSolicitudR = document.getElementById(nombreDiv);
+
+    $numeroSolicitudR.innerHTML= numeroSolicitud;
+
+    //creando el elemento HTML en el DOM
+let inputOculto =  document.createElement("input");
+inputOculto.type = "hidden";
+inputOculto.id = "inputId";
+inputOculto.value = id;
+
+//asigna a modal especifico
+$respuestaModal.appendChild(inputOculto);
+
+}
+
 
 //SOLICITUDES PENDIENTES
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     accordionContainer.innerHTML = '';
 
                     items.forEach((item, index) => {
+                      
                         const accordionItem = `
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading${index}">
@@ -58,13 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                             </div>
                                             <div class="accordion-buttoms">
                                                 <div class = "buttom">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#respuestaModal">
+                                                    <button type="button" id="aceptar" class="btn btn-primary" data-toggle="modal" data-target="#respuestaModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'respuestaModal','numeroSolicitudR')">
                                                         Aceptar
                                                     </button>
 
                                                 </div>
                                                 <div class = "buttom">
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rechazarModal">
+                                                    <button type="button" id="rechazar" class="btn btn-danger" data-toggle="modal" data-target="#rechazarModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'rechazarModal','numeroRechazar')">
                                                         Rechazar
                                                     </button>
                                                 </div>
@@ -79,7 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     console.error('La propiedad `items` no es un array.');
                 }
+                
             })
+        
             .catch(error => {
                 console.error('Error:', error);
                 alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');

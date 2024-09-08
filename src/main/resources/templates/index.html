@@ -328,10 +328,7 @@
                   <form id="respuestaForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
                       <div class="form-group">
                         <label for="numeroSolicitudR">Número de Solicitud:</label>
-                        <select id="numeroSolicitudR" name="numeroSolicitud" class="form-control" required>
-                            <option value="" disabled selected></option>
-                            <!-- Opciones se llenarán dinámicamente -->
-                        </select>
+                        <div id="numeroSolicitudR"></div>
                       </div>
                       <div class="form-group">
                         <label for="numeroRespuesta">Número de Respuesta:</label>
@@ -387,11 +384,10 @@
                 <!-- Formulario -->
                 <form id="rechazarForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRechazar();">
                     <div class="form-group">
-                        <label for="numeroRechazar">Número de Solicitud:</label>
-                        <select id="numeroRechazar" name="solicitud" class="form-control" required>
-                            <option value="" disabled selected></option>
-                            <!-- Opciones se llenarán dinámicamente -->
-                        </select>
+
+                        
+                        <label for="numeroRechazar" >Número de Solicitud: </label>
+                        <div id="numeroRechazar"></div>
                       </div>
                     <div class="form-group">
                       <label for="comentarioRechazar">Comentario:</label>
