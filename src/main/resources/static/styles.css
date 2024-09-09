@@ -118,4 +118,31 @@ color: #000;
     padding: 10px; 
     margin-bottom: 10px;
 }
+#solicitudes-table {
+    display: none;
+}
+#respuestas-table {
+    display: none;
+}
+#eventos-table {
+    display: none;
+}
 
+.encabezado-lista-solicitudes {
+    margin-top: 20px auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+}
+.encabezado-lista-respuestas {
+    margin-top: 20px auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+}
+.encabezado-lista-eventos {
+    margin-top: 20px auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+}

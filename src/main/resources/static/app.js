@@ -30,15 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 row.innerHTML = `
 
-                        <th>
-                        INDICADOR | valor 
-                        </th>
-                        <tr> 
-                        ${nombre}
-                        </tr>
-                            <th>
+                        <td>
                         ${registro.valor}
-                        </tr>
+                        </td>
                 `;
 
                 tableBody.appendChild(row);
@@ -52,10 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 loadData9();
 });
-
-
-
-
 
 //FUNCION CAPTA PARAMETROS DEL ACORDEON ####################
 function captarParametros(id,numeroSolicitud,nombreModal,nombreDiv) {
@@ -270,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //CALENDAR##############################################
-
 const obtenerFechaHoy = () => {
     const hoy = new Date();
     const dia = String(hoy.getDate()).padStart(2, '0');
@@ -281,32 +270,40 @@ const obtenerFechaHoy = () => {
 document.getElementById('fecha').textContent = obtenerFechaHoy();
 
 
-
-
-
-
-
-
 //TABLA SOLICITUDES#########################################
-document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.querySelector('#solicitudes-table tbody');
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleTableBtn = document.getElementById('toggleTableBtn');
+    const solicitudesTable = document.getElementById('solicitudes-table');
+    const thead = solicitudesTable.querySelector('thead');
+    const tableBody = solicitudesTable.querySelector('tbody');
 
-    const loadData3 = () => {
-    // Reemplaza esta URL con la URL de tu API
-    const apiUrl = 'http://localhost:8080/solicitudes?size=10';
+       // Inicializa el estado de la tabla
+       let isTableVisible = false;
+    
+    // Función para alternar la visibilidad de la tabla
+    function toggleTableVisibility() {
+        if (isTableVisible) {
+            // Ocultar la tabla y el thead
+            solicitudesTable.style.display = 'none';
+            thead.style.display = 'none';
+            toggleTableBtn.textContent = 'Mostrar';
+        } else {
+            // Mostrar la tabla y el thead
+            solicitudesTable.style.display = 'table';
+            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
 
-    // Solicitar datos usando Axios
-    axios.get(apiUrl)
-        .then(response => {
-            // La respuesta contiene los datos en response.data
-            const registros = response.data.content;
-            console.log('Datos recibidos tabla:', response);
+            // Realizar la solicitud para obtener los datos
+            axios.get('http://localhost:8080/solicitudes?size=20&sort=id,desc') // Cambia la URL por la de tu API
+                .then(response => {
+                
+                    const registros = response.data.content;
 
-            // Limpiar el cuerpo de la tabla
-            tableBody.innerHTML = '';
-
-            // Crear filas para cada registro
-            registros.forEach(registro => {
+                    // Limpiar el cuerpo de la tabla
+                    tableBody.innerHTML = '';
+        
+  
+             // Crear filas para cada registro
+             registros.forEach(registro => {
                 const estadoFormatted = registro.estado
                 .toLowerCase()                  // Convierte todo el texto a minúsculas
                 .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
@@ -315,11 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 console.log(registro)
                 const row = document.createElement('tr');
-
                 row.innerHTML = `
-                
                     <td>${registro.numeroSolicitud}</td>
-                   
                     <td>${registro.emisor}</td>
                     <td>${registro.titulo}</td>
                     <td>${registro.descripcion}</td>
@@ -327,32 +321,52 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${registro.fechaIngresoDepartamento}</td>
                     <td>${estadoFormatted}</td>
                 `;
-
                 tableBody.appendChild(row);
             });
         })
         .catch(error => {
-            console.error('Error al obtener los datos:', error);
+            console.error('Error al obtener las solicitudes:', error);
         });
+
+    toggleTableBtn.textContent = 'Ocultar';
+}
+// Alternar el estado de visibilidad
+isTableVisible = !isTableVisible;
 }
 
-loadData3();
+// Asignar la función al evento click del botón
+toggleTableBtn.addEventListener('click', toggleTableVisibility);
 });
+
 
 // TABLA EVENTOS#########################################
 document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.querySelector('#eventos-table tbody');
+    const toggleEventBtn = document.getElementById('toggleEventBtn');
+    const eventTable = document.getElementById('eventos-table');
+    const thead = eventTable.querySelector('thead');
+    const tableBody = eventTable.querySelector('tbody');
 
-    const loadData5 = () => {
-    // Reemplaza esta URL con la URL de tu API
-    const apiUrl = 'http://localhost:8080/eventos?size=10';
+       // Inicializa el estado de la tabla
+       let isTableVisible = false;
+    
+    // Función para alternar la visibilidad de la tabla
+    function toggleTableEventVisibility() {
+        if (isTableVisible) {
+            // Ocultar la tabla y el thead
+            eventTable.style.display = 'none';
+            thead.style.display = 'none';
+            toggleEventBtn.textContent = 'Mostrar';
+        } else {
+            // Mostrar la tabla y el thead
+            eventTable.style.display = 'table';
+            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
 
     // Solicitar datos usando Axios
-    axios.get(apiUrl)
+    axios.get('http://localhost:8080/eventos?size=20&sort=id,desc')
         .then(response => {
             // La respuesta contiene los datos en response.data
             const registros = response.data.content;
-            console.log('Datos recibidos tabla:', response);
+          
 
             // Limpiar el cuerpo de la tabla
             tableBody.innerHTML = '';
@@ -365,7 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
                 //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
                 .replace(/\b\w/g, letra => letra.toUpperCase());
-
 
             const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
 
@@ -385,12 +398,84 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         })
         .catch(error => {
-            console.error('Error al obtener los datos:', error);
+            console.error('Error al obtener los eventos:', error);
         });
+
+    toggleEventBtn.textContent = 'Ocultar';
+}
+// Alternar el estado de visibilidad
+isTableVisible = !isTableVisible;
 }
 
-loadData5();
+// Asignar la función al evento click del botón
+toggleEventBtn.addEventListener('click', toggleTableEventVisibility);
 });
 
 
+//TABLA RESPUESTAS#########################################
+document.addEventListener('DOMContentLoaded', () => {
+  
+    const toggleRespuestaBtn = document.getElementById('toggleRespuestaBtn');
+    const respuestaTable = document.getElementById('respuestas-table');
+    const thead = respuestaTable.querySelector('thead');
+    const tableBody = respuestaTable.querySelector('tbody');
 
+       // Inicializa el estado de la tabla
+       let isTableVisible = false;
+    
+    // Función para alternar la visibilidad de la tabla
+    function toggleTableRespuestaVisibility() {
+        if (isTableVisible) {
+            // Ocultar la tabla y el thead
+            respuestaTable.style.display = 'none';
+            thead.style.display = 'none';
+            toggleRespuestaBtn.textContent = 'Mostrar';
+        } else {
+            // Mostrar la tabla y el thead
+            respuestaTable.style.display = 'table';
+            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
+
+    // Reemplaza esta URL con la URL de tu API
+    const apiUrl = 'http://localhost:8080/respuestas?size=20&sort=id,desc';
+
+    // Solicitar datos usando Axios
+    axios.get(apiUrl)
+        .then(response => {
+            // La respuesta contiene los datos en response.data
+            const registros = response.data.content;
+
+            // Limpiar el cuerpo de la tabla
+            tableBody.innerHTML = '';
+
+            // Crear filas para cada registro
+            registros.forEach(registro => {
+
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                
+                    <td>${registro.numeroRespuesta}</td>
+                    <td>${registro.titulo}</td>
+                    <td>${registro.descripcion}</td>
+                    <td>${registro.comentario}</td>
+                    <td>${registro.fechaSolicitud}</td>
+                    <td>${registro.fechaEnvio}</td>
+                    <td>${registro.solicitudId}</td>
+                `; 
+
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener las respuestas:', error);
+        });
+
+    toggleRespuestaBtn.textContent = 'Ocultar ';
+}
+// Alternar el estado de visibilidad
+isTableVisible = !isTableVisible;
+}
+
+// Asignar la función al evento click del botón
+toggleRespuestaBtn.addEventListener('click', toggleTableRespuestaVisibility);
+});

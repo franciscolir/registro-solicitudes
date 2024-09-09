@@ -39,6 +39,7 @@ public class RespuestaService {
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         solicitudService.validaSiSolicitudFueRespondida(datos.solicitudId());
         var solicitud = solicitudRepository.getReferenceById(datos.solicitudId());
+        validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
         var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
         var fechaEnvioRespuesta = LocalDateTime.now();
         var respuesta = new Respuesta(null,
@@ -113,7 +114,15 @@ public class RespuestaService {
         //valida id de registro
     public void validaSiExisteIdAndActivoTrue (Long id) {
         if(!respuestaRepository.existsByIdAndActivoTrue(id)){
-            throw new ValidacionDeIntegridad("id no existe");
+            throw new ValidacionDeIntegridad(" id no existe");
+        }
+    }   //__________
+
+    //VALIDADORES____________________________________________
+    //valida id de registro
+    public void validaSiExisteNumeroRespuestaAndActivoTrue (Long id) {
+        if(respuestaRepository.existsByIdAndActivoTrue(id)){
+            throw new ValidacionDeIntegridad(" El numero de respuesta ya fue registrado");
         }
     }   //__________
 
@@ -121,7 +130,7 @@ public class RespuestaService {
         //valida numeroRespuesta. Obtiene id de registro y lo retorna
     public Long validaSiExisteYObtieneIdConNumeroRespuesta (Long numeroRespuesta) {
         if(!respuestaRepository.existsByNumeroRespuestaAndActivoTrue(numeroRespuesta)){
-            throw new ValidacionDeIntegridad("id de respuesta no existe");
+            throw new ValidacionDeIntegridad(" id de respuesta no existe");
         }
         return respuestaRepository.findByNumeroRespuestaAndActivoTrue(numeroRespuesta).getId();
     }

@@ -57,5 +57,3 @@ function enviarFormularioRechazar() {
         }, 3000);
     });
 }
-
-a();
