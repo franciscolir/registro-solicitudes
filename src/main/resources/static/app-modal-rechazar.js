@@ -1,36 +1,4 @@
 
-var idGlobal = captar;
-/*
-//SELECT de solicitudes pendientes
-
-$('#rechazarModal').on('show.bs.modal', function (e) {
-    axios.get('http://localhost:8080/solicitudes/pendientes')
-        .then(function(response) {
-        
-            if (response && Array.isArray(response.data.content)) {
-                llenarSelect(response.data.content);
-            } else {
-                console.error('Datos inesperados del servidor:', response.data);
-                alert('Hubo un problema con los datos recibidos del servidor.');
-            }
-        })
-        .catch(function(error) {
-            console.error('Error al obtener solicitudes:', error);
-            alert('No se pudo obtener la lista de solicitudes. Intenta nuevamente.');
-        });
-});
-
-function llenarSelect(solicitudes) {
-    const select = document.getElementById('numeroRechazar');
-    select.innerHTML = '<option value="" disabled selected></option>';
-    solicitudes.forEach(solicitud => {
-        const option = document.createElement('option');
-        option.value = solicitud.id;
-        option.textContent = solicitud.numeroSolicitud;
-        select.appendChild(option);
-    });
-}
-*/
 
 function enviarFormularioRechazar() {
 
