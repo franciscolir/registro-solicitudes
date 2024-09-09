@@ -29,7 +29,7 @@ public record DatosMuestraSolicitud(
                 solicitud.getDescripcion(),
                 formatDate2(solicitud.getFechaSolicitud()),
                 formatDate(solicitud.getFechaIngresoSolicitud()),
-                solicitud.getEstado().toString().toLowerCase()
+                solicitud.getEstado().toString()
         );
     }
 

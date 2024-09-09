@@ -1,24 +1,63 @@
+//VALORES POR API #####################################
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('#valores');
+    const fechaDiv = document.getElementById('fecha');
+    const fecha = fechaDiv.textContent || fechaDiv.innerText;
+
+    const loadData9 = () => {
+    // Reemplaza esta URL con la URL de tu API
+    
+    const apiUrl = `https://mindicador.cl/api/utm/${fecha}`;
 
 
-var urlRespuestas = 'respuestas';
-var urlSolicitudes = 'solicitudes';
-  var url ='http://localhost:8080/';  
+    // Solicitar datos usando Axios
+    axios.get(apiUrl)
+   
+        .then(response => {
+            // La respuesta contiene los datos en response.data
+            const nombre = response.data.codigo
+            const registros = response.data.serie;
+            console.log('Datos recibidos tabla:', response);
+         
+            // Limpiar el cuerpo de la tabla
+            tableBody.innerHTML = '';
 
+            // Crear filas para cada 
+            
+            registros.forEach(registro => {
+                console.log(registro)
+                const row = document.createElement('table');
 
+                row.innerHTML = `
 
-function getButtom (url) {
-    axios.get('http://localhost:8080/eventos') // Cambia la URL si tu backend está en otro lugar
-    .then(response => {
-        const data = response.data.content; // Extraer el array 'content'
-        const tableHtml = buildTable(data);
-        document.getElementById('result').innerHTML = tableHtml;
-    })
-    .catch(error => {
-        document.getElementById('result').innerHTML = `Error: ${error.message}`;
-    });
+                        <th>
+                        INDICADOR | valor 
+                        </th>
+                        <tr> 
+                        ${nombre}
+                        </tr>
+                            <th>
+                        ${registro.valor}
+                        </tr>
+                `;
 
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos:', error);
+        });
+        // Solicitar datos usando Axios
 }
 
+loadData9();
+});
+
+
+
+
+
+//FUNCION CAPTA PARAMETROS DEL ACORDEON ####################
 function captarParametros(id,numeroSolicitud,nombreModal,nombreDiv) {
 
    // nombreModal = "respuestaModal";
@@ -43,8 +82,7 @@ $respuestaModal.appendChild(inputOculto);
 
 }
 
-
-//SOLICITUDES PENDIENTES
+//SOLICITUDES PENDIENTES #######################################################
 document.addEventListener('DOMContentLoaded', () => {
     const accordionContainer = document.getElementById('accordionExample');
 
@@ -75,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     
                                     <div class="accordion-body">
                                             <div class="accordion-items">
-                                                    - Id ${item.id} <br>
                                                     - Numero de solicitud ${item.numeroSolicitud}<br>
                                                     - Emisor ${item.emisor} <br>
                                                     - Descripcion: ${item.descripcion} <br>
@@ -117,13 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-//RESUMEN EVENTOS
+
+//RESUMEN EVENTOS #####################################
 document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#registros-table tbody');
     
         const loadData2 = () => {
         // Reemplaza esta URL con la URL de tu API
-        const apiUrl = 'http://localhost:8080/eventos?size=3';
+        const apiUrl = 'http://localhost:8080/eventos?size=4';
     
         // Solicitar datos usando Axios
         axios.get(apiUrl)
@@ -135,14 +173,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Limpiar el cuerpo de la tabla
                 tableBody.innerHTML = '';
     
-                // Crear filas para cada registro
+                // Crear filas para cada 
+                
                 registros.forEach(registro => {
                     console.log(registro)
                     const row = document.createElement('table');
+             
                     const tipoFormatted = registro.tipo
                         .toLowerCase()                  // Convierte todo el texto a minúsculas
                         .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
-                        .replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+                        //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+                        .replace(/\b\w/g, letra => letra.toUpperCase());
+
 
                     const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
     
@@ -171,7 +213,81 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData2();
 });
 
+//ULTIMA RESPUESTA###################################
+document.addEventListener('DOMContentLoaded', () => {
+    const accordionContainer = document.getElementById('accordionUltimaRespuesta');
+    const loadData = () => {
+  
+    // Solicitar datos usando Axios y los ordena con desc y limita la selecion a 1
+    axios.get('http://localhost:8080/respuestas?size=1&sort=id,desc')
+        .then(response => {
+            // La respuesta contiene los datos en response.data
 
+                // Asegúrate de que los datos son un objeto y contiene `items`
+                const data = response.data;
+               console.log('Datos recibidos ultimo memo:', data.content);
+
+                // Accede al array `items` dentro del objeto
+                const items = data.content;
+
+                if (Array.isArray(items)) {
+                    accordionContainer.innerHTML = '';
+
+                    items.forEach((item, index) => {
+                      
+                        const accordionItem = `
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading${index}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseA${index}" aria-expanded="true" aria-controls="collapse${index}">
+                                        ${item.numeroRespuesta} 
+                                    </button>
+                                </h2>
+                                <div id="collapseA${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionUltimaRespuesta">    
+                                    
+                                    <div class="accordion-body">
+                                            <div class="accordion-items">
+                                                    - ${item.titulo}<br>
+                                                    - Fecha ${item.fechaRespuesta} <br>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        accordionContainer.innerHTML += accordionItem;
+                    });
+                } else {
+                    console.error('La propiedad `items` no es un array.');
+                }
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+            });
+        }
+        loadData();
+});
+
+//CALENDAR##############################################
+
+const obtenerFechaHoy = () => {
+    const hoy = new Date();
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Mes es 0-11
+    const anio = hoy.getFullYear();
+    return `${dia}-${mes}-${anio}`;
+};
+document.getElementById('fecha').textContent = obtenerFechaHoy();
+
+
+
+
+
+
+
+
+//TABLA SOLICITUDES#########################################
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#solicitudes-table tbody');
 
@@ -191,6 +307,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Crear filas para cada registro
             registros.forEach(registro => {
+                const estadoFormatted = registro.estado
+                .toLowerCase()                  // Convierte todo el texto a minúsculas
+                .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+                .replace(/\b\w/g, letra => letra.toUpperCase());
+
                 console.log(registro)
                 const row = document.createElement('tr');
 
@@ -203,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${registro.descripcion}</td>
                     <td>${registro.fechaSolicitud}</td>
                     <td>${registro.fechaIngresoDepartamento}</td>
-                    <td>${registro.estado}</td>
+                    <td>${estadoFormatted}</td>
                 `;
 
                 tableBody.appendChild(row);
@@ -217,36 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
 loadData3();
 });
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const divMemo = document.querySelector('#ultimo-memo');
-     const divMemoInfo = document.querySelector('#ultimo-memo-info');
-     const espaccio = "<br>";
-
-    const loadData4 = () => {
-    // Reemplaza esta URL con la URL de tu API
-    const apiUrl = 'http://localhost:8080/respuestas?size=1';
-
-    // Solicitar datos usando Axios
-    axios.get(apiUrl)
-        .then(response => {
-            // La respuesta contiene los datos en response.data
-            const registros = response.data.content;
-            console.log('Datos recibidos memo:', response); espaccio
-
-            
-            divMemo.innerHTML = registros[0].numeroRespuesta; 
-            
-            divMemoInfo.innerHTML = registros[0].fechaRespuesta  +  registros[0].titulo;
-        })
-        .catch(error => {
-            console.error('Error al obtener los datos:', error);
-        });
-}
-
-loadData4();
-});
-
+// TABLA EVENTOS#########################################
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#eventos-table tbody');
 
@@ -266,16 +359,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Crear filas para cada registro
             registros.forEach(registro => {
+
+                const tipoFormatted = registro.tipo
+                .toLowerCase()                  // Convierte todo el texto a minúsculas
+                .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+                .replace(/\b\w/g, letra => letra.toUpperCase());
+
+
+            const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
+
                 console.log(registro)
                 const row = document.createElement('tr');
 
                 row.innerHTML = `
                 
-                            <td>${registro.tipo}</td>
+                            <td>${tipoFormatted}</td>
                             <td>${registro.establecimiento}</td>
                             <td>${registro.descripcion}</td>
                             <td>${registro.fecha}</td>
-                            <td>${registro.invitado}</td>
+                            <td>${invitadosString}</td>
                 `;
 
                 tableBody.appendChild(row);

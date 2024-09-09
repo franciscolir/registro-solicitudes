@@ -74,7 +74,7 @@
                         </div>
                         </div>
                     </div>
-                </div>
+                    </div>
             </div>
             </div>
             <div class="col-md-4 justify-content-center align-item-center">
@@ -103,20 +103,29 @@
             <div class="col-md-2">
                 <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
                 <div class="encabezado-ultimoMemo">
-                        <div id="ultimo-memo"></div> 
-                        <div id="ultimo-memo-info">
-
-
-                        </div>
+                    <div class="accordion container-fluid" id="accordionUltimaRespuesta">
+                        <div class="accordion-UltimaRespuesta">
+                           <h2 class="accordion-header" id="headingOne1">
+                               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"> </button>
+                           </h2>
+                           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                               <div class="accordion-body">
+                                   
+                           </div>
+                           </div>
+                       </div>
+                       
+                        
+                    </div>
                 </div>
                 <div class="p-3 bg-primary text-dark">Calendar</div>
                 <div class="encabezado-calendar">
-                    <div id="calendar"></div> 
+                    <div id="fecha"></div> 
               
                 </div>
                 <div class="p-3 bg-secondary text-dark">Utm</div>
-                <div class="encabezado-utm">
-                    <div id="utm"></div> 
+                <div class="encabezado-valores">
+                    <div id="valores"></div> 
                    
                 </div>
             </div>
@@ -199,11 +208,7 @@
             </table>
         </div>    
     </section>
-    <section>
-        
-            
-             
-
+   
   <!-- Modal para Solicitudes -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
