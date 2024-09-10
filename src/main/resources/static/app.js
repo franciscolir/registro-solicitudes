@@ -274,68 +274,101 @@ document.getElementById('fecha').textContent = obtenerFechaHoy();
 document.addEventListener('DOMContentLoaded', function() {
     const toggleTableBtn = document.getElementById('toggleTableBtn');
     const solicitudesTable = document.getElementById('solicitudes-table');
-    const thead = solicitudesTable.querySelector('thead');
     const tableBody = solicitudesTable.querySelector('tbody');
-
-       // Inicializa el estado de la tabla
-       let isTableVisible = false;
+    const paginationContainer = document.getElementById('pagination-container');
+    const pagination = document.getElementById('pagination');
     
-    // Función para alternar la visibilidad de la tabla
+    let isTableVisible = false;
+    let currentPage = 0;
+    const pageSize = 10;
+
+    function fetchData(page) {
+
+        axios.get(`http://localhost:8080/solicitudes?page=${page}&size=${pageSize}`)
+            .then(response => {
+                const registros = response.data.content;
+                const totalPages = response.data.totalPages;
+
+
+            tableBody.innerHTML = '';
+
+                // Render table data
+                registros.forEach(registro => {
+                    const estadoFormatted = registro.estado
+                    .toLowerCase()                  // Convierte todo el texto a minúsculas
+                    .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                    //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
+                    .replace(/\b\w/g, letra => letra.toUpperCase());
+    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${registro.numeroSolicitud}</td>
+                        <td>${registro.emisor}</td>
+                        <td>${registro.titulo}</td>
+                        <td>${registro.descripcion}</td>
+                        <td>${registro.fechaSolicitud}</td>
+                        <td>${registro.fechaIngresoDepartamento}</td>
+                        <td>${estadoFormatted}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Render pagination
+                pagination.innerHTML = '';
+                for (let i = 0; i < totalPages; i++) {
+                    const pageItem = document.createElement('li');
+                    pageItem.className = 'page-item' + (i === page ? ' active' : '');
+                    pageItem.innerHTML = `<a class="page-link" href="#" data-page="(${i})">${i + 1}</a>`;
+                    pagination.appendChild(pageItem);
+                }
+             
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    function fetchPage(page) {
+        currentPage = page;
+        fetchData(page);
+    }
+
     function toggleTableVisibility() {
         if (isTableVisible) {
-            // Ocultar la tabla y el thead
+            // Ocultar la tabla y la paginación
             solicitudesTable.style.display = 'none';
-            thead.style.display = 'none';
+            paginationContainer.style.display = 'none';
             toggleTableBtn.textContent = 'Mostrar';
         } else {
-            // Mostrar la tabla y el thead
+            // Mostrar la tabla y la paginación
             solicitudesTable.style.display = 'table';
-            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
+            paginationContainer.style.display = 'block';
+            fetchData(currentPage);
+            toggleTableBtn.textContent = 'Ocultar';
+        }
+        isTableVisible = !isTableVisible;
+    }
 
-            // Realizar la solicitud para obtener los datos
-            axios.get('http://localhost:8080/solicitudes?size=20&sort=id,desc') // Cambia la URL por la de tu API
-                .then(response => {
-                
-                    const registros = response.data.content;
+    // Asignar la función al evento click del botón
+    toggleTableBtn.addEventListener('click', toggleTableVisibility);
+   
+    pagination.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target && target.matches('a.page-link')) {
+            event.preventDefault(); // Evita el desplazamiento
+            const page = target.getAttribute('data-page');
+            const pageNumber = page.replace(/[()]/g, '')   
+      
+            if (!isNaN(pageNumber)) { // Verifica que la página sea un número válido
+                fetchPage(pageNumber);
+            } else {
+                console.error('Invalid page number:', page);
+            }
+        }
+    });
 
-                    // Limpiar el cuerpo de la tabla
-                    tableBody.innerHTML = '';
-        
-  
-             // Crear filas para cada registro
-             registros.forEach(registro => {
-                const estadoFormatted = registro.estado
-                .toLowerCase()                  // Convierte todo el texto a minúsculas
-                .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
-                //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
-                .replace(/\b\w/g, letra => letra.toUpperCase());
-
-                console.log(registro)
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${registro.numeroSolicitud}</td>
-                    <td>${registro.emisor}</td>
-                    <td>${registro.titulo}</td>
-                    <td>${registro.descripcion}</td>
-                    <td>${registro.fechaSolicitud}</td>
-                    <td>${registro.fechaIngresoDepartamento}</td>
-                    <td>${estadoFormatted}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error('Error al obtener las solicitudes:', error);
-        });
-
-    toggleTableBtn.textContent = 'Ocultar';
-}
-// Alternar el estado de visibilidad
-isTableVisible = !isTableVisible;
-}
-
-// Asignar la función al evento click del botón
-toggleTableBtn.addEventListener('click', toggleTableVisibility);
+    // Inicializar la tabla cuando la página se carga
+    fetchData(currentPage);
 });
 
 
@@ -343,30 +376,22 @@ toggleTableBtn.addEventListener('click', toggleTableVisibility);
 document.addEventListener('DOMContentLoaded', () => {
     const toggleEventBtn = document.getElementById('toggleEventBtn');
     const eventTable = document.getElementById('eventos-table');
-    const thead = eventTable.querySelector('thead');
     const tableBody = eventTable.querySelector('tbody');
+    const paginationContainer = document.getElementById('pagination-evento-container');
+    const pagination = document.getElementById('pagination-evento');
 
-       // Inicializa el estado de la tabla
-       let isTableVisible = false;
+  let isTableVisible = false;
+    let currentPage = 0;
+    const pageSize = 10;
     
-    // Función para alternar la visibilidad de la tabla
-    function toggleTableEventVisibility() {
-        if (isTableVisible) {
-            // Ocultar la tabla y el thead
-            eventTable.style.display = 'none';
-            thead.style.display = 'none';
-            toggleEventBtn.textContent = 'Mostrar';
-        } else {
-            // Mostrar la tabla y el thead
-            eventTable.style.display = 'table';
-            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
+    function fetchDataEvento(page) {
 
     // Solicitar datos usando Axios
-    axios.get('http://localhost:8080/eventos?size=20&sort=id,desc')
+    axios.get(`http://localhost:8080/eventos?page=${page}&size=${pageSize}`)
         .then(response => {
             // La respuesta contiene los datos en response.data
             const registros = response.data.content;
-          
+            const totalPages = response.data.totalPages;
 
             // Limpiar el cuerpo de la tabla
             tableBody.innerHTML = '';
@@ -377,7 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tipoFormatted = registro.tipo
                 .toLowerCase()                  // Convierte todo el texto a minúsculas
                 .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
-                //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
                 .replace(/\b\w/g, letra => letra.toUpperCase());
 
             const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
@@ -396,19 +420,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 tableBody.appendChild(row);
             });
+
+            // Render pagination
+            pagination.innerHTML = '';
+            for (let i = 0; i < totalPages; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.className = 'page-item' + (i === page ? ' active' : '');
+                pageItem.innerHTML = `<a class="page-link" href="#" data-page="(${i})">${i + 1}</a>`;
+                pagination.appendChild(pageItem);
+            }
         })
         .catch(error => {
             console.error('Error al obtener los eventos:', error);
         });
 
-    toggleEventBtn.textContent = 'Ocultar';
+    }
+
+    function fetchPageEvento(page) {
+        currentPage = page;
+        fetchDataEvento(page);
 }
-// Alternar el estado de visibilidad
-isTableVisible = !isTableVisible;
+
+
+function toggleTableEventVisibility() {
+    if (isTableVisible) {
+        // Ocultar la tabla y la paginación
+        eventTable.style.display = 'none';
+        paginationContainer.style.display = 'none';
+        toggleEventBtn.textContent = 'Mostrar';
+    } else {
+        // Mostrar la tabla y la paginación
+        eventTable.style.display = 'table';
+        paginationContainer.style.display = 'block';
+        fetchDataEvento(currentPage);
+        toggleEventBtn.textContent = 'Ocultar';
+    }
+    isTableVisible = !isTableVisible;
 }
 
 // Asignar la función al evento click del botón
 toggleEventBtn.addEventListener('click', toggleTableEventVisibility);
+
+pagination.addEventListener('click', function(event) {
+    const target = event.target;
+    if (target && target.matches('a.page-link')) {
+        event.preventDefault(); // Evita el desplazamiento
+        const page = target.getAttribute('data-page');
+        
+        //const pageNumber = parseInt(page, 10); // Asegúrate de usar parseInt con base 10
+        const pageNumber = page.replace(/[()]/g, '')   
+  
+        if (!isNaN(pageNumber)) { // Verifica que la página sea un número válido
+            fetchPageEvento(pageNumber);
+        } else {
+            console.error('Invalid page number:', page);
+        }
+    }
+});
+
+// Inicializar la tabla cuando la página se carga
+fetchDataEvento(currentPage);
 });
 
 
@@ -417,32 +488,25 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const toggleRespuestaBtn = document.getElementById('toggleRespuestaBtn');
     const respuestaTable = document.getElementById('respuestas-table');
-    const thead = respuestaTable.querySelector('thead');
     const tableBody = respuestaTable.querySelector('tbody');
+    const paginationContainer = document.getElementById('pagination-respuesta-container');
+    const pagination = document.getElementById('pagination-respuesta');
 
        // Inicializa el estado de la tabla
        let isTableVisible = false;
     
-    // Función para alternar la visibilidad de la tabla
-    function toggleTableRespuestaVisibility() {
-        if (isTableVisible) {
-            // Ocultar la tabla y el thead
-            respuestaTable.style.display = 'none';
-            thead.style.display = 'none';
-            toggleRespuestaBtn.textContent = 'Mostrar';
-        } else {
-            // Mostrar la tabla y el thead
-            respuestaTable.style.display = 'table';
-            thead.style.display = 'table-header-group'; // Asegura que el thead se muestre
-
-    // Reemplaza esta URL con la URL de tu API
-    const apiUrl = 'http://localhost:8080/respuestas?size=20&sort=id,desc';
+       let currentPage = 0;
+       const pageSize = 10;
+   
+       function fetchDataRespuestas(page) {
 
     // Solicitar datos usando Axios
-    axios.get(apiUrl)
+    axios.get(`http://localhost:8080/respuestas?page=${page}&size=${pageSize}`)
         .then(response => {
             // La respuesta contiene los datos en response.data
             const registros = response.data.content;
+            const totalPages = response.data.totalPages;
+
 
             // Limpiar el cuerpo de la tabla
             tableBody.innerHTML = '';
@@ -465,17 +529,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 tableBody.appendChild(row);
             });
+              // Render pagination
+              pagination.innerHTML = '';
+              for (let i = 0; i < totalPages; i++) {
+                  const pageItem = document.createElement('li');
+                  pageItem.className = 'page-item' + (i === page ? ' active' : '');
+                  pageItem.innerHTML = `<a class="page-link" href="#" data-page="(${i})">${i + 1}</a>`;
+                  pagination.appendChild(pageItem);
+              }
         })
         .catch(error => {
             console.error('Error al obtener las respuestas:', error);
         });
 
-    toggleRespuestaBtn.textContent = 'Ocultar ';
-}
-// Alternar el estado de visibilidad
-isTableVisible = !isTableVisible;
-}
+    }  
+    function fetchPageRespuestas(page) {
+        currentPage = page;
+        fetchDataRespuestas(page);
+    }
 
-// Asignar la función al evento click del botón
-toggleRespuestaBtn.addEventListener('click', toggleTableRespuestaVisibility);
+    function toggleTableRespuestaVisibility() {
+        if (isTableVisible) {
+            // Ocultar la tabla y la paginación
+            respuestaTable.style.display = 'none';
+            paginationContainer.style.display = 'none';
+            toggleRespuestaBtn.textContent = 'Mostrar';
+        } else {
+            // Mostrar la tabla y la paginación
+            respuestaTable.style.display = 'table';
+            paginationContainer.style.display = 'block';
+            fetchDataRespuestas(currentPage);
+            toggleRespuestaBtn.textContent = 'Ocultar';
+        }
+        isTableVisible = !isTableVisible;
+    }
+
+    // Asignar la función al evento click del botón
+    toggleRespuestaBtn.addEventListener('click', toggleTableRespuestaVisibility);
+   
+    pagination.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target && target.matches('a.page-link')) {
+            event.preventDefault(); // Evita el desplazamiento
+            const page = target.getAttribute('data-page');
+            
+            //const pageNumber = parseInt(page, 10); // Asegúrate de usar parseInt con base 10
+            const pageNumber = page.replace(/[()]/g, '')   
+      
+            if (!isNaN(pageNumber)) { // Verifica que la página sea un número válido
+                fetchPageRespuestas(pageNumber);
+            } else {
+                console.error('Invalid page number:', page);
+            }
+        }
+    });
+
+    // Inicializar la tabla cuando la página se carga
+    fetchDataRespuestas(currentPage);
 });
+
+
+        
+    

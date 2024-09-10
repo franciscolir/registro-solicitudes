@@ -111,11 +111,13 @@ function enviarFormularioEvent() {
    // Crear objeto de datos para enviar
    const formData = {
     tipo: document.getElementById('tipo').value,
-   descripcion : document.getElementById('descripcionEvent').value,
-    fecha: document.getElementById('fecha').value,
+    descripcion : document.getElementById('descripcionEvent').value,
+    fecha: document.getElementById('fechaEvento').value,
     establecimiento: document.getElementById('establecimiento').value,
     invitados: valuesArray
     };
+
+console.log(formData,"form data")
 
     // Elemento de alerta
     const alertMessage = document.getElementById('eventAlertMessage');

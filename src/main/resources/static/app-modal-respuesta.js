@@ -5,7 +5,7 @@ $('#respuestaModal').on('show.bs.modal', function (e) {
     axios.get('http://localhost:8080/usuarios')
         .then(function(response) {
             if (response && Array.isArray(response.data.content)) {
-                llenarSelectInvitados(response.data.content);
+                llenarSelectUsuario(response.data.content);
            
             } else {
                 console.error('Datos inesperados del servidor:', response.data);
@@ -18,7 +18,7 @@ $('#respuestaModal').on('show.bs.modal', function (e) {
         });
 });
 
-function llenarSelectInvitados(usuarios) {
+function llenarSelectUsuario(usuarios) {
     const select = document.getElementById('funcionario');
     select.innerHTML = '<option value="" disabled selected></option>';
     usuarios.forEach(usuario => {
