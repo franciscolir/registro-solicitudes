@@ -7,10 +7,11 @@
     <title>Depto | Servicios Generales</title>
     <link rel="icon" type="image/x-icon" href="/static/imagenes/icono-agenda.png">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+
         <!-- CSS -->
     <link rel="stylesheet" href="/static/styles.css">
 </head>
@@ -43,9 +44,13 @@
                     </li>
                 </ul>
             </div>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" >
+                <!-- Botón para abrir el modal de búsqueda -->
+                
+
+                <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar Oficio</button>
+                <!--<input class="form-control me-2" type="search" id="searchInput" placeholder="Buscar N° Oficio" aria-label="Search">
+                <button class="btn btn-outline-success" type="button" onclick="search()">Buscar</button>-->
             </form>
         </div>
     </nav>
@@ -204,7 +209,6 @@
                             <th>N° Respuestas</th>
                             <th>Titulo</th>
                             <th>Descripcion</th>
-                            <th>Comentario</th>
                             <th>Fecha Respuesta</th>   
                             <th>Fecha Ingreso</th>
                             <th>Solicitud respondida</th>  
@@ -258,6 +262,78 @@
         </div>    
     </section>
    
+
+<!-- Modal para buscar el oficio -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Buscar Oficio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchForm">
+                    <div class="mb-3">
+                        <label for="numberInput" class="form-label">Número de Oficio</label>
+                        <input type="text" class="form-control" id="numberInput" placeholder="Ingrese el número de oficio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emisorSelect" class="form-label">Emisor</label>
+                        <select class="form-select" id="emisorSelect" required>
+                            <!-- Opciones del select se llenarán con JavaScript -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para mostrar la información del oficio -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Información del Oficio</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 <!-- Alerta para mostrar el mensaje de éxito o error -->
+                 <div id="alertMessage" class="alert" style="display:none;"></div>
+                <!-- Aquí se insertará la información del oficio -->
+                <div id="modalContent">Cargando...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Buscador -->
+<div class="modal fade" id="BuscadorModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Información del Oficio</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                 <!-- Alerta para mostrar el mensaje de éxito o error -->
+                 <div id="alertMessage" class="alert" style="display:none;"></div>
+                <!-- Aquí se insertará la información del oficio -->
+                <div id="modalContent">Cargando...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
   <!-- Modal para Solicitudes -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -467,10 +543,11 @@
     
     <!-- Javascript -->
     <script src="/static/app.js"></script>
-    <script src="/static/app-modal-evento.js"></script>
-    <script src="/static/app-modal-respuesta.js"></script>
-    <script src="/static/app-modal-solicitud.js"></script>
-    <script src="/static/app-modal-rechazar.js"></script>
+    <script src="/static/appModalBuscadores.js"></script>
+    <script src="/static/appModalEvento.js"></script>
+    <script src="/static/appModalRespuesta.js"></script>
+    <script src="/static/appModalSolicitud.js"></script>
+    <script src="/static/appModalRechazar.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -480,6 +557,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
 
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

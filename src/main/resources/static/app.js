@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function fetchDataEvento(page) {
 
     // Solicitar datos usando Axios
-    axios.get(`http://localhost:8080/eventos?page=${page}&size=${pageSize}`)
+    axios.get(`http://localhost:8080/eventos?page=${page}&size=${pageSize},desc`)
         .then(response => {
             // La respuesta contiene los datos en response.data
             const registros = response.data.content;
@@ -521,8 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${registro.numeroRespuesta}</td>
                     <td>${registro.titulo}</td>
                     <td>${registro.descripcion}</td>
-                    <td>${registro.comentario}</td>
-                    <td>${registro.fechaSolicitud}</td>
+                    <td>${registro.fechaRespuesta}</td>
                     <td>${registro.fechaEnvio}</td>
                     <td>${registro.solicitudId}</td>
                 `; 

@@ -45,7 +45,7 @@ public class EventoService {
 
         eventoRepository.save(evento);
 
-        //tratar lista de usuarios y almacebarla en tabla evento_usuario
+        //tratar lista de usuarios y almacenarla en tabla evento_usuario
         Set<Usuario> listaUsuarios = new HashSet<>();
         for (Long usuarioId : datos.invitados()) {
             var usuario = usuarioRepository.findById(usuarioId)
