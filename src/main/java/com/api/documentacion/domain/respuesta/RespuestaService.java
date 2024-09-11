@@ -145,6 +145,7 @@ public class RespuestaService {
 
     private Long validaSiExisteRegistroYDevuelveIdRespuesta(Long solicitudId, Long emisorId) {
         var id = solicitudService.validaYObtieneIdConNumeroSolicitud(solicitudId,emisorId);
+        System.out.println(id+" valida y obtiene id con nuemro de solicitud #################");
         if(!respuestaRepository.existsBySolicitudIdAndActivoTrue(id)){
             throw new ValidacionDeIntegridad(" id de solicitud no corresponde a respuesta");
         }
