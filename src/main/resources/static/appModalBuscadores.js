@@ -1,12 +1,15 @@
-$('#BuscadorModal').on('show.bs.modal', function (e) {
+$('#searchModal').on('show.bs.modal', function (e) {
+    
     axios.get('http://localhost:8080/emisores')
         .then(function(response) {
+            console.log('Respuesta del servidor:', response.data);
             if (response && Array.isArray(response.data.content)) {
                 llenarSelectEmisoresBuscador(response.data.content);
             } else {
                 console.error('Datos inesperados del servidor:', response.data);
                 alert('Hubo un problema con los datos recibidos del servidor.');
             }
+           
         })
         .catch(function(error) {
             console.error('Error al obtener emisores:', error);
@@ -15,7 +18,7 @@ $('#BuscadorModal').on('show.bs.modal', function (e) {
 });
 
 function llenarSelectEmisoresBuscador(emisores) {
-    const select = document.getElementById('emisor');
+    const select = document.getElementById('emisorSelect');
     select.innerHTML = '<option value="" disabled selected>Seleccione un emisor</option>';
     emisores.forEach(emisor => {
         const option = document.createElement('option');
@@ -30,7 +33,7 @@ function llenarSelectEmisoresBuscador(emisores) {
 
 function enviarFormularioBuscador() {
     // Obtener datos del formulario
-    
+
         const numeroSolicitud = document.getElementById('numberInput').value;
         const emisor = document.getElementById('emisorSelect').value;
 
@@ -38,26 +41,48 @@ function enviarFormularioBuscador() {
     const alertMessage = document.getElementById('alertMessage');
 
     // Enviar datos al servidor
-    axios.post(`http://localhost:8080/solicitudes/${numeroOficio}?emisorId=${emisorId}`)
+    axios.get(`http://localhost:8080/solicitudes/${numeroSolicitud}/${emisor}`)
+
     .then(function(response) {
+        console.log(response.data,"entra a funcion formulairio")
         // Manejar la respuesta exitosa
-        alertMessage.className = 'alert alert-success';
-        alertMessage.textContent = 'Solicitud enviada exitosamente';
-        alertMessage.style.display = 'block';
 
- 
+        const data = response.data;
 
+        if (data.estado == "RESUELTO" || "DECLINADO") {
+            axios.get(`http://localhost:8080/respuestas/${numeroSolicitud}/${emisor}`)
+
+
+        }
+        // Formatear el contenido del modal
+        const modalContent = `
+            <p><strong>Número de Solicitud:</strong> ${data.numeroSolicitud}</p>
+            <p><strong>Emisor:</strong> ${data.emisor}</p>
+            <p><strong>Título:</strong> ${data.titulo}</p>
+            <p><strong>Descripción:</strong> ${data.descripcion}</p>
+            <p><strong>Fecha de Solicitud:</strong> ${data.fechaSolicitud}</p>
+            <p><strong>Fecha de Ingreso:</strong> ${data.fechaIngresoDepartamento}</p>
+            <p><strong>Estado:</strong> ${data.estado}</p>
+        `;
+
+        // Insertar el contenido en el modal
+        document.getElementById('modalContent').innerHTML = modalContent;
+
+     
         // Ocultar el mensaje después de 2 segundos
         setTimeout(function() {
             alertMessage.style.display = 'none';
-            $('#BuscadorModal').modal('hide'); // Cerrar modal si existe
-            
-        }, 100)
+        }, 3000)
+
+          // Mostrar el modal
+          $('#infoModal').modal('show');
     })
     .catch(function(error) {
+        console.error('Error al obtener la información del oficio:', error);
         // Manejar el error
+        const alertMessage = document.getElementById('alertMessage');
         alertMessage.className = 'alert alert-danger';
-        alertMessage.textContent = 'Hubo un error al enviar la solicitud. Intenta nuevamente.';
+        alertMessage.textContent = 'No encuentra el registro.';
         alertMessage.style.display = 'block';
 
         // Ocultar el mensaje después de 2 segundos
@@ -66,84 +91,3 @@ function enviarFormularioBuscador() {
         }, 2000);
     });
 }
-
-
-
-/*
-document.addEventListener('DOMContentLoaded', () => {
-    // Referencias a los modales y al formulario
-    const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
-    const infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
-    const searchForm = document.getElementById('searchForm');
-
-    // Cargar emisores cuando se abre el modal de búsqueda
-    document.getElementById('searchModal').addEventListener('show.bs.modal', () => {
-        axios.get('http://localhost:8080/emisores') // Ajusta la URL según tu backend
-            .then(response => {
-
-
-                const emisores = response.data.content; // Suponiendo que la respuesta es un array de emisores
-                const emisorSelect = document.getElementById('emisorSelect');
-
-                emisorSelect.innerHTML = ''; // Limpiar opciones anteriores
-
-                emisores.forEach(emisor => {
-                    const option = document.createElement('option');
-                    option.value = emisor.id; // Ajusta según cómo lleguen los emisores
-                    option.textContent = emisor.establecimiento; // Ajusta según cómo lleguen los emisores
-                    emisorSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching emisores:', error);
-                alert('Error al cargar los emisores.');
-            });
-    });
-
-    // Manejo del formulario de búsqueda
-    searchForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const numeroOficio = document.getElementById('numberInput').value;
-        const emisorId = document.getElementById('emisorSelect').value;
-
-        if (!numeroOficio || !emisorId) {
-            alert('Por favor, complete todos los campos.');
-            return;
-        }
-
-        // Realizar la solicitud GET al backend con el número de oficio y el emisor
-        axios.get(`http://localhost:8080/solicitudes/${numeroOficio}?emisorId=${emisorId}`)
-            .then(response => {
-                // Obtener la información del response
-                const data = response.data;
-
-                // Formatear el contenido del modal
-                const modalContent = `
-                    <p><strong>Número de Solicitud:</strong> ${data.numeroSolicitud}</p>
-                    <p><strong>Emisor:</strong> ${data.emisor}</p>
-                    <p><strong>Título:</strong> ${data.titulo}</p>
-                    <p><strong>Descripción:</strong> ${data.descripcion}</p>
-                    <p><strong>Fecha de Solicitud:</strong> ${data.fechaSolicitud}</p>
-                    <p><strong>Fecha de Ingreso:</strong> ${data.fechaIngresoDepartamento}</p>
-                    <p><strong>Estado:</strong> ${data.es}</p>
-                `;
-
-                // Insertar el contenido en el modal
-                document.getElementById('modalContent').innerHTML = modalContent;
-
-                // Ocultar el primer modal y mostrar el segundo modal
-                searchModal.hide();
-                infoModal.show();
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                document.getElementById('modalContent').innerHTML = 'Error al cargar la información.';
-
-                // Ocultar el primer modal y mostrar el segundo modal con error
-                searchModal.hide();
-                infoModal.show();
-            });
-    });
-});
-tado*/

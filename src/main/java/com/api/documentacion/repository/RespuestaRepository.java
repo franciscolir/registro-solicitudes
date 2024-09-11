@@ -21,4 +21,8 @@ public interface RespuestaRepository extends JpaRepository<Respuesta,Long> {
     Respuesta findByNumeroRespuestaAndActivoTrue(Long numeroRespuesta);
 
     Boolean existsByNumeroRespuestaAndActivoTrue(Long numeroRespuesta);
+
+    Boolean existsBySolicitudIdAndActivoTrue(Long id);
+
+    Respuesta findBySolicitudIdAndActivoTrue(Long id);
 }

@@ -70,6 +70,13 @@ public class RespuestaService {
         var respuesta = respuestaRepository.getReferenceById(id);
 
         return new DatosMuestraRespuesta(respuesta);
+    }//___________
+
+    public DatosMuestraRespuesta obtenerRespuestaPorSolicitudId(Long solicitudId, Long emisorId) {
+        var id = validaSiExisteRegistroYDevuelveIdRespuesta(solicitudId, emisorId);
+        var respuesta = respuestaRepository.getReferenceById(id);
+
+        return new DatosMuestraRespuesta(respuesta);
     }
     //___________________________________________________
 
@@ -133,7 +140,17 @@ public class RespuestaService {
             throw new ValidacionDeIntegridad(" id de respuesta no existe");
         }
         return respuestaRepository.findByNumeroRespuestaAndActivoTrue(numeroRespuesta).getId();
+    }//___________
+
+
+    private Long validaSiExisteRegistroYDevuelveIdRespuesta(Long solicitudId, Long emisorId) {
+        var id = solicitudService.validaYObtieneIdConNumeroSolicitud(solicitudId,emisorId);
+        if(!respuestaRepository.existsBySolicitudIdAndActivoTrue(id)){
+            throw new ValidacionDeIntegridad(" id de solicitud no corresponde a respuesta");
+        }
+        return respuestaRepository.findBySolicitudIdAndActivoTrue(id).getId();
     }
+
     //______________________________________________________
 
 
@@ -151,4 +168,6 @@ public class RespuestaService {
 
         return LocalDate.parse(fecha, formatter);
     }//__________
+
+
 }

@@ -60,7 +60,7 @@ public class SolicitudService {
         return new DatosMuestraSolicitud(
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
-                solicitud.getEmisor().toString(),
+                solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
                 fechaSolicitud,
@@ -165,6 +165,10 @@ public class SolicitudService {
 
         return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
     }
+
+
+
+
 
     //valida si solicitud ya fue respondida
     public void validaSiSolicitudFueRespondida(Long id) {

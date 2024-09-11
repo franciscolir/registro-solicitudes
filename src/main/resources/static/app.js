@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Crear filas para cada 
                 
                 registros.forEach(registro => {
-                    console.log(registro)
+                    //console.log(registro)
                     const row = document.createElement('table');
              
                     const tipoFormatted = registro.tipo
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
 
-                console.log(registro)
+               // console.log(registro)
                 const row = document.createElement('tr');
 
                 row.innerHTML = `

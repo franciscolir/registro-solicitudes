@@ -22,4 +22,18 @@ public class Establecimiento {
     private String nombreSolicitante;
     private String nombreEstablecimiento;
     private String comentario;
+
+    @Override
+    public String toString() {
+        return "Establecimiento{" +
+                "id=" + id +
+                ", nombreSolicitante='" + nombreSolicitante + '\'' +
+                ", nombreEstablecimiento='" + nombreEstablecimiento + '\'' +
+                ", comentario='" + comentario + '\'' +
+                '}';
     }
+}
+
+
+
+
