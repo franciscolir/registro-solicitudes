@@ -74,7 +74,7 @@ $respuestaModal.appendChild(inputOculto);
 
 //SOLICITUDES PENDIENTES #######################################################
 document.addEventListener('DOMContentLoaded', () => {
-    const accordionContainer = document.getElementById('accordionExample');
+    const accordionContainer = document.getElementById('accordionResumen');
 
 
    const loadData = () => {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         ${item.titulo}  ---  ${item.fechaSolicitud}
                                     </button>
                                 </h2>
-                                <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionExample">    
+                                <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#accordionResumen">    
                                     
                                     <div class="accordion-body">
                                             <div class="accordion-items">

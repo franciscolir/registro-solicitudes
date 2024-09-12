@@ -16,132 +16,108 @@
 
 <body>
 
-     <!-- Navbar -->
-      <div class="nav container-fluid">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
-            <button class="container-fluid navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+            <a class="navbar-brand" href="#"><img src="/static/imagenes/icono-agenda.png" alt="Logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
                 aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <a class="navbar-brand" href="#"><img src="/static/imagenes/icono-agenda.png">
-                </a>
-                <ul class="navbar-nav d-flex justify-content-center align-item-center">
+                <ul class="navbar-nav d-flex justify-content-center">
                     <li class="nav-item">
-                        <a  class="nav-link active" aria-current="page" href="#solicitudesSection">Solicitudes</a>
+                        <a class="nav-link" href="#" onclick="showSection('solicitudesSection')">Solicitudes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#respuestasSection">Respuestas</a>
+                        <a class="nav-link" href="#" onclick="showSection('respuestasSection')">Respuestas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#proyectosSection">Proyectos</a>
+                        <a class="nav-link" href="#" onclick="showSection('proyectosSection')">Proyectos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#eventosSection">Eventos</a>
+                        <a class="nav-link" href="#" onclick="showSection('eventosSection')">Eventos</a>
                     </li>
                 </ul>
+                <form class="d-flex ms-auto">
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        Buscar Oficio
+                    </button>
+                </form>
             </div>
-            <form class="d-flex" >
-                <!-- Botón para abrir el modal de búsqueda -->
-                
-
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar Oficio</button>
-                <!--<input class="form-control me-2" type="search" id="searchInput" placeholder="Buscar N° Oficio" aria-label="Search">
-                <button   class="btn btn-outline-success" type="button" onclick="search()">Buscar</button>-->
-            </form>
         </div>
-    </nav>
-</div>
+</nav>
+
+
+<main class="hero container-fluid">
     <!-- Resumen -->
-    <section class="resumenSeccion hero container-fluid">
-        <div class="row mt-3 1">
-            <div class="col-md-6 ">
+    <section class="resumenSeccion">
+        <div class="row mt-3">
+            <div class="col-md-6">
                 <div class="p-3 bg-danger text-dark pendientes">
-                    <div class="encabezado-pendientes">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h2>Solicitudes Pendientes</h2>
-                    
-                        <!-- Botón para abrir el modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                         Ingresar Solicitud
-                     </button>
-
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                            Ingresar Solicitud
+                        </button>
                     </div>
-                    
-                    <div class="accordion" id="accordionExample">
-                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                
-                        </div>
+                    <div class="accordion" id="accordionResumen">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
+                                <div class="accordion-body">
+                                    <!-- Content here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
-            </div>
-            <div class="col-md-4 justify-content-center align-item-center">
+            <div class="col-md-4">
                 <div class="p-3 bg-warning text-dark eventos">
-                    <div class="encabezado-eventos">
-                        <h2 class="justify-content-center align-item-center ">Eventos</h2>
-
-                        <!-- Botón para abrir el modal de eventos-->
-      
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal">Agendar</button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>Eventos</h2>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
+                            Agendar
+                        </button>
                     </div>
-                    
-                    <table id="registros-table">
+                    <table id="registros-table" class="table">
                         <thead>
-                         
+                            <!-- Headers here -->
                         </thead>
                         <tbody>
                             <!-- Los registros se llenarán aquí -->
                         </tbody>
                     </table>
-                  
-                    
-                    
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
-                <div class="encabezado-ultimoMemo">
-                    <div class="accordion container-fluid" id="accordionUltimaRespuesta">
-                        <div class="accordion-UltimaRespuesta">
-                           <h2 class="accordion-header" id="headingOne1">
-                               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"> </button>
-                           </h2>
-                           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                               <div class="accordion-body">
-                                   
-                           </div>
-                           </div>
-                       </div>
-                       
-                        
+                <div class="accordion" id="accordionUltimaRespuesta">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"></button>
+                        </h2>
+                        <div id="collapseOne1" class="accordion-collapse collapse show" aria-labelledby="headingOne1" data-bs-parent="#accordionUltimaRespuesta">
+                            <div class="accordion-body">
+                                <!-- Content here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="p-3 bg-primary text-dark">Calendar</div>
-                <div class="encabezado-calendar">
-                    <div id="fecha"></div> 
-              
-                </div>
+                <div id="fecha"></div>
                 <div class="p-3 bg-secondary text-dark">UTM hoy</div>
-                <div class="encabezado-valores">
-                    <div id="valores"></div> 
-                    
-                   
-                </div>
+                <div id="valores"></div>
             </div>
         </div>
-                      
     </section>
 
-
-     <!-- Proyectos -->
-     <section id="proyectosSection">
+    <!-- Proyectos -->
+    <section id="proyectosSection">
         <div class="container-fluid">
             <div class="row mt-3">
                 <div class="col-md-4">
@@ -151,18 +127,54 @@
                     <div class="p-3 bg-secondary text-white">barra progreso</div>
                 </div>
             </div>
-        </div>    
+        </div>
     </section>
 
+
+
+    <section>
+        <div class="container-fluid">
+            <div class="row align-items-md-stretch">
+                <div class="col-md-3">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <h2>Solicitudes</h2>
+                        <p>En esta sección encontrarás los oficios derivados desde la Dirección DAEM al Departamento de Servicios Generales y Proyectos. Además, podrás ingresar nuevas solicitudes al sistema.</p>
+                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <h2>Respuestas</h2>
+                        <p>En esta sección encontrarás los memos de respuesta a los oficios derivados desde la Dirección DAEM. Además, podrás ingresar nuevas respuestas al sistema.</p>
+                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <h2>Proyectos</h2>
+                        <p>En esta sección encontrarás los proyectos en los cuales está trabajando el Departamento de Servicios Generales y Proyectos. Podrás ver el estado de avance e ingresar nuevos proyectos.</p>
+                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <h2>Eventos</h2>
+                        <p>En esta sección encontrarás una lista con los eventos agendados en los que tienen alguna participación los funcionarios del Departamento de Servicios Generales y Proyectos.</p>
+                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+</main>
     <!-- Solicitudes -->
-   
     <section id="solicitudesSection">
         <div class="container-fluid">
-            <div class="mt-3 p-3 bg-primary text-white">
-                <div class="encabezado-lista-solicitudes">
-                    <h2>Lista de Solicitudes</h2>
-                    <button id="toggleTableBtn" class="btn btn-light">Mostrar</button>
-                </div>
+            <div class="mt-3 p-3 bg-primary text-white d-flex justify-content-between align-items-center">
+                <h2>Lista de Solicitudes</h2>
+                <button id="toggleTableBtn" class="btn btn-light">Mostrar</button>
             </div>
             <table id="solicitudes-table" class="table table-striped mt-3">
                 <thead>
@@ -171,9 +183,9 @@
                         <th>Emisor</th>
                         <th>Titulo</th>
                         <th>Descripcion</th>
-                        <th>Fecha Solicitud</th>   
+                        <th>Fecha Solicitud</th>
                         <th>Fecha Ingreso</th>
-                        <th>Estado</th>  
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -185,62 +197,50 @@
                     <!-- Pagination buttons will be injected here -->
                 </ul>
             </nav>
-        </div>    
+        </div>
     </section>
 
     <!-- Memos -->
-   
     <section id="respuestasSection">
-            <div class="container-fluid">
-                <div class="mt-3 p-3 bg-primary text-white">
-
-                   <div class="encabezado-lista-respuestas" >   
-                     <h2>Lista de Respuestas</h2> 
-                    <button id="toggleRespuestaBtn" class="btn btn-light">Mostrar</button>
-                </div>
-                
-           
-                </div>
-                <table id="respuestas-table" class="table table-striped mt-3">
-                    <thead>
-                        <tr>  
-                            <th>N° Respuestas</th>
-                            <th>Titulo</th>
-                            <th>Descripcion</th>
-                            <th>Fecha Respuesta</th>   
-                            <th>Fecha Ingreso</th>
-                            <th>Solicitud respondida</th>  
-                        </tr>
-                    </thead>
-                    <tbody id="table-body-respuestas">
-                        <!-- Los registros se llenarán aquí -->
-                    </tbody>
-                </table>
-                <nav aria-label="Page navigation" id="pagination-respuesta-container" style="display: none;">
-                    <ul class="pagination" id="pagination-respuesta">
-                        <!-- Pagination buttons will be injected here -->
-                    </ul>
-                </nav>
-                </table>
-            </div>    
+        <div class="container-fluid">
+            <div class="mt-3 p-3 bg-primary text-white d-flex justify-content-between align-items-center">
+                <h2>Lista de Respuestas</h2>
+                <button id="toggleRespuestaBtn" class="btn btn-light">Mostrar</button>
+            </div>
+            <table id="respuestas-table" class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>N° Respuestas</th>
+                        <th>Titulo</th>
+                        <th>Descripcion</th>
+                        <th>Fecha Respuesta</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Solicitud respondida</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body-respuestas">
+                    <!-- Los registros se llenarán aquí -->
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation" id="pagination-respuesta-container" style="display: none;">
+                <ul class="pagination" id="pagination-respuesta">
+                    <!-- Pagination buttons will be injected here -->
+                </ul>
+            </nav>
+        </div>
     </section>
 
-   
     <!-- Eventos -->
     <section id="eventosSection">
         <div class="container-fluid">
-            <div class="mt-3 p-3 bg-danger text-white">
-
-                <div class="encabezado-lista-eventos">
-                    <h2>Lista de Eventos</h2>
-                    <button id="toggleEventBtn" class="btn btn-light">Mostrar</button>
-                </div>
-              
+            <div class="mt-3 p-3 bg-danger text-white d-flex justify-content-between align-items-center">
+                <h2>Lista de Eventos</h2>
+                <button id="toggleEventBtn" class="btn btn-light">Mostrar</button>
             </div>
             <table id="eventos-table" class="table table-striped mt-3">
                 <thead>
                     <tr>
-                        <th>Evento</th> 
+                        <th>Evento</th>
                         <th>Descripcion</th>
                         <th>Establecimiento</th>
                         <th>Fecha</th>
@@ -256,11 +256,12 @@
                     <!-- Pagination buttons will be injected here -->
                 </ul>
             </nav>
-            </table>
-        </div>    
+        </div>
     </section>
-   
 
+
+
+<section class="modals">
 <!-- Modal para buscar el oficio -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -318,7 +319,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -361,14 +362,13 @@
     </div>
 </div>
 
-
 <!-- Modal para Registrar Evento -->
 <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -409,7 +409,7 @@
                         <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples invitados.</small>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
                     </div>
                 </form>
@@ -510,7 +510,7 @@
         </div>
     </div>
 </div>
-
+</section>
 
 <!-- Enlaces a jQuery, Popper.js, y Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
