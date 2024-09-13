@@ -103,7 +103,7 @@ tr:hover {
 .buttom{
     padding: 10px;
     margin-bottom: 10px;
-    width: 90px;
+    width: auto;
     height: 40px;
 }
 

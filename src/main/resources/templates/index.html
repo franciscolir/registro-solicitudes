@@ -117,28 +117,28 @@
                     <div class="h-100 p-5 bg-body-tertiary border rounded-3">
                         <h2>Solicitudes</h2>
                         <p>En esta sección encontrarás los oficios derivados desde la Dirección DAEM al Departamento de Servicios Generales y Proyectos. Además, podrás ingresar nuevas solicitudes al sistema.</p>
-                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('solicitudes')">Ingresar</button>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="h-100 p-5 bg-body-tertiary border rounded-3">
                         <h2>Respuestas</h2>
                         <p>En esta sección encontrarás los memos de respuesta a los oficios derivados desde la Dirección DAEM. Además, podrás ingresar nuevas respuestas al sistema.</p>
-                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('respuestas')">Ingresar</button>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="h-100 p-5 bg-body-tertiary border rounded-3">
                         <h2>Proyectos</h2>
                         <p>En esta sección encontrarás los proyectos en los cuales está trabajando el Departamento de Servicios Generales y Proyectos. Podrás ver el estado de avance e ingresar nuevos proyectos.</p>
-                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('proyectos')">Ingresar</button>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="h-100 p-5 bg-body-tertiary border rounded-3">
                         <h2>Eventos</h2>
                         <p>En esta sección encontrarás una lista con los eventos agendados en los que tienen alguna participación los funcionarios del Departamento de Servicios Generales y Proyectos.</p>
-                        <button class="btn btn-outline-secondary" type="button">Ingresar</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('eventos')">Ingresar</button>
                     </div>
                 </div>
             </div>
@@ -150,9 +150,10 @@
 
   <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
   <section id="tableSection" class="container-fluid d-none">
-    <h2 id="tableTitle">Datos de la Tabla</h2>
+    
     <table id="dataTable" class="table table-striped">
         <thead>
+            <h2 id="tableTitle"> </h2>
             <div class=" encabezadoTablaDinamica">
             <tr>
                 <th colspan="7">

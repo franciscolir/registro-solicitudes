@@ -111,13 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <div class="accordion-buttoms">
                                                 <div class = "buttom">
                                                     <button type="button" id="aceptar" class="btn btn-primary" data-toggle="modal" data-target="#respuestaModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'respuestaModal','numeroSolicitudR')">
-                                                        Aceptar
+                                                        Responder Solicitud
                                                     </button>
 
                                                 </div>
                                                 <div class = "buttom">
                                                     <button type="button" id="rechazar" class="btn btn-danger" data-toggle="modal" data-target="#rechazarModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'rechazarModal','numeroRechazar')">
-                                                        Rechazar
+                                                        Rechazar Solicitud
                                                     </button>
                                                 </div>
                                             </div>
