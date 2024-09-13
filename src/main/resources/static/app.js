@@ -270,6 +270,20 @@ const obtenerFechaHoy = () => {
 document.getElementById('fecha').textContent = obtenerFechaHoy();
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //TABLA SOLICITUDES#########################################
 document.addEventListener('DOMContentLoaded', function() {
     const toggleTableBtn = document.getElementById('toggleTableBtn');
@@ -586,7 +600,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar la tabla cuando la página se carga
     fetchDataRespuestas(currentPage);
 });
-
-
-        
-    

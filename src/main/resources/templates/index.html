@@ -19,38 +19,38 @@
 <!-- Navbar -->
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="/static/imagenes/icono-agenda.png" alt="Logo"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <ul class="navbar-nav d-flex justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('solicitudesSection')">Solicitudes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('respuestasSection')">Respuestas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('proyectosSection')">Proyectos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showSection('eventosSection')">Eventos</a>
-                    </li>
-                </ul>
-                <form class="d-flex ms-auto">
-                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">
-                        Buscar Oficio
-                    </button>
-                </form>
-            </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"onclick="resetView()"><img src="/static/imagenes/icono-agenda.png" alt="Logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation" 
+                >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav d-flex justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="resetView()">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a>
+                </li>
+            </ul>
         </div>
+    </div>
 </nav>
 
 
-<main class="hero container-fluid">
+<main class="hero container-fluid" id="mainContent">
     <!-- Resumen -->
     <section class="resumenSeccion">
         <div class="row mt-3">
@@ -116,23 +116,7 @@
         </div>
     </section>
 
-    <!-- Proyectos -->
-    <section id="proyectosSection">
-        <div class="container-fluid">
-            <div class="row mt-3">
-                <div class="col-md-4">
-                    <div class="p-3 bg-warning text-white">detalles</div>
-                </div>
-                <div class="col-md-8">
-                    <div class="p-3 bg-secondary text-white">barra progreso</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <section>
+    <section class="bloqueDocumentos">
         <div class="container-fluid">
             <div class="row align-items-md-stretch">
                 <div class="col-md-3">
@@ -169,6 +153,22 @@
     
 
 </main>
+
+  <!-- Sección de tabla que se mostrará al hacer clic -->
+  <section id="tableSection" class="container-fluid d-none">
+    <h2 id="tableTitle">Datos de la Tabla</h2>
+    <table id="dataTable" class="table table-striped">
+        <thead>
+            <tr id="tableHeaders">
+                <!-- Los encabezados de la tabla se llenarán aquí -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas de la tabla se llenarán aquí -->
+        </tbody>
+    </table>
+</section>
+
     <!-- Solicitudes -->
     <section id="solicitudesSection">
         <div class="container-fluid">
@@ -529,6 +529,7 @@
 <script src="/static/appModalRespuesta.js"></script>
 <script src="/static/appModalSolicitud.js"></script>
 <script src="/static/appModalRechazar.js"></script>
+<script src="/static/appMuestraTablas.js"></script>
 
 </body>
 
