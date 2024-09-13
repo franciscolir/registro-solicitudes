@@ -231,3 +231,6 @@ color: #000;
 .bd-mode-toggle .dropdown-menu .active .bi {
   display: block !important;
 }
+#tableHeaders {
+    background-color: #007bff;
+}

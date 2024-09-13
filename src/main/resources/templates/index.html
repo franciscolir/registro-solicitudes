@@ -58,9 +58,6 @@
                 <div class="p-3 bg-danger text-dark pendientes">
                     <div class="d-flex justify-content-between align-items-center">
                         <h2>Solicitudes Pendientes</h2>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                            Ingresar Solicitud
-                        </button>
                     </div>
                     <div class="accordion" id="accordionResumen">
                         <div class="accordion-item">
@@ -79,10 +76,7 @@
             <div class="col-md-4">
                 <div class="p-3 bg-warning text-dark eventos">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2>Eventos</h2>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
-                            Agendar
-                        </button>
+                        <h2>Proximos Eventos</h2>
                     </div>
                     <table id="registros-table" class="table">
                         <thead>
@@ -154,111 +148,32 @@
 
 </main>
 
-  <!-- Sección de tabla que se mostrará al hacer clic -->
+  <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
   <section id="tableSection" class="container-fluid d-none">
     <h2 id="tableTitle">Datos de la Tabla</h2>
     <table id="dataTable" class="table table-striped">
         <thead>
+            <div class=" encabezadoTablaDinamica">
+            <tr>
+                <th colspan="7">
+                    <div id="buttonContainer"></div> <!-- Contenedor del botón -->
+                </th>
+            </tr>
             <tr id="tableHeaders">
                 <!-- Los encabezados de la tabla se llenarán aquí -->
             </tr>
+        </div>
         </thead>
         <tbody>
             <!-- Las filas de la tabla se llenarán aquí -->
         </tbody>
     </table>
+    <nav aria-label="Page navigation" id="pagination-respuesta-container" style="display: none;">
+        <ul class="pagination" id="pagination-respuesta">
+            <!-- Pagination buttons will be injected here -->
+        </ul>
+    </nav>
 </section>
-
-    <!-- Solicitudes -->
-    <section id="solicitudesSection">
-        <div class="container-fluid">
-            <div class="mt-3 p-3 bg-primary text-white d-flex justify-content-between align-items-center">
-                <h2>Lista de Solicitudes</h2>
-                <button id="toggleTableBtn" class="btn btn-light">Mostrar</button>
-            </div>
-            <table id="solicitudes-table" class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>N° Solicitud</th>
-                        <th>Emisor</th>
-                        <th>Titulo</th>
-                        <th>Descripcion</th>
-                        <th>Fecha Solicitud</th>
-                        <th>Fecha Ingreso</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Los registros se llenarán aquí -->
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation" id="pagination-container" style="display: none;">
-                <ul class="pagination" id="pagination">
-                    <!-- Pagination buttons will be injected here -->
-                </ul>
-            </nav>
-        </div>
-    </section>
-
-    <!-- Memos -->
-    <section id="respuestasSection">
-        <div class="container-fluid">
-            <div class="mt-3 p-3 bg-primary text-white d-flex justify-content-between align-items-center">
-                <h2>Lista de Respuestas</h2>
-                <button id="toggleRespuestaBtn" class="btn btn-light">Mostrar</button>
-            </div>
-            <table id="respuestas-table" class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>N° Respuestas</th>
-                        <th>Titulo</th>
-                        <th>Descripcion</th>
-                        <th>Fecha Respuesta</th>
-                        <th>Fecha Ingreso</th>
-                        <th>Solicitud respondida</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-respuestas">
-                    <!-- Los registros se llenarán aquí -->
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation" id="pagination-respuesta-container" style="display: none;">
-                <ul class="pagination" id="pagination-respuesta">
-                    <!-- Pagination buttons will be injected here -->
-                </ul>
-            </nav>
-        </div>
-    </section>
-
-    <!-- Eventos -->
-    <section id="eventosSection">
-        <div class="container-fluid">
-            <div class="mt-3 p-3 bg-danger text-white d-flex justify-content-between align-items-center">
-                <h2>Lista de Eventos</h2>
-                <button id="toggleEventBtn" class="btn btn-light">Mostrar</button>
-            </div>
-            <table id="eventos-table" class="table table-striped mt-3">
-                <thead>
-                    <tr>
-                        <th>Evento</th>
-                        <th>Descripcion</th>
-                        <th>Establecimiento</th>
-                        <th>Fecha</th>
-                        <th>Invitado</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-eventos">
-                    <!-- Los registros se llenarán aquí -->
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation" id="pagination-evento-container" style="display: none;">
-                <ul class="pagination" id="pagination-evento">
-                    <!-- Pagination buttons will be injected here -->
-                </ul>
-            </nav>
-        </div>
-    </section>
-
 
 
 <section class="modals">
