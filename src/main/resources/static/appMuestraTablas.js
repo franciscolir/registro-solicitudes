@@ -12,17 +12,19 @@ function showTable(type) {
     const tableTitle = document.getElementById('tableTitle');
     const tableHeaders = document.getElementById('tableHeaders');
     const tableBody = document.querySelector('#dataTable tbody');
+    const buttonContainer = document.getElementById('buttonContainer');
 
     // Limpia el contenido anterior
     tableHeaders.innerHTML = '';
     tableBody.innerHTML = '';
+    buttonContainer.innerHTML = '';
 
     // Configuración de la tabla según el tipo
     let apiUrl = '';
     let headers = [];
     let formatRow = () => ''; // Función por defecto que no hace nada
     let title = '';
-    let buttonAction = () => {};
+    let buttonHtml = '';
 
     switch (type) {
         case 'solicitudes':
@@ -143,41 +145,3 @@ function fetchData(apiUrl, formatRow, tableBody) {
         });
 }
 
-// Función para manejar la paginación y mostrar/ocultar tablas
-function setupTableWithPagination(type, tableId, paginationContainerId, paginationId) {
-    document.addEventListener('DOMContentLoaded', () => {
-        const table = document.getElementById(tableId);
-        const tableBody = table.querySelector('tbody');
-        const pagination = document.getElementById(paginationId);
-
-        let currentPage = 0;
-        const pageSize = 10;
-
-        function fetchDataWithPagination(page) {
-            const apiUrl = `http://localhost:8080/${type}?page=${page}&size=${pageSize}`;
-            showTable(type, tableBody, apiUrl);
-        }
-
-        pagination.addEventListener('click', function(event) {
-            const target = event.target;
-            if (target && target.matches('a.page-link')) {
-                event.preventDefault();
-                const page = target.getAttribute('data-page');
-                const pageNumber = parseInt(page, 10);
-                if (!isNaN(pageNumber)) {
-                    fetchDataWithPagination(pageNumber);
-                } else {
-                    console.error('Número de página inválido:', page);
-                }
-            }
-        });
-
-        // Inicializar la tabla cuando la página se carga
-        fetchDataWithPagination(currentPage);
-    });
-}
-
-// Configurar tablas con paginación
-setupTableWithPagination('solicitudes', 'solicitudes-table', 'pagination-container', 'pagination');
-setupTableWithPagination('eventos', 'eventos-table', 'pagination-evento-container', 'pagination-evento');
-setupTableWithPagination('respuestas', 'respuestas-table', 'pagination-respuesta-container', 'pagination-respuesta');
