@@ -149,31 +149,31 @@
 </main>
 
   <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
-  <section id="tableSection" class="container-fluid d-none">
+<section id="tableSection" class="container d-none">
     
-    <table id="dataTable" class="table table-striped">
+    <div class="encabezado-tabla-dinamica">
+        <h2 id="tableTitle"> </h2>
+        <div id="buttonContainer"></div> <!-- Contenedor del botón -->
+                        <nav aria-label="Page navigation" id="pagination-container" style="display: none;">
+                            <ul class="pagination" id="pagination">
+                                <!-- Los botones de paginación serán inyectados aquí -->
+                            </ul>
+                        </nav>
+    </div>
+    <table id="dataTable" class="table table-striped"> 
         <thead>
-            <h2 id="tableTitle"> </h2>
-            <div class=" encabezadoTablaDinamica">
             <tr>
-                <th colspan="7">
-                    <div id="buttonContainer"></div> <!-- Contenedor del botón -->
-                </th>
-            </tr>
-            <tr id="tableHeaders">
-                <!-- Los encabezados de la tabla se llenarán aquí -->
-            </tr>
-        </div>
+                    <th colspan="7">    
+                    </th>
+                </tr>
+                <tr id="tableHeaders">
+                    <!-- Los encabezados de la tabla se llenarán aquí -->
+                </tr>           
         </thead>
         <tbody>
             <!-- Las filas de la tabla se llenarán aquí -->
         </tbody>
     </table>
-    <nav aria-label="Page navigation" id="pagination-respuesta-container" style="display: none;">
-        <ul class="pagination" id="pagination-respuesta">
-            <!-- Pagination buttons will be injected here -->
-        </ul>
-    </nav>
 </section>
 
 
