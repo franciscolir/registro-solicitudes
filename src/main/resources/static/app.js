@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //RESUMEN EVENTOS #####################################
 document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#registros-table tbody');
-    
+
         const loadData2 = () => {
         // Reemplaza esta URL con la URL de tu API
         const apiUrl = 'http://localhost:8080/eventos?size=4';
@@ -170,13 +170,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     const row = document.createElement('table');
              
                     const tipoFormatted = registro.tipo
-                        .toLowerCase()                  // Convierte todo el texto a minúsculas
-                        .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
-                        //.replace(/^(.)/, (match, p1) => p1.toUpperCase()); // Convierte la primera letra a mayúscula
-                        .replace(/\b\w/g, letra => letra.toUpperCase());
+                    .toLowerCase()                  // Convierte todo el texto a minúsculas
+                    .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                    .replace(/\b\w/g, letra => letra.toUpperCase()); // Convierte la primera letra de cada palabra a mayúscula
+
+                       ;   
+              // Determinar la cadena de invitados
+ /*             const invitadosString = (registro.invitado && registro.invitado.trim())
+             ? registro.invitado.replace(/[\[\]']+/g, '') // Elimina corchetes
+             : "Depto. SSGG"; // Elimina corchetes y agrega texto si viene vacio;
+*/
+const invitadosString = (registro.invitado && registro.invitado.length > 2)
+? registro.invitado.replace(/[\[\]']+/g, '') // Elimina corchetes
+: "Depto. SSGG"; // Valor por defecto si está vacío o no definido
 
 
-                    const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
+
+
+                   
     
                     row.innerHTML = `
                     
@@ -282,7 +293,7 @@ document.getElementById('fecha').textContent = obtenerFechaHoy();
 
 
 
-
+/*
 
 //TABLA SOLICITUDES#########################################
 document.addEventListener('DOMContentLoaded', function() {
@@ -385,218 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchData(currentPage);
 });
 
-
-// TABLA EVENTOS#########################################
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleEventBtn = document.getElementById('toggleEventBtn');
-    const eventTable = document.getElementById('eventos-table');
-    const tableBody = eventTable.querySelector('tbody');
-    const paginationContainer = document.getElementById('pagination-evento-container');
-    const pagination = document.getElementById('pagination-evento');
-
-  let isTableVisible = false;
-    let currentPage = 0;
-    const pageSize = 10;
-    
-    function fetchDataEvento(page) {
-
-    // Solicitar datos usando Axios
-    axios.get(`http://localhost:8080/eventos?page=${page}&size=${pageSize},desc`)
-        .then(response => {
-            // La respuesta contiene los datos en response.data
-            const registros = response.data.content;
-            const totalPages = response.data.totalPages;
-
-            // Limpiar el cuerpo de la tabla
-            tableBody.innerHTML = '';
-
-            // Crear filas para cada registro
-            registros.forEach(registro => {
-
-                const tipoFormatted = registro.tipo
-                .toLowerCase()                  // Convierte todo el texto a minúsculas
-                .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
-                .replace(/\b\w/g, letra => letra.toUpperCase());
-
-            const invitadosString = registro.invitado.replace(/[\[\]']+/g, ''); // Elimina corchetes
-
-               // console.log(registro)
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-                
-                            <td>${tipoFormatted}</td>
-                            <td>${registro.establecimiento}</td>
-                            <td>${registro.descripcion}</td>
-                            <td>${registro.fecha}</td>
-                            <td>${invitadosString}</td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-
-            // Render pagination
-            pagination.innerHTML = '';
-            for (let i = 0; i < totalPages; i++) {
-                const pageItem = document.createElement('li');
-                pageItem.className = 'page-item' + (i === page ? ' active' : '');
-                pageItem.innerHTML = `<a class="page-link" href="#" data-page="(${i})">${i + 1}</a>`;
-                pagination.appendChild(pageItem);
-            }
-        })
-        .catch(error => {
-            console.error('Error al obtener los eventos:', error);
-        });
-
-    }
-
-    function fetchPageEvento(page) {
-        currentPage = page;
-        fetchDataEvento(page);
-}
+*/
 
 
-function toggleTableEventVisibility() {
-    if (isTableVisible) {
-        // Ocultar la tabla y la paginación
-        eventTable.style.display = 'none';
-        paginationContainer.style.display = 'none';
-        toggleEventBtn.textContent = 'Mostrar';
-    } else {
-        // Mostrar la tabla y la paginación
-        eventTable.style.display = 'table';
-        paginationContainer.style.display = 'block';
-        fetchDataEvento(currentPage);
-        toggleEventBtn.textContent = 'Ocultar';
-    }
-    isTableVisible = !isTableVisible;
-}
 
-// Asignar la función al evento click del botón
-toggleEventBtn.addEventListener('click', toggleTableEventVisibility);
-
-pagination.addEventListener('click', function(event) {
-    const target = event.target;
-    if (target && target.matches('a.page-link')) {
-        event.preventDefault(); // Evita el desplazamiento
-        const page = target.getAttribute('data-page');
-        
-        //const pageNumber = parseInt(page, 10); // Asegúrate de usar parseInt con base 10
-        const pageNumber = page.replace(/[()]/g, '')   
-  
-        if (!isNaN(pageNumber)) { // Verifica que la página sea un número válido
-            fetchPageEvento(pageNumber);
-        } else {
-            console.error('Invalid page number:', page);
-        }
-    }
-});
-
-// Inicializar la tabla cuando la página se carga
-fetchDataEvento(currentPage);
-});
-
-
-//TABLA RESPUESTAS#########################################
-document.addEventListener('DOMContentLoaded', () => {
-  
-    const toggleRespuestaBtn = document.getElementById('toggleRespuestaBtn');
-    const respuestaTable = document.getElementById('respuestas-table');
-    const tableBody = respuestaTable.querySelector('tbody');
-    const paginationContainer = document.getElementById('pagination-respuesta-container');
-    const pagination = document.getElementById('pagination-respuesta');
-
-       // Inicializa el estado de la tabla
-       let isTableVisible = false;
-    
-       let currentPage = 0;
-       const pageSize = 10;
-   
-       function fetchDataRespuestas(page) {
-
-    // Solicitar datos usando Axios
-    axios.get(`http://localhost:8080/respuestas?page=${page}&size=${pageSize}`)
-        .then(response => {
-            // La respuesta contiene los datos en response.data
-            const registros = response.data.content;
-            const totalPages = response.data.totalPages;
-
-
-            // Limpiar el cuerpo de la tabla
-            tableBody.innerHTML = '';
-
-            // Crear filas para cada registro
-            registros.forEach(registro => {
-
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-                
-                    <td>${registro.numeroRespuesta}</td>
-                    <td>${registro.titulo}</td>
-                    <td>${registro.descripcion}</td>
-                    <td>${registro.fechaRespuesta}</td>
-                    <td>${registro.fechaEnvio}</td>
-                    <td>${registro.solicitudId}</td>
-                `; 
-
-                tableBody.appendChild(row);
-            });
-              // Render pagination
-              pagination.innerHTML = '';
-              for (let i = 0; i < totalPages; i++) {
-                  const pageItem = document.createElement('li');
-                  pageItem.className = 'page-item' + (i === page ? ' active' : '');
-                  pageItem.innerHTML = `<a class="page-link" href="#" data-page="(${i})">${i + 1}</a>`;
-                  pagination.appendChild(pageItem);
-              }
-        })
-        .catch(error => {
-            console.error('Error al obtener las respuestas:', error);
-        });
-
-    }  
-    function fetchPageRespuestas(page) {
-        currentPage = page;
-        fetchDataRespuestas(page);
-    }
-
-    function toggleTableRespuestaVisibility() {
-        if (isTableVisible) {
-            // Ocultar la tabla y la paginación
-            respuestaTable.style.display = 'none';
-            paginationContainer.style.display = 'none';
-            toggleRespuestaBtn.textContent = 'Mostrar';
-        } else {
-            // Mostrar la tabla y la paginación
-            respuestaTable.style.display = 'table';
-            paginationContainer.style.display = 'block';
-            fetchDataRespuestas(currentPage);
-            toggleRespuestaBtn.textContent = 'Ocultar';
-        }
-        isTableVisible = !isTableVisible;
-    }
-
-    // Asignar la función al evento click del botón
-    toggleRespuestaBtn.addEventListener('click', toggleTableRespuestaVisibility);
-   
-    pagination.addEventListener('click', function(event) {
-        const target = event.target;
-        if (target && target.matches('a.page-link')) {
-            event.preventDefault(); // Evita el desplazamiento
-            const page = target.getAttribute('data-page');
-            
-            //const pageNumber = parseInt(page, 10); // Asegúrate de usar parseInt con base 10
-            const pageNumber = page.replace(/[()]/g, '')   
-      
-            if (!isNaN(pageNumber)) { // Verifica que la página sea un número válido
-                fetchPageRespuestas(pageNumber);
-            } else {
-                console.error('Invalid page number:', page);
-            }
-        }
-    });
-
-    // Inicializar la tabla cuando la página se carga
-    fetchDataRespuestas(currentPage);
-});

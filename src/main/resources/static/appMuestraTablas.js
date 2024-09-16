@@ -310,6 +310,8 @@ function getTableConfig(type, page) {
             `;
             break;
         case 'eventos':
+            
+
             config.apiUrl = `${baseUrl}eventos${paginacionUrl}`;
             config.headers = ['Evento', 'Descripción', 'Establecimiento', 'Fecha', 'Invitado'];
             config.title = 'Eventos';
@@ -318,7 +320,7 @@ function getTableConfig(type, page) {
                 <td>${registro.establecimiento}</td>
                 <td>${registro.descripcion}</td>
                 <td>${registro.fecha}</td>
-                <td>${registro.invitado.replace(/[\[\]']+/g, '')}</td>
+                <td>${formatInvitados(registro.invitado)}</td>
             `;
             console.log(config.formatRow,"formatrow#########");
             config.buttonHtml = `
@@ -341,6 +343,13 @@ function getTableConfig(type, page) {
 
     return config;
 }
+
+function formatInvitados(invitado) {
+    return (invitado && invitado.length > 2)
+                    ? invitado.replace(/[\[\]']+/g, '')
+                    : "Depto. SSGG"
+}
+
 
 // Función para formatear texto
 function formatText(text) {
