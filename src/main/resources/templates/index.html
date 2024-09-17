@@ -156,11 +156,12 @@
     <div class="encabezado-tabla-dinamica">
         <h2 id="tableTitle"> </h2>
         <div id="buttonContainer"></div> <!-- Contenedor del botón -->
-                        <nav aria-label="Page navigation" id="pagination-container" style="display: none;">
-                            <ul class="pagination" id="pagination">
-                                <!-- Los botones de paginación serán inyectados aquí -->
-                            </ul>
-                        </nav>
+        <div>
+            <button type="button" class="btn btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+            <button type="button" class="btn btn-secondary" onclick="clearFilters()">Limpiar Filtros</button>
+            </div>
+        
+                      
     </div>
     <table id="dataTable" class="table table-striped"> 
         <thead>
@@ -170,7 +171,13 @@
                 </tr>
                 <tr id="tableHeaders">
                     <!-- Los encabezados de la tabla se llenarán aquí -->
-                </tr>           
+            </tr> 
+
+            <!-- ########################################################### -->
+            <tr id = "filterContainer">
+                  
+            </tr> 
+          <!-- ########################################################### -->
         </thead>
         <tbody>
             <!-- Las filas de la tabla se llenarán aquí -->
@@ -320,7 +327,7 @@
                     </div>
                     <div class="form-group">
                         <label for="invitados">Invitados:</label>
-                        <select id="invitados" name="invitados" class="form-control" multiple required>
+                        <select id="invitados" name="invitados" class="form-control" multiple >
                             <option value="" disabled selected></option>
                             <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
                         </select>
