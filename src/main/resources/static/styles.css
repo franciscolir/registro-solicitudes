@@ -149,7 +149,7 @@ color: #000;
 .encabezado-tabla-dinamica {
     margin-top: 20px auto;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    grid-template-columns: 2fr 1fr 2fr; /* Columna izquierda es el doble de ancha que la derecha */
     gap: 10px; /* Espacio entre columnas */
 }
 

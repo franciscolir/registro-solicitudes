@@ -7,582 +7,627 @@
     <title>Depto | Servicios Generales</title>
     <link rel="icon" type="image/x-icon" href="/static/imagenes/logo.png">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
 
-<!-- Navbar -->
+    <!-- Navbar -->
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"onclick="resetView()"><img src="/static/imagenes/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation" 
-                >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <ul class="navbar-nav d-flex justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="resetView()">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a>
-                </li>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" onclick="resetView()"><img src="/static/imagenes/logo.png"
+                    class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <ul class="navbar-nav d-flex justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="resetView()">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a>
-                </li>
-            </ul>
-            
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a>
+                    </li>
+                </ul>
+
+            </div>
+            <button type="submit" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">
+                Buscar oficio
+            </button>`;
         </div>
-        <button type="submit" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">
-            Buscar oficio
-        </button>`;
-    </div>
-    
-</nav>
+
+    </nav>
 
 
-<main class="hero container-fluid" id="mainContent">
-    <!-- Resumen -->
-    <section class="resumenSeccion">
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <div class="p-3 bg-danger text-dark pendientes">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h2>Solicitudes Pendientes</h2>
+    <main class="hero container-fluid" id="mainContent">
+        <!-- Resumen -->
+        <section class="resumenSeccion">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-danger text-dark pendientes">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2>Solicitudes Pendientes</h2>
+                        </div>
+                        <div class="accordion" id="accordionResumen">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne"></button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
+                                    <div class="accordion-body">
+                                        <!-- Content here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="accordion" id="accordionResumen">
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-warning text-dark eventos">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2>Proximos Eventos</h2>
+                        </div>
+                        <table id="registros-table" class="table">
+                            <thead>
+                                <!-- Headers here -->
+                            </thead>
+                            <tbody>
+                                <!-- Los registros se llenarán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
+                    <div class="accordion" id="accordionUltimaRespuesta">
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"></button>
+                            <h2 class="accordion-header" id="headingOne1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne1" aria-expanded="true"
+                                    aria-controls="collapseOne1"></button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
+                            <div id="collapseOne1" class="accordion-collapse collapse show"
+                                aria-labelledby="headingOne1" data-bs-parent="#accordionUltimaRespuesta">
                                 <div class="accordion-body">
                                     <!-- Content here -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="p-3 bg-primary text-dark">Calendar</div>
+                    <div id="fecha"></div>
+                    <div class="p-3 bg-secondary text-dark">UTM hoy</div>
+                    <div id="valores"></div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="p-3 bg-warning text-dark eventos">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h2>Proximos Eventos</h2>
+        </section>
+
+        <section class="bloqueDocumentos">
+            <div class="container-fluid">
+                <div class="row align-items-md-stretch">
+                    <div class="col-md-3">
+                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                            <h2>Solicitudes</h2>
+                            <p>En esta sección encontrarás los oficios derivados desde la Dirección DAEM al Departamento
+                                de Servicios Generales y Proyectos. Además, podrás ingresar nuevas solicitudes al
+                                sistema.</p>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="showTable('solicitudes')">Ingresar</button>
+                        </div>
                     </div>
-                    <table id="registros-table" class="table">
-                        <thead>
-                            <!-- Headers here -->
-                        </thead>
-                        <tbody>
-                            <!-- Los registros se llenarán aquí -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
-                <div class="accordion" id="accordionUltimaRespuesta">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne1">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1"></button>
-                        </h2>
-                        <div id="collapseOne1" class="accordion-collapse collapse show" aria-labelledby="headingOne1" data-bs-parent="#accordionUltimaRespuesta">
-                            <div class="accordion-body">
-                                <!-- Content here -->
-                            </div>
+                    <div class="col-md-3">
+                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                            <h2>Respuestas</h2>
+                            <p>En esta sección encontrarás los memos de respuesta a los oficios derivados desde la
+                                Dirección DAEM. Además, podrás ingresar nuevas respuestas al sistema.</p>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="showTable('respuestas')">Ingresar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                            <h2>Proyectos</h2>
+                            <p>En esta sección encontrarás los proyectos en los cuales está trabajando el Departamento
+                                de Servicios Generales y Proyectos. Podrás ver el estado de avance e ingresar nuevos
+                                proyectos.</p>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="showTable('proyectos')">Ingresar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                            <h2>Eventos</h2>
+                            <p>En esta sección encontrarás una lista con los eventos agendados en los que tienen alguna
+                                participación los funcionarios del Departamento de Servicios Generales y Proyectos.</p>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="showTable('eventos')">Ingresar</button>
                         </div>
                     </div>
                 </div>
-                <div class="p-3 bg-primary text-dark">Calendar</div>
-                <div id="fecha"></div>
-                <div class="p-3 bg-secondary text-dark">UTM hoy</div>
-                <div id="valores"></div>
             </div>
+        </section>
+
+
+    </main>
+
+    <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
+    <section id="tableSection" class="container d-none">
+
+        <div class="encabezado-tabla-dinamica">
+            <h2 id="tableTitle"> </h2>
+            <div id="buttonContainer"></div> <!-- Contenedor del botón -->
+            <div id="filtroContainer"></div> <!-- Contenedor del filtro -->
         </div>
-    </section>
-
-    <section class="bloqueDocumentos">
-        <div class="container-fluid">
-            <div class="row align-items-md-stretch">
-                <div class="col-md-3">
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                        <h2>Solicitudes</h2>
-                        <p>En esta sección encontrarás los oficios derivados desde la Dirección DAEM al Departamento de Servicios Generales y Proyectos. Además, podrás ingresar nuevas solicitudes al sistema.</p>
-                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('solicitudes')">Ingresar</button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                        <h2>Respuestas</h2>
-                        <p>En esta sección encontrarás los memos de respuesta a los oficios derivados desde la Dirección DAEM. Además, podrás ingresar nuevas respuestas al sistema.</p>
-                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('respuestas')">Ingresar</button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                        <h2>Proyectos</h2>
-                        <p>En esta sección encontrarás los proyectos en los cuales está trabajando el Departamento de Servicios Generales y Proyectos. Podrás ver el estado de avance e ingresar nuevos proyectos.</p>
-                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('proyectos')">Ingresar</button>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                        <h2>Eventos</h2>
-                        <p>En esta sección encontrarás una lista con los eventos agendados en los que tienen alguna participación los funcionarios del Departamento de Servicios Generales y Proyectos.</p>
-                        <button class="btn btn-outline-secondary" type="button" onclick="showTable('eventos')">Ingresar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-
-</main>
-
-  <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
-<section id="tableSection" class="container d-none">
-    
-    <div class="encabezado-tabla-dinamica">
-        <h2 id="tableTitle"> </h2>
-        <div id="buttonContainer"></div> <!-- Contenedor del botón -->
-        <div>
-       
-            </div>
-        
-                      
-    </div>
-    <table id="dataTable" class="table table-striped"> 
-        <thead>
-            <tr>
-                    <th colspan="7">    
+        <table id="dataTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="7">
                     </th>
                 </tr>
                 <tr id="tableHeaders">
                     <!-- Los encabezados de la tabla se llenarán aquí -->
-            </tr> 
-
-            <!-- ########################################################### -->
-            <tr id = "filterContainer">
-                  
-            </tr> 
-          <!-- ########################################################### -->
-        </thead>
-        <tbody>
-            <!-- Las filas de la tabla se llenarán aquí -->
-        </tbody>
-    </table>
+                </tr>
+                <tr id="filterContainer">
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas de la tabla se llenarán aquí -->
+            </tbody>
+        </table>
 
 
-<!-- Modal para Aplicar Filtros -->
-<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="filterModalLabel">Aplicar Filtros (Solicitudes)</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="filterFormSolicitudes">
-                    <div class="mb-3">
-                        <label for="filterNumeroSolicitud" class="form-label">Buscar por N° Solicitud</label>
-                        <input type="number" class="form-control" id="filterNumeroSolicitud" placeholder="Buscar por N°">
+        <!-- Modal para Aplicar Filtros -->
+        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Aplicar Filtros (Solicitudes)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="filterEmisor" class="form-label">Seleccionar Establecimiento</label>
-                        <select class="form-control" id="filterEmisor">
-                            <option value="" disabled selected>Seleccione un establecimiento</option>
-                            <!-- Opciones dinámicas aquí -->
-                        </select>
+                    <div class="modal-body">
+                        <form id="filterFormSolicitudes">
+                            <div class="mb-3">
+                                <label for="filterNumeroSolicitud" class="form-label">Buscar por N° Solicitud</label>
+                                <input type="number" class="form-control" id="filterNumeroSolicitud"
+                                    placeholder="Buscar por N°">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterEmisor" class="form-label">Seleccionar Establecimiento</label>
+                                <select class="form-control" id="filterEmisor">
+                                    <option value="" disabled selected>Seleccione un establecimiento</option>
+                                    <!-- Opciones dinámicas aquí -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterTitulo" class="form-label">Buscar por Título</label>
+                                <input type="text" class="form-control" id="filterTitulo"
+                                    placeholder="Buscar por título">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterDescripcion" class="form-label">Buscar por Descripción</label>
+                                <input type="text" class="form-control" id="filterDescripcion"
+                                    placeholder="Buscar por descripción">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterEstado" class="form-label">Seleccionar Estado</label>
+                                <select class="form-control" id="filterEstado">
+                                    <option value="" disabled selected>Seleccione un estado</option>
+                                    <!-- Opciones dinámicas aquí -->
+                                </select>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="filterTitulo" class="form-label">Buscar por Título</label>
-                        <input type="text" class="form-control" id="filterTitulo" placeholder="Buscar por título">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilters('solicitudes')"
+                            data-bs-dismiss="modal">Aplicar Filtros</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="filterDescripcion" class="form-label">Buscar por Descripción</label>
-                        <input type="text" class="form-control" id="filterDescripcion" placeholder="Buscar por descripción">
-                    </div>
-                    <div class="mb-3">
-                        <label for="filterEstado" class="form-label">Seleccionar Estado</label>
-                        <select class="form-control" id="filterEstado">
-                            <option value="" disabled selected>Seleccione un estado</option>
-                            <!-- Opciones dinámicas aquí -->
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="applyFilters('solicitudes')" data-bs-dismiss="modal">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Aplicar Filtros Respuestas -->
-<div class="modal fade" id="filterModalRespuestas" tabindex="-1" aria-labelledby="filterModalLabelRespuestas" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="filterModalLabelRespuestas">Aplicar Filtros (Respuestas)</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="filterFormRespuestas">
-                    <div class="mb-3">
-                        <label for="filterNumeroRespuesta" class="form-label">Buscar por N° Respuesta</label>
-                        <input type="number" class="form-control" id="filterNumeroRespuesta" placeholder="Buscar por N°">
-                    </div>
-                    <div class="mb-3">
-                        <label for="filterTituloRespuesta" class="form-label">Buscar por Título</label>
-                        <input type="text" class="form-control" id="filterTituloRespuesta" placeholder="Buscar por título">
-                    </div>
-                    <div class="mb-3">
-                        <label for="filterDescripcionRespuesta" class="form-label">Buscar por Descripción</label>
-                        <input type="text" class="form-control" id="filterDescripcionRespuesta" placeholder="Buscar por descripción">
-                    </div>
-                    <div class="mb-3">
-                        <label for="filterSolicitudRespuesta" class="form-label">Buscar por N° Solicitud</label>
-                        <input type="number" class="form-control" id="filterSolicitudRespuesta" placeholder="Buscar por N°">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="applyFilters('respuestas')" data-bs-dismiss="modal">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal para Aplicar Filtros Eventos -->
-<div class="modal fade" id="filterModalEventos" tabindex="-1" aria-labelledby="filterModalLabelEventos" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="filterModalLabelEventos">Aplicar Filtros para Eventos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="filterContainer">
-                    <form id="filterFormEventos">
-                        <div class="mb-3">
-                            <label for="filterEvento" class="form-label">Buscar por Evento</label>
-                            <input type="text" class="form-control" id="filterEvento" placeholder="Buscar por evento">
-                        </div>
-                        <div class="mb-3">
-                            <label for="filterDescripcionEvento" class="form-label">Buscar por Descripción</label>
-                            <input type="text" class="form-control" id="filterDescripcionEvento" placeholder="Buscar por descripción">
-                        </div>
-                        <div class="mb-3">
-                            <label for="filterEstablecimiento" class="form-label">Seleccionar Establecimiento</label>
-                            <select class="form-control" id="filterEstablecimiento">
-                                <option value="" disabled selected>Seleccione un establecimiento</option>
-                                <!-- Opciones dinámicas aquí -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="filterInvitado" class="form-label">Seleccionar Invitado</label>
-                            <select class="form-control" id="filterInvitado">
-                                <option value="" disabled selected>Seleccione un invitado</option>
-                                <!-- Opciones dinámicas aquí -->
-                            </select>
-                        </div>
-                    </form>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="applyFilters('eventos')" data-bs-dismiss="modal">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
         </div>
-    </div>
-</div>
 
-
-
-<section class="modals">
-<!-- Modal para buscar el oficio -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="searchModalLabel">Buscar Oficio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                   <!-- Alerta para mostrar el mensaje de éxito o error -->
-                   <div id="alertMessage" class="alert" style="display:none;"></div>
-                <form id="searchForm" onsubmit="event.preventDefault(); enviarFormularioBuscador();">
-                    <div class="mb-3">
-                        <label for="numberInput" class="form-label">Número de Oficio</label>
-                        <input type="text" class="form-control" id="numberInput" placeholder="Ingrese el número de oficio" required>
+        <!-- Modal para Aplicar Filtros Respuestas -->
+        <div class="modal fade" id="filterModalRespuestas" tabindex="-1" aria-labelledby="filterModalLabelRespuestas"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabelRespuestas">Aplicar Filtros (Respuestas)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="emisorSelect" class="form-label">Emisor</label>
-                        <select class="form-select" id="emisorSelect" required>
-                            <!-- Opciones del select se llenarán con JavaScript -->
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="applyFilters()">Buscar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para mostrar la información del oficio -->
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Información del Oficio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                 <!-- Alerta para mostrar el mensaje de éxito o error -->
-                 <div id="alertMessage" class="alert" style="display:none;"></div>
-                <!-- Aquí se insertará la información del oficio -->
-                <div id="modalContent">Cargando...</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-  <!-- Modal para Solicitudes -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Alerta para mostrar el mensaje de éxito o error -->
-                <div id="alertMessage" class="alert" style="display:none;"></div>
-
-                <!-- Formulario -->
-                <form id="myForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormulario();">
-                    <div class="form-group">
-                        <label for="emisor">Emisor:</label>
-                        <select id="emisor" name="emisor" class="form-control" required>
-                            <option value="" disabled selected>Seleccione un emisor</option>
-                            <!-- Opciones se llenarán dinámicamente -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="numeroSolicitud">Número de Solicitud:</label>
-                        <input type="number" id="numeroSolicitud" name="numeroSolicitud" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="titulo">Título:</label>
-                        <input type="text" id="titulo" name="titulo" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción:</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaSolicitud">Fecha de Solicitud:</label>
-                        <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="form-control" required>
+                    <div class="modal-body">
+                        <form id="filterFormRespuestas">
+                            <div class="mb-3">
+                                <label for="filterNumeroRespuesta" class="form-label">Buscar por N° Respuesta</label>
+                                <input type="number" class="form-control" id="filterNumeroRespuesta"
+                                    placeholder="Buscar por N°">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterTituloRespuesta" class="form-label">Buscar por Título</label>
+                                <input type="text" class="form-control" id="filterTituloRespuesta"
+                                    placeholder="Buscar por título">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterDescripcionRespuesta" class="form-label">Buscar por
+                                    Descripción</label>
+                                <input type="text" class="form-control" id="filterDescripcionRespuesta"
+                                    placeholder="Buscar por descripción">
+                            </div>
+                            <div class="mb-3">
+                                <label for="filterSolicitudRespuesta" class="form-label">Buscar por N° Solicitud</label>
+                                <input type="number" class="form-control" id="filterSolicitudRespuesta"
+                                    placeholder="Buscar por N°">
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Registrar Evento -->
-<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Alerta para mostrar el mensaje de éxito o error -->
-                <div id="eventAlertMessage" class="alert" style="display:none;"></div>
-
-                <!-- Formulario -->
-                <form id="eventForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioEvent();">
-                    <div class="form-group">
-                        <label for="tipo">Tipo:</label>
-                        <select id="tipo" name="tipo" class="form-control" required>
-                            <option value="" disabled selected>Seleccione un tipo</option>
-                            <!-- Opciones se llenarán dinámicamente desde el endpoint /eventos -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción:</label>
-                        <input type="text" id="descripcionEvent" name="descripcion" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="fecha">Fecha y Hora:</label>
-                        <input type="datetime-local" id="fechaEvento" name="fecha" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="establecimiento">Establecimiento:</label>
-                        <select id="establecimiento" name="establecimiento" class="form-control" required>
-                            <option value="" disabled selected>Seleccione un establecimiento</option>
-                            <!-- Opciones se llenarán dinámicamente desde el endpoint /establecimientos -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="invitados">Invitados:</label>
-                        <select id="invitados" name="invitados" class="form-control" multiple >
-                            <option value="" disabled selected></option>
-                            <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
-                        </select>
-                        <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples invitados.</small>
-                    </div>
-                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilters('respuestas')"
+                            data-bs-dismiss="modal">Aplicar Filtros</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Modal para Registrar Respuesta -->
-<div class="modal fade" id="respuestaModal" tabindex="-1" role="dialog" aria-labelledby="respuestaModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="respuestaModalLabel">Ingresar Respuesta</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <!-- Alerta para mostrar el mensaje de éxito o error -->
-                  <div id="alertMessageRespuesta" class="alertRespuesta" style="display:none;"></div>
-  
-                  <!-- Formulario -->
-                  <form id="respuestaForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
-                      <div class="form-group">
-                        <label for="numeroSolicitudR">Número de Solicitud:</label>
-                        <div id="numeroSolicitudR"></div>
-                      </div>
-                      <div class="form-group">
-                        <label for="numeroRespuesta">Número de Respuesta:</label>
-                        <input type="number" id="numeroRespuesta" name="numeroRespuesta" class="form-control" required>
+        <!-- Modal para Aplicar Filtros Eventos -->
+        <div class="modal fade" id="filterModalEventos" tabindex="-1" aria-labelledby="filterModalLabelEventos"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabelEventos">Aplicar Filtros para Eventos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="form-group">
-                        <label for="funcionario">Funcionario:</label>
-                        <select id="funcionario" name="funcionario" class="form-control" required>
-                            <option value="" disabled selected></option>
-                            <!-- Opciones se llenarán dinámicamente -->
-                        </select>
-                      </div>
-                      <div class="form-group">
-                          <label for="titulo">Título:</label>
-                          <input type="text" id="tituloRespuesta" name="titulo" class="form-control" required>
-                      </div>
-                      <div class="form-group">
-                          <label for="descripcionRespuesta">Descripción:</label>
-                          <textarea id="descripcionRespuesta" name="descripcion" class="form-control"required></textarea>
-                      </div>
-                      <div class="form-group">
-                        <label for="comentarioRespuesta">Comentario:</label>
-                        <textarea id="comentarioRespuesta" name="comentario" class="form-control"></textarea>
+                    <div class="modal-body">
+                        <div id="filterContainer">
+                            <form id="filterFormEventos">
+                                <div class="mb-3">
+                                    <label for="filterEvento" class="form-label">Buscar por Evento</label>
+                                    <select class="form-control" id="filterEvento"></select>
+                                    <option value="" disabled selected>Seleccione un tipo de evento</option>
+                                    <!-- Opciones dinámicas aquí -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="filterDescripcionEvento" class="form-label">Buscar por
+                                        Descripción</label>
+                                    <input type="text" class="form-control" id="filterDescripcionEvento"
+                                        placeholder="Buscar por descripción">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="filterEstablecimiento" class="form-label">Seleccionar
+                                        Establecimiento</label>
+                                    <select class="form-control" id="filterEstablecimiento">
+                                        <option value="" disabled selected>Seleccione un establecimiento</option>
+                                        <!-- Opciones dinámicas aquí -->
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                      <div class="form-group">
-                          <label for="fechaRespuesta">Fecha de Respuesta:</label>
-                          <input type="date" id="fechaRespuesta" name="fechaRespuesta" class="form-control" required>
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                          <button type="submit" class="btn btn-primary">Enviar</button>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-</div>
-
-<!-- Modal para Rechazar Solicitud -->
-<div class="modal fade" id="rechazarModal" tabindex="-1" role="dialog" aria-labelledby="rechazarModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Alerta para mostrar el mensaje de éxito o error -->
-                <div id="alertMessageRechazar" class="alertRechazar" style="display:none;"></div>
-
-                <!-- Formulario -->
-                <form id="rechazarForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRechazar();">
-                    <div class="form-group">
-
-                        
-                        <label for="numeroRechazar" >Número de Solicitud: </label>
-                        <div id="numeroRechazar"></div>
-                      </div>
-                    <div class="form-group">
-                      <label for="comentarioRechazar">Comentario:</label>
-                      <textarea id="comentarioRechazar" name="comentario"placeholder="Indicar Motivo de Rechazo" class="form-control"></textarea>
-                  </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="button" class="btn btn-primary" onclick="applyFilters('eventos')"
+                            data-bs-dismiss="modal">Aplicar Filtros</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-</section>
 
-<!-- Enlaces a jQuery, Popper.js, y Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-<!-- Javascript -->
-<script src="/static/app.js"></script>
-<script src="/static/appModalBuscadores.js"></script>
-<script src="/static/appModalEvento.js"></script>
-<script src="/static/appModalRespuesta.js"></script>
-<script src="/static/appModalSolicitud.js"></script>
-<script src="/static/appModalRechazar.js"></script>
-<script src="/static/appMuestraTablas.js"></script>
+
+
+        <section class="modals">
+            <!-- Modal para buscar el oficio -->
+            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="searchModalLabel">Buscar Oficio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="alertMessage" class="alert" style="display:none;"></div>
+                            <form id="searchForm" onsubmit="event.preventDefault(); enviarFormularioBuscador();">
+                                <div class="mb-3">
+                                    <label for="numberInput" class="form-label">Número de Oficio</label>
+                                    <input type="text" class="form-control" id="numberInput"
+                                        placeholder="Ingrese el número de oficio" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="emisorSelect" class="form-label">Emisor</label>
+                                    <select class="form-select" id="emisorSelect" required>
+                                        <!-- Opciones del select se llenarán con JavaScript -->
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                    onclick="applyFilters()">Buscar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para mostrar la información del oficio -->
+            <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="infoModalLabel">Información del Oficio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="alertMessage" class="alert" style="display:none;"></div>
+                            <!-- Aquí se insertará la información del oficio -->
+                            <div id="modalContent">Cargando...</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal para Solicitudes -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="alertMessage" class="alert" style="display:none;"></div>
+
+                            <!-- Formulario -->
+                            <form id="myForm" class="needs-validation"
+                                onsubmit="event.preventDefault(); enviarFormulario();">
+                                <div class="form-group">
+                                    <label for="emisor">Emisor:</label>
+                                    <select id="emisor" name="emisor" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione un emisor</option>
+                                        <!-- Opciones se llenarán dinámicamente -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroSolicitud">Número de Solicitud:</label>
+                                    <input type="number" id="numeroSolicitud" name="numeroSolicitud"
+                                        class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="titulo">Título:</label>
+                                    <input type="text" id="titulo" name="titulo" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción:</label>
+                                    <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fechaSolicitud">Fecha de Solicitud:</label>
+                                    <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="form-control"
+                                        required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para Registrar Evento -->
+            <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="eventAlertMessage" class="alert" style="display:none;"></div>
+
+                            <!-- Formulario -->
+                            <form id="eventForm" class="needs-validation"
+                                onsubmit="event.preventDefault(); enviarFormularioEvent();">
+                                <div class="form-group">
+                                    <label for="tipo">Tipo:</label>
+                                    <select id="tipo" name="tipo" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione un tipo</option>
+                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /eventos -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">Descripción:</label>
+                                    <input type="text" id="descripcionEvent" name="descripcion" class="form-control"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fecha">Fecha y Hora:</label>
+                                    <input type="datetime-local" id="fechaEvento" name="fecha" class="form-control"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="establecimiento">Establecimiento:</label>
+                                    <select id="establecimiento" name="establecimiento" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione un establecimiento</option>
+                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /establecimientos -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="invitados">Invitados:</label>
+                                    <select id="invitados" name="invitados" class="form-control" multiple>
+                                        <option value="" disabled selected></option>
+                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
+                                    </select>
+                                    <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac)
+                                        para seleccionar múltiples invitados.</small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para Registrar Respuesta -->
+            <div class="modal fade" id="respuestaModal" tabindex="-1" role="dialog"
+                aria-labelledby="respuestaModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="respuestaModalLabel">Ingresar Respuesta</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="alertMessageRespuesta" class="alertRespuesta" style="display:none;"></div>
+
+                            <!-- Formulario -->
+                            <form id="respuestaForm" class="needs-validation"
+                                onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
+                                <div class="form-group">
+                                    <label for="numeroSolicitudR">Número de Solicitud:</label>
+                                    <div id="numeroSolicitudR"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroRespuesta">Número de Respuesta:</label>
+                                    <input type="number" id="numeroRespuesta" name="numeroRespuesta"
+                                        class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="funcionario">Funcionario:</label>
+                                    <select id="funcionario" name="funcionario" class="form-control" required>
+                                        <option value="" disabled selected></option>
+                                        <!-- Opciones se llenarán dinámicamente -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="titulo">Título:</label>
+                                    <input type="text" id="tituloRespuesta" name="titulo" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcionRespuesta">Descripción:</label>
+                                    <textarea id="descripcionRespuesta" name="descripcion" class="form-control"
+                                        required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comentarioRespuesta">Comentario:</label>
+                                    <textarea id="comentarioRespuesta" name="comentario"
+                                        class="form-control"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fechaRespuesta">Fecha de Respuesta:</label>
+                                    <input type="date" id="fechaRespuesta" name="fechaRespuesta" class="form-control"
+                                        required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para Rechazar Solicitud -->
+            <div class="modal fade" id="rechazarModal" tabindex="-1" role="dialog" aria-labelledby="rechazarModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Alerta para mostrar el mensaje de éxito o error -->
+                            <div id="alertMessageRechazar" class="alertRechazar" style="display:none;"></div>
+
+                            <!-- Formulario -->
+                            <form id="rechazarForm" class="needs-validation"
+                                onsubmit="event.preventDefault(); enviarFormularioRechazar();">
+                                <div class="form-group">
+
+
+                                    <label for="numeroRechazar">Número de Solicitud: </label>
+                                    <div id="numeroRechazar"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comentarioRechazar">Comentario:</label>
+                                    <textarea id="comentarioRechazar" name="comentario"
+                                        placeholder="Indicar Motivo de Rechazo" class="form-control"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enlaces a jQuery, Popper.js, y Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Javascript -->
+        <script src="/static/app.js"></script>
+        <script src="/static/appModalBuscadores.js"></script>
+        <script src="/static/appModalEvento.js"></script>
+        <script src="/static/appModalRespuesta.js"></script>
+        <script src="/static/appModalSolicitud.js"></script>
+        <script src="/static/appModalRechazar.js"></script>
+        <script src="/static/appMuestraTablas.js"></script>
 
 </body>
 

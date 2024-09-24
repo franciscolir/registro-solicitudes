@@ -1,321 +1,3 @@
-/*
-
-let data = []; // Variable global para almacenar los datos obtenidos
-
-//###############################################################################
-
-// Función para mostrar el main y ocultar la tabla
-function resetView() {
-  document.getElementById("mainContent").classList.remove("d-none");
-  document.getElementById("tableSection").classList.add("d-none");
-}
-
-function clearFilters() {
-  // Limpiar los campos de entrada de los filtros
-  document.getElementById("filterNumeroSolicitud").value = "";
-  document.getElementById("filterEmisor").value = "";
-  document.getElementById("filterTitulo").value = "";
- document.getElementById("filterDescripcion").value = "";
-document.getElementById("filterFechaSolicitud").value = "";
-document.getElementById("filterFechaIngreso").value = "";
-document.getElementById("filterEstado").value = "";
-
-  // Limpiar los filtros aplicados
-  const filterIds = [
-    "filterNumeroSolicitud",
-    "filterEmisor",
-    "filterTitulo",
-    "filterDescripcion",
-    "filterFechaSolicitud",
-    "filterFechaIngreso",
-    "filterEstado"
-  ];
-
-  filterIds.forEach(id => document.getElementById(id).value = "");
-
-  // Aplicar filtros vacíos (que efectivamente no aplican filtros)
-  applyFilters();
-}
-
-// Función para mostrar una tabla dependiendo del tipo y la página actual
-function showTable(type) {
-  document.getElementById("mainContent").classList.add("d-none");
-  document.getElementById("tableSection").classList.remove("d-none");
-
-  const tableTitle = document.getElementById("tableTitle");
-  const tableHeaders = document.getElementById("tableHeaders");
-  const tableBody = document.querySelector("#dataTable tbody");
-  const buttonContainer = document.getElementById("buttonContainer");
-  const filtersContainer = document.getElementById("filterContainer");
-
-  // Limpia el contenido anterior
-  tableHeaders.innerHTML = "";
-  tableBody.innerHTML = "";
-  buttonContainer.innerHTML = "";
-  filtersContainer.innerHTML = ""; //agregado
-
-  const { apiUrl, headers, title, formatRow, buttonHtml, filter } =  getTableConfig(type); 
-
-  if (!apiUrl) {
-    console.error("Tipo de tabla no reconocido:", type);
-    return;
-  }
-
-  tableTitle.innerText = title;
-
-  // Genera los headers dinámicamente
-  headers.forEach((header) => {
-    const th = document.createElement("th");
-    th.innerText = header;
-    tableHeaders.appendChild(th);
-  });
-
-  // Añadir el botón en el encabezado
-  buttonContainer.innerHTML = buttonHtml;
-  filtersContainer.innerHTML = filter; //agregado
-
-  // Llamada para obtener los datos y renderizar la tabla
-  fetchData(apiUrl, formatRow, tableBody); //, page, paginationContainer);
-}
-
-// Función para configurar la tabla según el tipo
-function getTableConfig(type) {
-  const baseUrl = "http://localhost:8080/";
-  const pageSize = 100;
-  const page = 0;
-  const paginacionUrl = `?page=${page}&size=${pageSize}`;
-
-  let config = {
-    apiUrl: "",
-    headers: [],
-    title: "",
-    filter: "",
-    formatRow: () => "",
-    buttonHtml: "",
-  };
-
-  switch (type) {
-    case "solicitudes":
-      config.apiUrl = `${baseUrl}solicitudes${paginacionUrl}&sort=fechaIngresoSolicitud,desc`;
-      config.headers = [
-        "N° Solicitud",
-        "Emisor",
-        "Titulo",
-        "Descripcion",
-        "Fecha Solicitud",
-        "Fecha Ingreso",
-        "Estado",
-      ];
-      config.title = "Solicitudes";
-      config.formatRow = (registro) => `
-                <td>${registro.numeroSolicitud}</td>
-                <td>${registro.emisor}</td>
-                <td>${registro.titulo}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.fechaSolicitud}</td>
-                <td>${registro.fechaIngresoDepartamento}</td>
-                <td>${formatText(registro.estado)}</td>
-            `;
-      config.filter = generateFilterInputs([
-        { id: "filterNumeroSolicitud", placeholder: "Buscar por N°", type: "number" },
-        { id: "filterEmisor", placeholder: "Seleccionar establecimiento", type: "select", options: ["Seleccione un establecimiento"] },
-        { id: "filterTitulo", placeholder: "Buscar por título", type: "text" },
-        { id: "filterDescripcion", placeholder: "Buscar por descripción", type: "text" },
-        { id: "filterFechaSolicitud", placeholder: "dd/mm/aaaa", type: "text" },
-        { id: "filterFechaIngreso", placeholder: "dd/mm/aaaa", type: "text" },
-        { id: "filterEstado", placeholder: "Seleccionar estado", type: "select", options: ["Seleccione un estado"] }
-      ]);
-      
-      
-      /*`
-                <td><input type="number" class="form-control" id="filterNumeroSolicitud" placeholder = "buscar por N°"></td>
-                <td> <select class="form-control" id="filterEmisor" placeholder = "buscar por emisor"><option value="" disabled selected>Seleccione un establecimiento</option></select></td>
-                <td><input type="text" class="form-control" id="filterTitulo" placeholder = "buscar por titulo"></td>
-                <td><input type="text" class="form-control" id="filterDescripcion" placeholder = "buscar por descripcion"></td>
-                <td><input type="text" class="form-control" id="filterFechaSolicitud" placeholder = "dd/mm/aaaa"></td>
-                <td><input type="text" class="form-control" id="filterFechaIngreso" placeholder = "dd/mm/aaaa"></td>
-                <td> <select class="form-control" id="filterEstado" placeholder = "buscar por estado"><option value="" disabled selected>Seleccione un estado</option></select></td>
-            `;*/ /*
-      config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                    Ingresar Solicitud
-                </button>
-            `;
-      break;
-    case "respuestas":
-      config.apiUrl = `${baseUrl}respuestas${paginacionUrl}&sort=numeroRespuesta,desc`;
-      config.headers = [
-        "N° Memo",
-        "Titulo",
-        "Descripcion",
-        "Fecha Respuesta",
-        "Ingreso a departamento",
-        "N° de Solicitud respondida",
-      ];
-      config.title = "Respuestas";
-      config.formatRow = (registro) => `
-                <td>${registro.numeroRespuesta}</td>
-                <td>${registro.titulo}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.fechaRespuesta}</td>
-                <td>${registro.fechaEnvio}</td>
-                <td>${registro.solicitudId}</td>
-            `;
-      config.filter = `
-                <td><input type="number" class="form-control" id="filterNumeroRespuesta" placeholder = "ingrese N°"></td>
-                <td><input type="text" class="form-control" id="filterTitulo" placeholder = "titulo o palabra"></td>
-                <td><input type="text" class="form-control" id="filterDescripcion" placeholder = "ingrese palabra"></td>
-                <td><input type="text" class="form-control" id="filterFechaRespuesta" placeholder = "dd/mm/aaaa"></td>
-                <td><input type="text" class="form-control" id="filterFechaIngreso" placeholder = "dd/mm/aaaa"></td>
-                <td><input type="number" class="form-control" id="filterNumeroSolicitud" placeholder = "ingrese N°"></td>
-            `;
-      config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#respuestaModal">
-                    Ingresar Respuesta
-                </button>
-            `;
-      break;
-    case "eventos":
-      config.apiUrl = `${baseUrl}eventos${paginacionUrl}&sort=fecha,desc`;
-      config.headers = [
-        "Evento",
-        "Descripción",
-        "Establecimiento",
-        "Fecha",
-        "Invitado",
-      ];
-      config.title = "Eventos";
-      config.formatRow = (registro) => `
-                <td>${formatText(registro.tipo)}</td>
-                <td>${registro.establecimiento}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.fecha}</td>
-                <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>
-            `;
-            config.filter = `
-            <td><input type="number" class="form-control" id="filterNumeroRespuesta" placeholder = "ingrese N°"></td>
-            <td><input type="text" class="form-control" id="filterTitulo" placeholder = "titulo o palabra"></td>
-            <td><input type="text" class="form-control" id="filterDescripcion" placeholder = "ingrese palabra"></td>
-            <td><input type="text" class="form-control" id="filterFechaRespuesta" placeholder = "dd/mm/aaaa"></td>
-            <td><input type="text" class="form-control" id="filterFechaIngreso" placeholder = "dd/mm/aaaa"></td>
-            <td><input type="number" class="form-control" id="filterNumeroSolicitud" placeholder = "ingrese N°"></td>
-        `;
-      config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">
-                    Agendar
-                </button>`;
-      break;
-    case "proyectos":
-      config.apiUrl = `${baseUrl}proyectos${paginacionUrl}`;
-      config.headers = [
-        "ID",
-        "Descripción",
-        "Fecha",
-        "Responsable",
-        "Resultado",
-      ];
-      config.title = "Proyectos";
-      config.formatRow = (registro) => `
-                <td>${registro.titulo}</td>
-                <td>${registro.descripcion}</td>
-            `;
-      break;
-    default:
-      return null;
-  }
-
-  return config;
-}
-
-// Función para generar inputs de filtro
-function generateFilterInputs(filters) {
-  return filters.map(filter => {
-    if (filter.type === "select") {
-      return `<td><select class="form-control" id="${filter.id}"><option value="" disabled selected>${filter.placeholder}</option>${filter.options.map(option => `<option value="${option}">${option}</option>`).join("")}</select></td>`;
-    }
-    return `<td><input type="${filter.type}" class="form-control" id="${filter.id}" placeholder="${filter.placeholder}"></td>`;
-  }).join("");
-}
-
-
-
-// Función para formatear texto
-function formatText(text) {
-  return text
-    .toLowerCase()
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (letra) => letra.toUpperCase());
-}
-
-//###############################################################################
-
-function fetchData(apiUrl, formatRow, tableBody) {
-  //, page, paginationContainer) {
-  axios
-    .get(apiUrl)
-    .then((response) => {
-      data = response.data.content; // Almacena los datos en la variable global
-      renderTable(data, formatRow, tableBody); // Renderiza la tabla con los datos iniciales
-    
-    })
-    .catch((error) => {
-      console.error("Error al cargar los datos:", error);
-    });
-}
-
-function renderTable(data, formatRow, tableBody) {
-  tableBody.innerHTML = ""; // Limpia la tabla existente
-
-  data.forEach((item) => {
-    const row = document.createElement("tr");
-    row.innerHTML = formatRow(item);
-    tableBody.appendChild(row);
-  });
-}
-
-function applyFilters() {
-  // Recoger los valores de los filtros
-  const filters = {
-    numeroSolicitud: document.getElementById("filterNumeroSolicitud").value,
-    emisor: document.getElementById("filterEmisor").value,
-    titulo: document.getElementById("filterTitulo").value.toLowerCase(),
-    descripcion: document.getElementById("filterDescripcion").value.toLowerCase(),
-    fechaSolicitud: document.getElementById("filterFechaSolicitud").value,
-    fechaIngreso: document.getElementById("filterFechaIngreso").value,
-    estado: document.getElementById("filterEstado").value,
-
-    // Agrega otros filtros aquí
-  };
-
-  // Filtrar los datos almacenados
-  const filteredData = data.filter((item) => {
-    return (
-      (!filters.numeroSolicitud ||item.numeroSolicitud == filters.numeroSolicitud) &&
-      (!filters.emisor || item.emisor == filters.emisor) &&
-      (!filters.titulo || item.titulo.toLowerCase().includes(filters.titulo)) &&
-      (!filters.descripcion || item.descripcion.toLowerCase().includes(filters.descripcion)) &&
-      (!filters.fechaSolicitud || item.fechaSolicitud === filters.fechaSolicitud) &&
-      (!filters.fechaIngreso || item.fechaIngreso === filters.fechaIngreso) &&
-      (!filters.estado || item.estado === filters.estado)
-    );
-  });
-
-  // Renderizar la tabla con los datos filtrados
-  const formatRow = getTableConfig(document.getElementById("tableTitle").innerText.toLowerCase()).formatRow;
-  const tableBody = document.querySelector("#dataTable tbody");
-  renderTable(filteredData, formatRow, tableBody);
-}
-
-
-// Inicializa la tabla al cargar la página
-resetView();
-
-//###############################################################################
-
-
-
-*/
-
 
 let data = []; // Variable global para almacenar los datos obtenidos
 
@@ -345,7 +27,6 @@ function clearFilters(modalType) {
             "filterEvento",
             "filterDescripcionEvento",
             "filterEstablecimiento",
-            "filterInvitado"
         ]
     };
 
@@ -357,14 +38,30 @@ function clearFilters(modalType) {
             element.value = "";
         }
     });
+
+    // Llenar selects al limpiar
+    if (modalType === 'solicitudes') {
+        fillEmisorSelect();
+        fillEstadoSelect();
+    } else if (modalType === 'eventos') {
+        fillEventoSelect();
+        fillEstablecimientoSelect();
+    }
+
     applyFilters(modalType);
 }
 
 // Función para aplicar filtros
 function applyFilters(modalType) {
-    const filters = getFilterValues(modalType);
-    const filteredData = filterData(data, filters);
-    renderTable(filteredData, getTableConfig(modalType).formatRow);
+  const filters = getFilterValues(modalType);
+  const filteredData = filterData(data, filters);
+
+  // Mostrar tabla o mensaje si no hay coincidencias
+  if (filteredData.length > 0) {
+      renderTable(filteredData, getTableConfig(modalType).formatRow);
+  } else {
+      renderNoResultsMessage();
+  }
 }
 
 // Función para obtener los valores de los filtros
@@ -372,37 +69,46 @@ function getFilterValues(modalType) {
     const filterIds = {
         solicitudes: {
             numeroSolicitud: document.getElementById("filterNumeroSolicitud")?.value,
-            emisor: document.getElementById("filterEmisor")?.value,
+            emisor: document.getElementById("filterEmisor")?.value.toLowerCase(),
             titulo: document.getElementById("filterTitulo")?.value.toLowerCase(),
             descripcion: document.getElementById("filterDescripcion")?.value.toLowerCase(),
-            estado: document.getElementById("filterEstado")?.value
+            estado: document.getElementById("filterEstado")?.value.toLowerCase()
         },
         respuestas: {
             numeroRespuesta: document.getElementById("filterNumeroRespuesta")?.value,
             titulo: document.getElementById("filterTituloRespuesta")?.value.toLowerCase(),
             descripcion: document.getElementById("filterDescripcionRespuesta")?.value.toLowerCase(),
-            solicitudRespuesta: document.getElementById("filterSolicitudRespuesta")?.value
+            solicitudId: document.getElementById("filterSolicitudRespuesta")?.value
         },
         eventos: {
-            titulo: document.getElementById("filterEvento")?.value.toLowerCase(),
+            tipo: document.getElementById("filterEvento")?.value.toLowerCase(),
             descripcion: document.getElementById("filterDescripcionEvento")?.value.toLowerCase(),
-            establecimiento: document.getElementById("filterEstablecimiento")?.value,
-            invitado: document.getElementById("filterInvitado")?.value.toLowerCase()
+            establecimiento: document.getElementById("filterEstablecimiento")?.value.toLowerCase(),
+      
         }
     };
 
     return filterIds[modalType] || {};
 }
 
-// Función para filtrar los datos
 function filterData(data, filters) {
-    return data.filter(item => {
-        return Object.keys(filters).every(key => {
-            if (!filters[key]) return true; // Si no hay filtro, permite el item
-            return item[key]?.toString().toLowerCase().includes(filters[key]);
-        });
-    });
+  return data.filter(item => {
+      return Object.keys(filters).every(key => {
+          const filterValue = filters[key]?.toString().trim().toLowerCase(); // Asegúrate de que sea una cadena y recorta espacios
+          const itemValue = item[key]; // No convertimos itemValue a string aquí, solo lo obtenemos
+          
+          if (!filterValue) return true; // Si no hay filtro, permite el item
+          
+          // Asegúrate de que itemValue no sea undefined
+          if (itemValue === undefined) return false; // Si el valor del item es undefined, no hay coincidencia
+          
+          // Realiza la comparación
+          return itemValue.toString().trim().toLowerCase().includes(filterValue);
+      });
+  });
 }
+
+
 
 // Función para mostrar la tabla
 function showTable(type) {
@@ -410,11 +116,12 @@ function showTable(type) {
     document.getElementById("tableSection").classList.remove("d-none");
 
     const tableConfig = getTableConfig(type);
-    const { title, headers, formatRow, buttonHtml } = tableConfig;
+    const { title, headers, formatRow, buttonHtml, filtroHtml } = tableConfig;
 
     document.getElementById("tableTitle").innerText = title;
     renderTableHeaders(headers);
     renderTableButtons(buttonHtml);
+    renderTableFiltro(filtroHtml)
     fetchData(tableConfig.apiUrl, formatRow);
 }
 
@@ -429,10 +136,16 @@ function renderTableHeaders(headers) {
     });
 }
 
-// Función para renderizar los botones de la tabla
+// Función para renderizar el boton de registro
 function renderTableButtons(buttonHtml) {
     document.getElementById("buttonContainer").innerHTML = buttonHtml;
 }
+
+// Función para renderizar los botones del filtro
+function renderTableFiltro(filtroHtml) {
+  document.getElementById("filtroContainer").innerHTML = filtroHtml;
+}
+
 
 // Función para obtener la configuración de la tabla
 function getTableConfig(type) {
@@ -447,70 +160,78 @@ function getTableConfig(type) {
         title: "",
         formatRow: () => "",
         buttonHtml: "",
+        filtroHtml:""
     };
 
     switch (type) {
-        case "solicitudes":
-            config.apiUrl = `${baseUrl}solicitudes${paginacionUrl}&sort=fechaIngresoSolicitud,desc`;
-            config.headers = ["N° Solicitud", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Fecha Ingreso", "Estado"];
-            config.title = "Solicitudes";
-            config.formatRow = (registro) => `
-                <td>${registro.numeroSolicitud}</td>
-                <td>${registro.emisor}</td>
-                <td>${registro.titulo}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.fechaSolicitud}</td>
-                <td>${registro.fechaIngresoDepartamento}</td>
-                <td>${formatText(registro.estado)}</td>
-            `;
-            config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Ingresar Solicitud</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" onclick="clearFilters('solicitudes')">Limpiar Filtros</button>
-            `;
-            break;
+      case "solicitudes":
+          config.apiUrl = `${baseUrl}solicitudes${paginacionUrl}&sort=fechaIngresoSolicitud,desc`;
+          config.headers = ["N° Solicitud", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Fecha Ingreso", "Estado"];
+          config.title = "Solicitudes";
+          config.formatRow = (registro) => `
+              <td>${registro.numeroSolicitud}</td>
+              <td>${registro.emisor}</td>
+              <td>${registro.titulo}</td>
+              <td>${registro.descripcion}</td>
+              <td>${registro.fechaSolicitud}</td>
+              <td>${registro.fechaIngresoDepartamento}</td>
+              <td>${formatText(registro.estado)}</td>
+          `;
+          config.buttonHtml = `
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Ingresar Solicitud</button>
+          `;
+          config.filtroHtml = `
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Aplicar Filtros</button>
+          <button type="button" class="btn btn-secondary" onclick="clearFilters('solicitudes')">Limpiar Filtros</button>
+      `;
 
-        case "respuestas":
-            config.apiUrl = `${baseUrl}respuestas${paginacionUrl}&sort=numeroRespuesta,desc`;
-            config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Ingreso a departamento", "N° de Solicitud respondida"];
-            config.title = "Respuestas";
-            config.formatRow = (registro) => `
-                <td>${registro.numeroRespuesta}</td>
-                <td>${registro.titulo}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.fechaRespuesta}</td>
-                <td>${registro.fechaEnvio}</td>
-                <td>${registro.solicitudId}</td>
-            `;
-            config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#respuestaModal">Ingresar Respuesta</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalRespuestas">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" onclick="clearFilters('respuestas')">Limpiar Filtros</button>
-            `;
-            break;
+          break;
 
-        case "eventos":
-            config.apiUrl = `${baseUrl}eventos${paginacionUrl}&sort=fecha,desc`;
-            config.headers = ["Evento", "Descripción", "Establecimiento", "Invitado"];
-            config.title = "Eventos";
-            config.formatRow = (registro) => `
-                <td>${formatText(registro.tipo)}</td>
-                <td>${registro.descripcion}</td>
-                <td>${registro.establecimiento}</td>
-                <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>
-            `;
-            config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Agendar</button>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalEventos">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" onclick="clearFilters('eventos')">Limpiar Filtros</button>
-            `;
-            break;
+      case "respuestas":
+          config.apiUrl = `${baseUrl}respuestas${paginacionUrl}&sort=numeroRespuesta,desc`;
+          config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Ingreso a departamento", "N° de Solicitud respondida"];
+          config.title = "Respuestas";
+          config.formatRow = (registro) => `
+              <td>${registro.numeroRespuesta}</td>
+              <td>${registro.titulo}</td>
+              <td>${registro.descripcion}</td>
+              <td>${registro.fechaRespuesta}</td>
+              <td>${registro.fechaEnvio}</td>
+              <td>${registro.solicitudId}</td>
+          `;
+          config.buttonHtml = `
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#respuestaModal">Ingresar Respuesta</button>
+                 `;
+          config.filtroHtml = `
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalRespuestas">Aplicar Filtros</button>
+              <button type="button" class="btn btn-secondary" onclick="clearFilters('respuestas')">Limpiar Filtros</button>
+          `;
+          break;
 
-        default:
-            return null;
-    }
+      case "eventos":
+          config.apiUrl = `${baseUrl}eventos${paginacionUrl}&sort=fecha,desc`;
+          config.headers = ["Evento", "Descripción", "Establecimiento", "Invitado"];
+          config.title = "Eventos";
+          config.formatRow = (registro) => `
+              <td>${formatText(registro.tipo)}</td>
+              <td>${registro.descripcion}</td>
+              <td>${registro.establecimiento}</td>
+              <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>
+          `;
+          config.buttonHtml = `
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Agendar</button>
+                 `;
+          config.filtroHtml = `
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalEventos">Aplicar Filtros</button>
+              <button type="button" class="btn btn-secondary" onclick="clearFilters('eventos')">Limpiar Filtros</button>
+          `;
+          break;
 
-    return config;
+      default:
+          return null;
+  }
+
+  return config;
 }
 
 // Función para renderizar la tabla
@@ -523,28 +244,112 @@ function renderTable(data, formatRow) {
         row.innerHTML = formatRow(item);
         tableBody.appendChild(row);
     });
+/*
+    if (data.length > 0) {
+        fillEmisorSelect();
+        fillEstadoSelect();
+        fillEventoSelect();
+        fillEstablecimientoSelect();
+        fillInvitadoSelect();
+    }*/
 }
+
+
+// Función para mostrar un mensaje si no hay resultados
+function renderNoResultsMessage() {
+  const tableBody = document.querySelector("#dataTable tbody");
+  tableBody.innerHTML = "<tr><td colspan='7' class='text-center'>No se encontraron resultados.</td></tr>"; // Ajusta el colspan según tu tabla
+}
+
+
+function fillEmisorSelect() {
+  const emisorSelect = document.getElementById("filterEmisor");
+  if (!emisorSelect) return; // Verifica si el select existe
+
+  const emisores = [...new Set(data.map(item => item.emisor).filter(Boolean))]; // Filtra valores undefined
+
+  emisorSelect.innerHTML = `<option value="">Seleccione un emisor</option>`; // Opción vacía
+  emisores.forEach(emisor => {
+      const option = document.createElement("option");
+      option.value = emisor;
+      option.textContent = formatText(emisor); // Formatea el texto
+      emisorSelect.appendChild(option);
+  });
+}
+
+function fillEstadoSelect() {
+  const estadoSelect = document.getElementById("filterEstado");
+  if (!estadoSelect) return; // Verifica si el select existe
+
+  const estados = [...new Set(data.map(item => item.estado).filter(Boolean))]; // Filtra valores undefined
+
+  estadoSelect.innerHTML = `<option value="">Seleccione un estado</option>`; // Opción vacía
+  estados.forEach(estado => {
+      const option = document.createElement("option");
+      option.value = estado;
+      option.textContent = formatText(estado); // Formatea el texto
+      estadoSelect.appendChild(option);
+  });
+}
+
+function fillEventoSelect() {
+  const eventoSelect = document.getElementById("filterEvento");
+  if (!eventoSelect) return; // Verifica si el select existe
+
+  const eventos = [...new Set(data.map(item => item.tipo).filter(Boolean))]; // Filtra valores undefined
+
+  eventoSelect.innerHTML = `<option value="">Seleccione un evento</option>`; // Opción vacía
+  eventos.forEach(evento => {
+      const option = document.createElement("option");
+      option.value = evento;
+      option.textContent = formatText(evento); // Formatea el texto
+      eventoSelect.appendChild(option);
+  });
+}
+
+function fillEstablecimientoSelect() {
+  const establecimientoSelect = document.getElementById("filterEstablecimiento");
+  if (!establecimientoSelect) return; // Verifica si el select existe
+
+  const establecimientos = [...new Set(data.map(item => item.establecimiento).filter(Boolean))]; // Filtra valores undefined
+
+  establecimientoSelect.innerHTML = `<option value="">Seleccione un establecimiento</option>`; // Opción vacía
+  establecimientos.forEach(establecimiento => {
+      const option = document.createElement("option");
+      option.value = establecimiento;
+      option.textContent = formatText(establecimiento); // Formatea el texto
+      establecimientoSelect.appendChild(option);
+  });
+}
+
+
 
 // Función para obtener y mostrar los datos
 function fetchData(apiUrl, formatRow) {
-    axios
-        .get(apiUrl)
-        .then(response => {
-            data = response.data.content; // Almacena los datos en la variable global
-            renderTable(data, formatRow);
-        })
-        .catch(error => {
-            console.error("Error al cargar los datos:", error);
-        });
+  axios
+      .get(apiUrl)
+      .then(response => {
+          data = response.data.content; // Almacena los datos en la variable global
+          renderTable(data, formatRow);
+          fillEmisorSelect();
+          fillEstadoSelect();
+          fillEventoSelect();
+          fillEstablecimientoSelect();
+          
+      })
+      .catch(error => {
+          console.error("Error al cargar los datos:", error);
+      });
 }
 
-// Función para formatear texto
 function formatText(text) {
-    return text
-        .toLowerCase()
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  if (!text) return ""; // Manejo de caso donde el texto es undefined o vacío
+  return text
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
 }
+
 
 // Inicializa la tabla al cargar la página
 resetView();
