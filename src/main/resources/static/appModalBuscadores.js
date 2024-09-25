@@ -56,13 +56,13 @@ function enviarFormularioBuscador() {
                             <p><strong>Número de Respuesta:</strong> ${data2.numeroRespuesta}</p>
                             <p><strong>Fecha de Respuesta:</strong> ${data2.fechaRespuesta}</p>
                         `;
-                        document.getElementById('modalContent').innerHTML = modalContent;
+                        document.getElementById('modalContentOficio').innerHTML = modalContent;
                         $('#infoModal').modal('show');
                         $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
                     });
             } else {
                 // Si no se cumple la condición, mostrar el modal con la información básica
-                document.getElementById('modalContent').innerHTML = modalContent;
+                document.getElementById('modalContentOficio').innerHTML = modalContent;
                 $('#infoModal').modal('show');
                 $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
             }

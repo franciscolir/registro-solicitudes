@@ -22,7 +22,7 @@ function enviarFormularioRechazar() {
         if (response.status === 200) {
         // Manejar la respuesta exitosa
         alertMessage.className = 'alert alert-success';
-        alertMessage.textContent = 'Respuesta enviada exitosamente';
+        alertMessage.textContent = 'Solicitud rechazada con exito';
         alertMessage.style.display = 'block';
 
         // Ocultar el mensaje después de 2 segundos
@@ -30,7 +30,7 @@ function enviarFormularioRechazar() {
             alertMessage.style.display = 'none';
             $('#rechazarModal').modal('hide'); // Cerrar modal si existe
             window.location.reload();
-        }, 1800)
+        }, 2000)
     } else {
         console.error('Error:', response.status, response.statusText);
         // Handle non-200 status codes here

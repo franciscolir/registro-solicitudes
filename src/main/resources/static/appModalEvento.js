@@ -134,7 +134,7 @@ console.log(formData,"form data")
         if (response.status === 200) {
         // Manejar la respuesta exitosa
         alertMessage.className = 'alert alert-success';
-        alertMessage.textContent = 'Solicitud enviada exitosamente';
+        alertMessage.textContent = 'Evento agendado exitosamente';
         alertMessage.style.display = 'block';
 
         // Ocultar el mensaje después de 2 segundos

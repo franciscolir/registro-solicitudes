@@ -122,6 +122,39 @@
             </div>
         </section>
 
+                      <!-- Modal para Rechazar Solicitud -->
+  <!-- Modal para Rechazar Solicitud -->
+<div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
+
+                <!-- Formulario -->
+                <form id="rechazarForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRechazar();">
+                    <div class="mb-3">
+                        <label for="numeroRechazar">Número de Solicitud:</label>
+                        <div id="numeroRechazar"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comentarioRechazar">Comentario:</label>
+                        <textarea id="comentarioRechazar" name="comentario" placeholder="Indicar Motivo de Rechazo" class="form-control" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
         <section class="bloqueDocumentos">
             <div class="container-fluid">
                 <div class="row align-items-md-stretch">
@@ -509,7 +542,8 @@
                              onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
                              <div class="form-group">
                                  <label for="numeroSolicitudR">Número de Solicitud:</label>
-                                 <div id="numeroSolicitudR"></div>
+                                 <input type="number" id="numeroSolicitudR" name="numeroSolicitudR" value=""
+                                     class="form-control" required>
                              </div>
                              <div class="form-group">
                                  <label for="numeroRespuesta">Número de Respuesta:</label>
@@ -553,37 +587,6 @@
          </div>
 
 
-              <!-- Modal para Rechazar Solicitud -->
-  <!-- Modal para Rechazar Solicitud -->
-<div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
-
-                <!-- Formulario -->
-                <form id="rechazarForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRechazar();">
-                    <div class="mb-3">
-                        <label for="numeroRechazar">Número de Solicitud:</label>
-                        <div id="numeroRechazar"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="comentarioRechazar">Comentario:</label>
-                        <textarea id="comentarioRechazar" name="comentario" placeholder="Indicar Motivo de Rechazo" class="form-control"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -599,7 +602,7 @@
                     <!-- Alerta para mostrar el mensaje de éxito o error -->
                     <div id="alertMessage" class="alert" style="display:none;"></div>
                     <!-- Aquí se insertará la información del oficio -->
-                    <div id="modalContent">Cargando...</div>
+                    <div id="modalContentOficio">Cargando...</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

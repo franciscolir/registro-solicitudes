@@ -36,7 +36,7 @@ function enviarFormularioRespuesta() {
 
     const formData = {
 
-        solicitudId: document.getElementById('inputId').value,
+        solicitudId: document.getElementById('numeroSolicitudR').value,
         numeroRespuesta: document.getElementById('numeroRespuesta').value,
         usuario: document.getElementById('funcionario').value,
         titulo: document.getElementById('tituloRespuesta').value,

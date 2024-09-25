@@ -62,14 +62,18 @@ function captarParametros(id,numeroSolicitud,nombreModal,nombreDiv) {
     $numeroSolicitudR.innerHTML= numeroSolicitud;
 
     //creando el elemento HTML en el DOM
-let inputOculto =  document.createElement("input");
-inputOculto.type = "hidden";
-inputOculto.id = "inputId";
-inputOculto.value = id;
-
+//let inputOculto =  document.createElement("input");
+//inputOculto.type = "hidden";
+//inputOculto.id = "inputId";
+//inputOculto.value = id;
 //asigna a modal especifico
-$respuestaModal.appendChild(inputOculto);
+//$respuestaModal.appendChild(inputOculto);
 
+let a = document.getElementById('numeroSolicitudR').value = numeroSolicitud;
+
+
+
+$respuestaModal.appendChild(a);
 }
 
 //SOLICITUDES PENDIENTES #######################################################
@@ -110,15 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                             </div>
                                             <div class="accordion-buttoms">
                                                 <div class = "buttom">
-                                                    <button type="button" id="aceptar" class="btn btn-primary" data-toggle="modal" data-target="#respuestaModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'respuestaModal','numeroSolicitudR')">
+                                                    <button type="button" id="aceptar" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#respuestaModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'respuestaModal','numeroSolicitudR')">
                                                         Responder Solicitud
                                                     </button>
 
                                                 </div>
                                                 <div class = "buttom">
-                                                    <button type="button" id="rechazar" class="btn btn-danger" data-toggle="modal" data-target="#rechazarModal" onclick="captarParametros(${item.id},${item.numeroSolicitud},'rechazarModal','numeroRechazar')">
+                                                    <button type="button" id="rechazar" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazarModal" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">
                                                         Rechazar Solicitud
                                                     </button>
+
                                                 </div>
                                             </div>
                                     </div>
