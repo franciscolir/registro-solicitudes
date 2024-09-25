@@ -24,8 +24,13 @@ function llenarSelectEmisoresBuscador(emisores) {
 }
 
 function enviarFormularioBuscador() {
-    const numeroSolicitud = document.getElementById('numberInput').value;
+    const numeroSolicitud = document.getElementById('numberInput').value.trim();
     const emisor = document.getElementById('emisorSelect').value;
+
+    if (!numeroSolicitud || !emisor) {
+        mostrarError('Por favor, complete todos los campos requeridos.');
+        return;
+    }
 
     axios.get(`http://localhost:8080/solicitudes/${numeroSolicitud}/${emisor}`)
         .then(response => {
@@ -53,20 +58,22 @@ function enviarFormularioBuscador() {
                         `;
                         document.getElementById('modalContent').innerHTML = modalContent;
                         $('#infoModal').modal('show');
+                        $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
                     });
             } else {
                 // Si no se cumple la condición, mostrar el modal con la información básica
                 document.getElementById('modalContent').innerHTML = modalContent;
                 $('#infoModal').modal('show');
+                $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
             }
         })
         .catch(() => {
-            mostrarError('No encuentra el registro.');
+            mostrarError('No se encuentra el registro.');
         });
 }
 
 function mostrarError(mensaje) {
-    const alertMessage = document.getElementById('alertMessage');
+    const alertMessage = document.getElementById('alertMessageSearch');
     alertMessage.className = 'alert alert-danger';
     alertMessage.textContent = mensaje;
     alertMessage.style.display = 'block';
