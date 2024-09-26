@@ -1,21 +1,20 @@
-
+.hero .resumenSeccion {
+    background-color: #E1F3F3
+}
 
 .navbar {
     padding: 1rem;
-    margin: 2rem;
-    background-color: #f5f6f7 ;
+    margin: 5px;
+    background-color: #ffffff ;
 }
 
 
 .nav-item{
 
     padding: 15px;
-    font: 17px Tahoma, sans-serif;
+    font: 18px Tahoma, sans-serif;
 }
 
-.container-fluid{
-    background-color: #ececec;
-}
 .container {
     width: 90%;
     text-align: center;
@@ -86,8 +85,17 @@ tr:hover {
     border-color: red ;
 }
 
+.titulo{
+    text-align: center;
+}
 .eventos {
-    border-color: red solid;
+    
+    background-color: #EA9F44 ;
+    border-radius: 0.3em;
+    padding: 0.5em;
+}
+th {
+    background-color: #084C77;
 }
 
 .accordion-body {

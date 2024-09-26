@@ -13,57 +13,46 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/styleTime.css">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 
 <body>
 
     <!-- Navbar -->
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" onclick="resetView()"><img src="/static/imagenes/logo.png"
-                    class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
-                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                <ul class="navbar-nav d-flex justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="resetView()">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a>
-                    </li>
-                </ul>
-
-            </div>
-            <button type="submit" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#searchModal">
-                Buscar oficio
-            </button>
+    <nav class="navbar navbar-expand-md navbar-light ">
+        <a class="navbar-brand" href="#" onclick="resetView()">
+            <img src="/static/imagenes/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav d-flex justify-content-center">
+                <li class="nav-item"><a class="nav-link" href="#" onclick="resetView()">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a></li>
+            </ul>
+            <button type="submit" class="btn btn-outline-success ms-auto" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar oficio</button>
         </div>
-
     </nav>
+    
 
-
+    <h2>Registro de Solicitudes ingresadas</h2>
     <main class="hero container-fluid" id="mainContent">
         <!-- Resumen -->
         <section class="resumenSeccion">
             <div class="row mt-3">
-                <div class="col-md-6">
+
+                <div class="col-md-3">
                     <div class="p-3 bg-danger text-dark pendientes">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h2>Solicitudes Pendientes</h2>
+                            <h2>Ingreso</h2>
                         </div>
                         <div class="accordion" id="accordionResumen">
                             <div class="accordion-item">
@@ -82,77 +71,114 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-warning text-dark eventos">
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger text-dark pendientes">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h2>Proximos Eventos</h2>
+                            <h2>Asingado</h2>
                         </div>
-                        <table id="registros-table" class="table">
-                            <thead>
-                                <!-- Headers here -->
-                            </thead>
-                            <tbody>
-                                <!-- Los registros se llenarán aquí -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="p-3 bg-warning text-dark">Ultimo Memo</div>
-                    <div class="accordion" id="accordionUltimaRespuesta">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne1">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne1" aria-expanded="true"
-                                    aria-controls="collapseOne1"></button>
-                            </h2>
-                            <div id="collapseOne1" class="accordion-collapse collapse show"
-                                aria-labelledby="headingOne1" data-bs-parent="#accordionUltimaRespuesta">
-                                <div class="accordion-body">
-                                    <!-- Content here -->
+                        <div class="accordion" id="accordionResumen">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne"></button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
+                                    <div class="accordion-body">
+                                        <!-- Content here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="p-3 bg-primary text-dark">Calendar</div>
-                    <div id="fecha"></div>
-                    <div class="p-3 bg-secondary text-dark">UTM hoy</div>
-                    <div id="valores"></div>
                 </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger text-dark pendientes">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2>Salida</h2>
+                        </div>
+                        <div class="accordion" id="accordionResumen">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne"></button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
+                                    <div class="accordion-body">
+                                        <!-- Content here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="utmTime container-fluid">
+                        <div class="containerTime mb-3">
+                            <div class="clock-containerTime text-center"></div>
+                            <div class="date-containerTime text-center"></div>
+                        </div>
+                        <div class="ultimoMemo container-fluid">
+                            <div class="utm text-center">Último Memo</div>
+                            <div id="ultimaRespuesta" class="respuesta-container text-center"></div>
+                        </div>
+                    </div>
+                
+                    <div class="p-3 text-dark eventos">
+                        <h2 class="titulo text-center">Próximos Eventos</h2>
+                        <div class="table-responsive">
+                            <table id="registros-table" class="table table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <!-- Headers here -->
+                                </thead>
+                                <tbody>
+                                    <!-- Los registros se llenarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </section>
 
-                      <!-- Modal para Rechazar Solicitud -->
-  <!-- Modal para Rechazar Solicitud -->
-<div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
+        <!-- Modal para Rechazar Solicitud -->
+        <!-- Modal para Rechazar Solicitud -->
+        <div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
 
-                <!-- Formulario -->
-                <form id="rechazarForm" class="needs-validation" onsubmit="event.preventDefault(); enviarFormularioRechazar();">
-                    <div class="mb-3">
-                        <label for="numeroRechazar">Número de Solicitud:</label>
-                        <div id="numeroRechazar"></div>
+                        <!-- Formulario -->
+                        <form id="rechazarForm" class="needs-validation"
+                            onsubmit="event.preventDefault(); enviarFormularioRechazar();">
+                            <div class="mb-3">
+                                <label for="numeroRechazar">Número de Solicitud:</label>
+                                <div id="numeroRechazar"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comentarioRechazar">Comentario:</label>
+                                <textarea id="comentarioRechazar" name="comentario"
+                                    placeholder="Indicar Motivo de Rechazo" class="form-control" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="comentarioRechazar">Comentario:</label>
-                        <textarea id="comentarioRechazar" name="comentario" placeholder="Indicar Motivo de Rechazo" class="form-control" required></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
         <section class="bloqueDocumentos">
@@ -371,227 +397,226 @@
 
     </section>
 
-        <section class="modals">
-            <!-- Modal para Solicitudes -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Alerta para mostrar el mensaje de éxito o error -->
-                            <div id="alertMessage" class="alert" style="display:none;"></div>
+    <section class="modals">
+        <!-- Modal para Solicitudes -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Alerta para mostrar el mensaje de éxito o error -->
+                        <div id="alertMessage" class="alert" style="display:none;"></div>
 
-                            <!-- Formulario -->
-                            <form id="myForm" class="needs-validation"
-                                onsubmit="event.preventDefault(); enviarFormulario();">
-                                <div class="form-group">
-                                    <label for="emisor">Emisor:</label>
-                                    <select id="emisor" name="emisor" class="form-control" required>
-                                        <option value="" disabled selected>Seleccione un emisor</option>
-                                        <!-- Opciones se llenarán dinámicamente -->
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="numeroSolicitud">Número de Solicitud:</label>
-                                    <input type="number" id="numeroSolicitud" name="numeroSolicitud"
-                                        class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="titulo">Título:</label>
-                                    <input type="text" id="titulo" name="titulo" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="descripcion">Descripción:</label>
-                                    <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="fechaSolicitud">Fecha de Solicitud:</label>
-                                    <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="form-control"
-                                        required>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Enviar</button>
-                                </div>
-                            </form>
-                        </div>
+                        <!-- Formulario -->
+                        <form id="myForm" class="needs-validation"
+                            onsubmit="event.preventDefault(); enviarFormulario();">
+                            <div class="form-group">
+                                <label for="emisor">Emisor:</label>
+                                <select id="emisor" name="emisor" class="form-control" required>
+                                    <option value="" disabled selected>Seleccione un emisor</option>
+                                    <!-- Opciones se llenarán dinámicamente -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroSolicitud">Número de Solicitud:</label>
+                                <input type="number" id="numeroSolicitud" name="numeroSolicitud" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="titulo">Título:</label>
+                                <input type="text" id="titulo" name="titulo" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
+                                <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaSolicitud">Fecha de Solicitud:</label>
+                                <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="form-control"
+                                    required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Modal para Registrar Evento -->
-            <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Alerta para mostrar el mensaje de éxito o error -->
-                            <div id="eventAlertMessage" class="alert" style="display:none;"></div>
+        <!-- Modal para Registrar Evento -->
+        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Alerta para mostrar el mensaje de éxito o error -->
+                        <div id="eventAlertMessage" class="alert" style="display:none;"></div>
 
-                            <!-- Formulario -->
-                            <form id="eventForm" class="needs-validation"
-                                onsubmit="event.preventDefault(); enviarFormularioEvent();">
-                                <div class="form-group">
-                                    <label for="tipo">Tipo:</label>
-                                    <select id="tipo" name="tipo" class="form-control" required>
-                                        <option value="" disabled selected>Seleccione un tipo</option>
-                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /eventos -->
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="descripcion">Descripción:</label>
-                                    <input type="text" id="descripcionEvent" name="descripcion" class="form-control"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="fecha">Fecha y Hora:</label>
-                                    <input type="datetime-local" id="fechaEvento" name="fecha" class="form-control"
-                                        required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="establecimiento">Establecimiento:</label>
-                                    <select id="establecimiento" name="establecimiento" class="form-control" required>
-                                        <option value="" disabled selected>Seleccione un establecimiento</option>
-                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /establecimientos -->
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="invitados">Invitados:</label>
-                                    <select id="invitados" name="invitados" class="form-control" multiple>
-                                        <option value="" disabled selected></option>
-                                        <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
-                                    </select>
-                                    <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac)
-                                        para seleccionar múltiples invitados.</small>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
-                                </div>
-                            </form>
-                        </div>
+                        <!-- Formulario -->
+                        <form id="eventForm" class="needs-validation"
+                            onsubmit="event.preventDefault(); enviarFormularioEvent();">
+                            <div class="form-group">
+                                <label for="tipo">Tipo:</label>
+                                <select id="tipo" name="tipo" class="form-control" required>
+                                    <option value="" disabled selected>Seleccione un tipo</option>
+                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /eventos -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción:</label>
+                                <input type="text" id="descripcionEvent" name="descripcion" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fecha">Fecha y Hora:</label>
+                                <input type="datetime-local" id="fechaEvento" name="fecha" class="form-control"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="establecimiento">Establecimiento:</label>
+                                <select id="establecimiento" name="establecimiento" class="form-control" required>
+                                    <option value="" disabled selected>Seleccione un establecimiento</option>
+                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /establecimientos -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="invitados">Invitados:</label>
+                                <select id="invitados" name="invitados" class="form-control" multiple>
+                                    <option value="" disabled selected></option>
+                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
+                                </select>
+                                <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac)
+                                    para seleccionar múltiples invitados.</small>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
 
-           
 
-           
-        </section>
-        
-            <!-- Modal para buscar el oficio -->
-          
-            <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="searchModalLabel">Buscar Oficio</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+    </section>
+
+    <!-- Modal para buscar el oficio -->
+
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Buscar Oficio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Alerta para mostrar el mensaje de éxito o error -->
+                    <div id="alertMessageSearch" class="alert" style="display:none;"></div>
+                    <form id="searchForm" onsubmit="event.preventDefault();">
+                        <div class="mb-3">
+                            <label for="numberInput" class="form-label">Número de Oficio</label>
+                            <input type="text" class="form-control" id="numberInput"
+                                placeholder="Ingrese el número de oficio" required>
                         </div>
-                        <div class="modal-body">
-                            <!-- Alerta para mostrar el mensaje de éxito o error -->
-                            <div id="alertMessageSearch" class="alert" style="display:none;"></div>
-                            <form id="searchForm" onsubmit="event.preventDefault();">
-                                <div class="mb-3">
-                                    <label for="numberInput" class="form-label">Número de Oficio</label>
-                                    <input type="text" class="form-control" id="numberInput" placeholder="Ingrese el número de oficio" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="emisorSelect" class="form-label">Emisor</label>
-                                    <select class="form-select" id="emisorSelect" required>
-                                        <!-- Opciones del select se llenarán con JavaScript -->
-                                    </select>
-                                </div>
-                                <button type="button" class="btn btn-primary"  onclick="enviarFormularioBuscador()">Buscar</button>
-                            </form>
+                        <div class="mb-3">
+                            <label for="emisorSelect" class="form-label">Emisor</label>
+                            <select class="form-select" id="emisorSelect" required>
+                                <!-- Opciones del select se llenarán con JavaScript -->
+                            </select>
                         </div>
-                    </div>
+                        <button type="button" class="btn btn-primary"
+                            onclick="enviarFormularioBuscador()">Buscar</button>
+                    </form>
                 </div>
             </div>
-            
-             <!-- Modal para Registrar Respuesta -->
-             <div class="modal fade" id="respuestaModal" tabindex="-1" role="dialog"
-             aria-labelledby="respuestaModalLabel" aria-hidden="true">
-             <div class="modal-dialog" role="document">
-                 <div class="modal-content">
-                     <div class="modal-header">
-                         <h5 class="modal-title" id="respuestaModalLabel">Ingresar Respuesta</h5>
-                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                             <span aria-hidden="true">&times;</span>
-                         </button>
-                     </div>
-                     <div class="modal-body">
-                         <!-- Alerta para mostrar el mensaje de éxito o error -->
-                         <div id="alertMessageRespuesta" class="alertRespuesta" style="display:none;"></div>
+        </div>
+    </div>
 
-                         <!-- Formulario -->
-                         <form id="respuestaForm" class="needs-validation"
-                             onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
-                             <div class="form-group">
-                                 <label for="numeroSolicitudR">Número de Solicitud:</label>
-                                 <input type="number" id="numeroSolicitudR" name="numeroSolicitudR" value=""
-                                     class="form-control" required>
-                             </div>
-                             <div class="form-group">
-                                 <label for="numeroRespuesta">Número de Respuesta:</label>
-                                 <input type="number" id="numeroRespuesta" name="numeroRespuesta"
-                                     class="form-control" required>
-                             </div>
-                             <div class="form-group">
-                                 <label for="funcionario">Funcionario:</label>
-                                 <select id="funcionario" name="funcionario" class="form-control" required>
-                                     <option value="" disabled selected></option>
-                                     <!-- Opciones se llenarán dinámicamente -->
-                                 </select>
-                             </div>
-                             <div class="form-group">
-                                 <label for="titulo">Título:</label>
-                                 <input type="text" id="tituloRespuesta" name="titulo" class="form-control" required>
-                             </div>
-                             <div class="form-group">
-                                 <label for="descripcionRespuesta">Descripción:</label>
-                                 <textarea id="descripcionRespuesta" name="descripcion" class="form-control"
-                                     required></textarea>
-                             </div>
-                             <div class="form-group">
-                                 <label for="comentarioRespuesta">Comentario:</label>
-                                 <textarea id="comentarioRespuesta" name="comentario"
-                                     class="form-control"></textarea>
-                             </div>
-                             <div class="form-group">
-                                 <label for="fechaRespuesta">Fecha de Respuesta:</label>
-                                 <input type="date" id="fechaRespuesta" name="fechaRespuesta" class="form-control"
-                                     required>
-                             </div>
-                             <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                 <button type="submit" class="btn btn-primary">Enviar</button>
-                             </div>
-                         </form>
-                     </div>
-                 </div>
-             </div>
-         </div>
+    <!-- Modal para Registrar Respuesta -->
+    <div class="modal fade" id="respuestaModal" tabindex="-1" role="dialog" aria-labelledby="respuestaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="respuestaModalLabel">Ingresar Respuesta</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Alerta para mostrar el mensaje de éxito o error -->
+                    <div id="alertMessageRespuesta" class="alertRespuesta" style="display:none;"></div>
 
-
+                    <!-- Formulario -->
+                    <form id="respuestaForm" class="needs-validation"
+                        onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
+                        <div class="form-group">
+                            <label for="numeroSolicitudR">Número de Solicitud:</label>
+                            <input type="number" id="numeroSolicitudR" name="numeroSolicitudR" value=""
+                                class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroRespuesta">Número de Respuesta:</label>
+                            <input type="number" id="numeroRespuesta" name="numeroRespuesta" class="form-control"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="funcionario">Funcionario:</label>
+                            <select id="funcionario" name="funcionario" class="form-control" required>
+                                <option value="" disabled selected></option>
+                                <!-- Opciones se llenarán dinámicamente -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="titulo">Título:</label>
+                            <input type="text" id="tituloRespuesta" name="titulo" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcionRespuesta">Descripción:</label>
+                            <textarea id="descripcionRespuesta" name="descripcion" class="form-control"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="comentarioRespuesta">Comentario:</label>
+                            <textarea id="comentarioRespuesta" name="comentario" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaRespuesta">Fecha de Respuesta:</label>
+                            <input type="date" id="fechaRespuesta" name="fechaRespuesta" class="form-control" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
-      <!-- Modal para mostrar la información del oficio -->
-      <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+
+
+    <!-- Modal para mostrar la información del oficio -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -612,28 +637,31 @@
     </div>
 
 
-        <!-- Enlaces a jQuery, Popper.js, y Bootstrap JS -->
+    <!-- Enlaces a jQuery, Popper.js, y Bootstrap JS -->
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 
-<!-- Bootstrap 5 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
-<!-- Axios -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        <!-- Javascript -->
-        <script src="/static/app.js"></script>
-        <script src="/static/appModalBuscadores.js"></script>
-        <script src="/static/appModalEvento.js"></script>
-        <script src="/static/appModalRespuesta.js"></script>
-        <script src="/static/appModalSolicitud.js"></script>
-        <script src="/static/appModalRechazar.js"></script>
-        <script src="/static/appMuestraTablas.js"></script>
+    <!-- Javascript -->
+    <script src="/static/app.js"></script>
+    <script src="/static/appModalBuscadores.js"></script>
+    <script src="/static/appModalEvento.js"></script>
+    <script src="/static/appModalRespuesta.js"></script>
+    <script src="/static/appModalSolicitud.js"></script>
+    <script src="/static/appModalRechazar.js"></script>
+    <script src="/static/appMuestraTablas.js"></script>
+    <script src="/static/appTime.js"></script>
 
 </body>
 

@@ -1,0 +1,72 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.utmTime {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Columna izquierda es el doble de ancha que la derecha */
+    gap: 10px; /* Espacio entre columnas */
+    background-color: #E1F3F3; /* Color de fondo suave */
+    border-radius: 0.5em;
+    padding: 20px;
+}
+
+.containerTime {
+    display: grid;
+    color: #ffffff;
+    align-items: center;
+    grid-template-columns: 8fr 4fr;
+    background-color: #03395D; /* Color oscuro */
+    border-radius: 0.5em;
+    padding: 20px;
+}
+
+.clock-containerTime {
+    background-color: #084C77; /* Color del reloj */
+    color: #E1F3F3; /* Color del texto claro */
+    text-align: center;
+    font-size: 3.75em;
+    margin-left: 0.2em;
+    border-radius: 0.1em;
+    padding: 0.2em 0;
+}
+
+.date-containerTime {
+    padding: 1em 0;
+    background-color: #E1F3F3; /* Color cálido para la fecha */
+    color: #03395D; /* Texto claro */
+    text-align: center;
+    border-radius: 0.5em;
+}
+
+.date-containerTime span {
+    font-size: 2.5em;
+}
+
+.utm {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.5em;
+    background-color: #EA9F44; /* Color brillante para UTM */
+    border-radius: 0.5em;
+    padding: 1em;
+    color: #03395D; /* Texto oscuro */
+}
+
+#ultimaRespuesta {
+    margin-top: 1em; /* Espacio adicional para separar los valores */
+    text-align: center;
+    font-size: 2.5em;
+    margin: 0.5em 0;
+    background-color: #ffffff; /* Color brillante para los valores */
+    border-radius: 0.3em;
+    padding: 0.5em;
+    color: #03395D; /* Texto oscuro */
+    font-weight: bold;
+}
+.ultimoMemo{
+    padding-left: 0%;
+}
