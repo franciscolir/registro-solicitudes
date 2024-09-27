@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.respuesta;
 
+import com.api.documentacion.domain.registro.Registro;
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
@@ -8,6 +9,7 @@ import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
+import com.api.documentacion.repository.RegistroRepository;
 import com.api.documentacion.repository.RespuestaRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import com.api.documentacion.repository.UsuarioRepository;
@@ -32,6 +34,8 @@ public class RespuestaService {
     SolicitudService solicitudService;
     @Autowired
     UsuarioService usuarioService;
+    @Autowired
+    RegistroRepository registroRepository;
 
 
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {

@@ -1,6 +1,8 @@
 package com.api.documentacion.domain.usuario;
 
+import com.api.documentacion.domain.Certificado;
 import com.api.documentacion.domain.evento.Evento;
+import com.api.documentacion.domain.registro.Registro;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,19 +40,23 @@ public class Usuario {
     @ManyToMany(mappedBy = "invitados")
     private Set<Evento> eventos = new HashSet<>();
 
+    @OneToOne(mappedBy = "usuario")
+    private Certificado certificado;  // Relación inversa
+
+    @OneToOne(mappedBy = "usuario")
+    private Registro registro;  // Relación inversa
 
 
-    public Usuario(Long id, String nombre, String correoElectronico, String contraseña, Perfil perfil, Boolean activo, LocalDateTime fecha, String comentario) {
-        this.id = getId();
+    public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Perfil perfil, Boolean activo, LocalDateTime fechaIngresoSistema) {
+        this.id = id;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
-        this.perfil = perfil;
-        this.activo = true;
-        this.fechaIngresoSistema = fecha;
         this.comentario = comentario;
+        this.perfil = perfil;
+        this.activo = activo;
+        this.fechaIngresoSistema = fechaIngresoSistema;
     }
-
 
     @Override
     public String toString() {

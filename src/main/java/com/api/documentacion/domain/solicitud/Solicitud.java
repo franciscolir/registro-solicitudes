@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.solicitud;
 
+import com.api.documentacion.domain.registro.Registro;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.emisor.Emisor;
 import com.api.documentacion.domain.emisor.Estado;
@@ -44,6 +45,9 @@ public class Solicitud {
 
     @OneToOne(mappedBy = "solicitud")
     private Respuesta respuesta;
+
+    @OneToOne(mappedBy = "solicitud")
+    private Registro registro;  // Relación inversa
 
 
     public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, LocalDateTime fechaIngresoSolicitud, Estado estado,Boolean cerrado, Boolean activo) {

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 
 public record DatosRegistraRespuesta(
 
+        @NotNull(message = "numero de registro es obligatorio")
+        Long registroId,
         @NotNull(message = "numero de solicitud es obligatoria")
         Long solicitudId,
         @NotNull(message = "numero de respuesta es obligatoria")
