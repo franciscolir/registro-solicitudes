@@ -72,48 +72,94 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="p-3 bg-danger text-dark pendientes">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2>Asingado</h2>
-                        </div>
-                        <div class="accordion" id="accordionResumen">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne"></button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
-                                    <div class="accordion-body">
-                                        <!-- Content here -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table text-dark">
+                        <thead >
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" colspan="2">Ingreso</th>
+                                     
+                          </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td><div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Opciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item"><a class="dropdown-link text-success"  onclick="">ver</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar a:</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="">rechazar</a></li>
+                              
+                                </ul>
+                              </div></td>
+                         
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td><div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Opciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item"><a class="dropdown-link text-success"  onclick="">ver</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar a:</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="">rechazar</a></li>
+                              
+                                </ul>
+                              </div></td>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
                 </div>
                 <div class="col-md-3">
-                    <div class="p-3 bg-danger text-dark pendientes">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2>Salida</h2>
-                        </div>
-                        <div class="accordion" id="accordionResumen">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne"></button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show"
-                                    aria-labelledby="headingOne" data-bs-parent="#accordionResumen">
-                                    <div class="accordion-body">
-                                        <!-- Content here -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" colspan="2">First</th>
+                    
+                          </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td><div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Opciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item"><a class="dropdown-link text-success"  onclick="">ver</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="">rechazar</a></li>
+                              
+                                </ul>
+                              </div></td>
+                           
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td><div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Opciones
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item"><a class="dropdown-link text-success"  onclick="">ver</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="">rechazar</a></li>
+                              
+                                </ul>
+                              </div></td>
+                          </tr>
+                       
+                        </tbody>
+                      </table>
                 </div>
                 <div class="col-md-3">
                     <div class="utmTime container-fluid">
@@ -145,7 +191,6 @@
             </div>
         </section>
 
-        <!-- Modal para Rechazar Solicitud -->
         <!-- Modal para Rechazar Solicitud -->
         <div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel"
             aria-hidden="true">
