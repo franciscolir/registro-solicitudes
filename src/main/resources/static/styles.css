@@ -1,7 +1,25 @@
 
-.general {
+section.general {
     background-color: #E1F3F3
 }
+
+.table{
+    border: none;
+    border-radius: 5px;
+}
+
+.tableResumen{
+background-color: #D06344;
+ 
+}
+
+#numeroSolicitud{
+    
+    font-size: 30px;
+    text-align: center;
+    color: #084C77;
+}
+
 
 
 .navbar {
