@@ -2,7 +2,7 @@ package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.Certificado;
 import com.api.documentacion.domain.evento.Evento;
-import com.api.documentacion.domain.registro.Registro;
+import com.api.documentacion.domain.movimiento.Movimiento;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,7 +44,7 @@ public class Usuario {
     private Certificado certificado;  // Relación inversa
 
     @OneToOne(mappedBy = "usuario")
-    private Registro registro;  // Relación inversa
+    private Movimiento movimiento;  // Relación inversa
 
 
     public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Perfil perfil, Boolean activo, LocalDateTime fechaIngresoSistema) {

@@ -1,6 +1,6 @@
 package com.api.documentacion.domain;
 
-import com.api.documentacion.domain.registro.Registro;
+import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,5 +35,5 @@ public class Certificado {
     private Usuario usuario;
 
     @OneToOne(mappedBy = "certificado")
-    private Registro registro;  // Relación inversa
+    private Movimiento movimiento;  // Relación inversa
 }

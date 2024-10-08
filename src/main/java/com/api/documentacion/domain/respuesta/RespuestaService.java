@@ -1,6 +1,5 @@
 package com.api.documentacion.domain.respuesta;
 
-import com.api.documentacion.domain.registro.Registro;
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
@@ -9,7 +8,7 @@ import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
-import com.api.documentacion.repository.RegistroRepository;
+import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.RespuestaRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import com.api.documentacion.repository.UsuarioRepository;
@@ -35,8 +34,9 @@ public class RespuestaService {
     @Autowired
     UsuarioService usuarioService;
     @Autowired
-    RegistroRepository registroRepository;
+    MovimientoRepository movimientoRepository;
 
+    //POST___________________________________________
 
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
@@ -65,6 +65,8 @@ public class RespuestaService {
 
         return new DatosMuestraRespuesta(respuesta);
     }
+    //___________________________________________________
+
 
     //GET___________________________________________
         //obtiene respuesta con el numero de respuesta
@@ -111,7 +113,7 @@ public class RespuestaService {
 
 
     //DELETE________________________________________________
-        //elimina una solicitud (delete logico)
+        //elimina una repuesta (delete logico)
     public void eliminarRespuesta (DatosEliminaRespuesta datos){
 
         validaSiExisteIdAndActivoTrue(datos.id());

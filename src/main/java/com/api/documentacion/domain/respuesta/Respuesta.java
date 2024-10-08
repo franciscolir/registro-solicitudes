@@ -1,6 +1,6 @@
 package com.api.documentacion.domain.respuesta;
 
-import com.api.documentacion.domain.registro.Registro;
+import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -43,7 +43,7 @@ public class Respuesta {
     private Solicitud solicitud;
 
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Registro> registros;  // Relación OneToMany
+    private List<Movimiento> movimientos;  // Relación OneToMany
 
     public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo, Solicitud solicitud) {
         this.id = id;

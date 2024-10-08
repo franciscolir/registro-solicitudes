@@ -1,15 +1,17 @@
-package com.api.documentacion.domain.registro;
+package com.api.documentacion.domain.movimiento.dto;
 
 
 import jakarta.validation.constraints.NotNull;
 
-public record DatosRegitro(
+public record DatosRegistraMovimiento(
 
         @NotNull(message = "numero de registro es obligatorio")
         Long solicitud,
         Long usuario,
         Long certificado,
-        Long respuesta
+        Long respuesta,
+        Boolean asignado,
+        Boolean rechazado
 
 ) {
 
