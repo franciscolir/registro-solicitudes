@@ -165,3 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
         loadData();
 
 });
+<div class="btn-group d-md-table-cell d-none">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                                     <ul class="dropdown-menu">
+                                        
+                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
+                                    </ul>
+                                </div>

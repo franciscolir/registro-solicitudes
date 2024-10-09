@@ -12,7 +12,8 @@ public record DatosMuestraMovimientoAsignacion(
         String nombreUsuario,
         String comentarioAsignacion,
         String estado,
-        Boolean resuelto
+        Boolean resuelto,
+        Boolean asignado
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -23,7 +24,8 @@ public record DatosMuestraMovimientoAsignacion(
                 movimiento.getUsuario().getNombre(),
                 movimiento.getComentarioAsignacion(),
                 movimiento.getEstado().toString(),
-                movimiento.getResuelto()
+                movimiento.getResuelto(),
+                movimiento.getAsignado()
         );
     }
     private static String formatDateTime(LocalDateTime dateTime) {

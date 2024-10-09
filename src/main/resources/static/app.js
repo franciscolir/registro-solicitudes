@@ -177,6 +177,44 @@ document.addEventListener('DOMContentLoaded', () => {
                         consulta3 = null; // Manejo de error para la tercera consulta
                     }
 
+                
+console.log(consulta2.resuelto+"#######################")
+console.log(typeof consulta2.resuelto+"#######################")
+                    if (consulta2.resuelto==true) {
+                       
+                        const botonesOpciones =  `
+                     <div class="btn-group d-md-table-cell d-none">
+                          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                          <ul class="dropdown-menu">
+                                <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
+                            </ul>
+                      </div>
+                  ` 
+                    } 
+                    else if (item && item.asignado && consulta2 && consulta2.resuelto) {
+                         botonesOpciones =  `
+                        <div class="btn-group d-md-table-cell d-none">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
+                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li> 
+                            </ul>
+                        </div>
+                    ` 
+                    }else {
+                         botonesOpciones =  `
+                        <div class="btn-group d-md-table-cell d-none">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
+                                <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
+                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>     
+                            </ul>
+                        </div>
+                    ` 
+                    }
+
                     rows += `
                         <tr>
                             <th id="numeroSolicitud" scope="row">
@@ -217,14 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }</td> <!-- Nueva columna para datos del tercer endpoint -->
                                     
                             <td>
-                                <div class="btn-group d-md-table-cell d-none">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
-                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver</a></li>
-                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
-                                        <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
-                                    </ul>
-                                </div>
+                                ${botonesOpciones}
                             </td> <!-- Nueva columna para datos del tercer endpoint -->
                             <td class="d-md-none">
                                 <div>
