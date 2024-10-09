@@ -1,8 +1,6 @@
 package com.api.documentacion.domain.movimiento;
 
-import com.api.documentacion.domain.movimiento.dto.DatosActualizaMovimiento;
-import com.api.documentacion.domain.movimiento.dto.DatosMuestraMovimiento;
-import com.api.documentacion.domain.movimiento.dto.DatosRegistraMovimiento;
+import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,96 +9,104 @@ import java.time.LocalDateTime;
 
 @Service
 public class MovimientoService {
-@Autowired
+    @Autowired
     UsuarioRepository usuarioRepository;
-@Autowired
+    @Autowired
     CertificadoRepository certificadoRepository;
-@Autowired
+    @Autowired
     RespuestaRepository respuestaRepository;
-@Autowired
+    @Autowired
     SolicitudRepository solicitudRepository;
-@Autowired
+    @Autowired
     MovimientoRepository movimientoRepository;
 
     //POST___________________________________________
 
-    public DatosMuestraMovimiento registrar(DatosRegistraMovimiento datos) {
+    public DatosMuestraMovimientoAsignacion registrar(DatosRegistraMovimiento datos) {
 
-        LocalDateTime fechaAsignacion;
-        LocalDateTime fechaRechazo;
-        boolean asignado;
-        boolean rechazado;
-
-        if (datos.asignado()) {
-            fechaAsignacion = LocalDateTime.now();
-            fechaRechazo = null;
-            asignado = true;
-            rechazado = false;
-        } else {
-            fechaAsignacion = null;
-            fechaRechazo = LocalDateTime.now();
-            asignado = false;
-            rechazado = true;
-        }
-
+            var fechaAsignacion = LocalDateTime.now();
         var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
-        var certificado = certificadoRepository.getReferenceById(datos.certificado());
-        var respuesta = respuestaRepository.getReferenceById(datos.respuesta());
         var movimiento = new Movimiento(null,
                 fechaAsignacion,
                 null,
                 null,
-                fechaRechazo,
-                rechazado,
-                asignado,
+                true,
                 false,
                 false,
                 true,
+                datos.comentarioAsignacion(),
+                null,
+                EstadoMovimiento.PENDIENTE,
                 solicitud,
                 usuario,
-                certificado,
-                respuesta
-                );
+                null,
+                null
+        );
         movimientoRepository.save(movimiento);
 
-        return new DatosMuestraMovimiento(movimiento);
+        return new DatosMuestraMovimientoAsignacion(movimiento);
     }
+
     //___________________________________________________
 
     //GET___________________________________________
-    //obtiene movimiento
+    //obtiene movimiento al asignar
 
-    public DatosMuestraMovimiento obtenerMovimiento(Long id) {
+    public DatosMuestraMovimientoAsignacion obtenerMovimientoAsignacion(Long idSolicitud) {
 
+        var id = movimientoRepository.findIdBySolicitudId(idSolicitud).getId();
         var movimiento = movimientoRepository.getReferenceById(id);
 
-        return new DatosMuestraMovimiento(movimiento);
-    }//___________
+        return new DatosMuestraMovimientoAsignacion(movimiento);
+    }
+    //obtiene movimiento al resolver
+
+    public DatosMuestraMovimientoResuelto obtenerMovimientoResuelto(Long idSolicitud) {
+
+        var id = movimientoRepository.findIdBySolicitudId(idSolicitud).getId();
+        var movimiento = movimientoRepository.getReferenceById(id);
+
+        return new DatosMuestraMovimientoResuelto(movimiento);
+    }
+    //___________________________________________________
+
     //PUT________________________________________________
-    //resuelve o cierra movimiento
-    public DatosMuestraMovimiento actualizaMovimiento (DatosActualizaMovimiento datos){
+    //resuelve movimiento
+    public DatosMuestraMovimientoResuelto actualizaMovimiento (DatosActualizaMovimiento datos){
 
         var movimiento = movimientoRepository.getReferenceById(datos.id());
-        if (datos.resuelto()) {
+
             var fechaResuelto = LocalDateTime.now();
+            var certificado = certificadoRepository.getReferenceById(datos.certificado());
             movimiento.actualizaMovimiento(
                     datos.id(),
                     true,
-                    null,
                     fechaResuelto,
-                    null);
-        }
+                    datos.comentarioResuelto(),
+                    EstadoMovimiento.RESUELTO,
+                    certificado
+            );
 
-        if (datos.cerrado()){
+        var movimientoActualizado = movimientoRepository.getReferenceById(datos.id());
+
+        return new DatosMuestraMovimientoResuelto(movimientoActualizado);
+    }//______________
+
+    //cierra movimiento
+        public DatosMuestraMovimiento cierraMovimiento (DatosCierraMovimiento datos){
+            var movimiento = movimientoRepository.getReferenceById(datos.id());
+
             var fechaCierre = LocalDateTime.now();
-        movimiento.actualizaMovimiento(
-                datos.id(),
-                null,
-                true,
-                null,
-                fechaCierre);
-        }
+            var respuesta = respuestaRepository.getReferenceById(datos.respuesta());
+            movimiento.cierraMovimiento(
+                    datos.id(),
+                    true,
+                    fechaCierre,
+                    EstadoMovimiento.CERRADO,
+                    respuesta
+            );
+
 
         var movimientoActualizado = movimientoRepository.getReferenceById(datos.id());
 

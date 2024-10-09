@@ -1,9 +1,6 @@
 package com.api.documentacion.controller;
 
-
-import com.api.documentacion.domain.movimiento.dto.DatosActualizaMovimiento;
-import com.api.documentacion.domain.movimiento.dto.DatosMuestraMovimiento;
-import com.api.documentacion.domain.movimiento.dto.DatosRegistraMovimiento;
+import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -14,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @ResponseBody
-@RequestMapping("/movimiento")
+@RequestMapping("/movimientos")
 public class MovimientoController {
 
     @Autowired
@@ -23,24 +20,38 @@ public class MovimientoController {
     //ingresar un registro de movimiento de solicitud
     @PostMapping
     @Transactional
-    public ResponseEntity<?> ingresarRegistro(@RequestBody @Valid DatosRegistraMovimiento datos) {
+    public ResponseEntity<DatosMuestraMovimientoAsignacion> ingresarRegistro(@RequestBody @Valid DatosRegistraMovimiento datos) {
         var movimiento = movimientoService.registrar(datos);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(movimiento);
     }
 
     //Obtener un movimiento
-    @GetMapping("/{id}")
-    public ResponseEntity<DatosMuestraMovimiento> obtenerRegistro(@PathVariable("id") Long id) {
-        var movimiento  =  movimientoService.obtenerMovimiento(id);
+    @GetMapping("/asignado/{id}")
+    public ResponseEntity<DatosMuestraMovimientoAsignacion> obtenerMovimientoAsignacion(@PathVariable("id") Long id) {
+        var movimiento  =  movimientoService.obtenerMovimientoAsignacion(id);
+        return ResponseEntity.ok(movimiento);
+    }
+    //Obtener un movimiento
+    @GetMapping("/resuelto/{id}")
+    public ResponseEntity<DatosMuestraMovimientoResuelto> obtenerMovimientoResuelto(@PathVariable("id") Long id) {
+        var movimiento  =  movimientoService.obtenerMovimientoResuelto(id);
         return ResponseEntity.ok(movimiento);
     }
 
     //Actualizar un movimiento
-    @PutMapping
+    @PutMapping("/resolver")
     @Transactional
-    public ResponseEntity<DatosMuestraMovimiento> actualizarMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
+    public ResponseEntity<DatosMuestraMovimientoResuelto> actualizarMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
         var movimiento = movimientoService.actualizaMovimiento(datos);
+        return ResponseEntity.ok(movimiento);
+    }
+
+    //Cierra un movimiento
+    @PutMapping("/cerrar")
+    @Transactional
+    public ResponseEntity<DatosMuestraMovimiento> cierraMovimiento(@RequestBody @Valid DatosCierraMovimiento datos){
+        var movimiento = movimientoService.cierraMovimiento(datos);
         return ResponseEntity.ok(movimiento);
     }
 

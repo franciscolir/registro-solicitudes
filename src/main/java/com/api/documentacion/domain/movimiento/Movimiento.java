@@ -27,18 +27,19 @@ public class Movimiento {
     private Long id;
 
     private LocalDateTime fechaAsignacion;
-
     private LocalDateTime fechaResuelto;
-
     private LocalDateTime fechaCierre;
 
-    private LocalDateTime fechaRechazo;
-
-    private Boolean rechazado;
     private Boolean asignado;
     private Boolean resuelto;
     private Boolean cerrado;
     private Boolean activo;
+
+    private String comentarioAsignacion;
+    private String comentarioResuelto;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoMovimiento estado;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "solicitud_id")
@@ -57,17 +58,30 @@ public class Movimiento {
     private Respuesta respuesta;
 
 
-    public void actualizaMovimiento (Long id, Boolean resuelto, Boolean cerrado, LocalDateTime fechaResuelto, LocalDateTime fechaCierre){
+    public void actualizaMovimiento (Long id, Boolean resuelto, LocalDateTime fechaResuelto, String comentarioResuelto, EstadoMovimiento estado, Certificado certificado){
 
         this.id = id;
         if(resuelto != null)
             this.resuelto = resuelto;
-        if(cerrado != null)
-            this.cerrado = cerrado;
         if(fechaResuelto != null)
             this.fechaResuelto = fechaResuelto;
+        if(comentarioResuelto != null)
+            this.comentarioResuelto = comentarioResuelto;
+        this.estado = estado;
+        if(certificado != null)
+            this.certificado = certificado;
+
+    }
+    public void cierraMovimiento (Long id, Boolean cerrado, LocalDateTime fechaCierre, EstadoMovimiento estado, Respuesta respuesta){
+
+        this.id = id;
+        if(cerrado != null)
+            this.cerrado = cerrado;
         if(fechaCierre != null)
             this.fechaCierre = fechaCierre;
+        this.estado = estado;
+        if(respuesta != null)
+            this.respuesta = respuesta;
     }
 
 
