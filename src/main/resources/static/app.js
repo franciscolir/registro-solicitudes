@@ -163,21 +163,24 @@ document.addEventListener('DOMContentLoaded', () => {
                             <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
+                                <a>solicitud</a>
                                     <li>${item.emisor}</li> 
                                     <li>${item.titulo}</li>  
                                     <li>${item.fechaSolicitud}</li> 
-                                </ul>
-                            </td>
-                            <td class="fila d-md-table-cell d-none">
-                                <ul>
-                                    <li>${item.nombreUsuario || 'No hay datos'}</li> 
-                                    <li>${item.fechaAsignacion || 'No hay datos'}</li>  
-                                    <li>${item.comentarioAsignacion || 'No hay datos'}</li> 
                                     <li>${item.estado || 'No hay datos'}</li> 
                                 </ul>
                             </td>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
+                                <a>asignado a:</a>
+                                    <li>${item.nombreUsuario || 'No hay datos'}</li> 
+                                    <li>${item.fechaAsignacion || 'No hay datos'}</li>  
+                                    <li>${item.comentarioAsignacion || 'No hay datos'}</li> 
+                                </ul>
+                            </td>
+                            <td class="fila d-md-table-cell d-none">
+                                <ul>
+                                <a>salida</a>
                                     <li>${item.certificado || 'No hay datos'}</li> 
                                     <li>${item.fechaResuelto || 'No hay datos'}</li>  
                                     <li>${item.comentarioResuelto || 'No hay datos'}</li> 

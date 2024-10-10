@@ -13,6 +13,11 @@ background-color: #D06344;
  
 }
 
+.table-group-divider{
+    margin-top: 10%;
+    padding-top: 10%;
+}
+
 #numeroSolicitud{
     
     font-size: 30px;
