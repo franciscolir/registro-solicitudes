@@ -2,9 +2,12 @@ package com.api.documentacion.controller;
 
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,13 @@ public class MovimientoController {
         var movimiento = movimientoService.registrar(datos);
 
         return ResponseEntity.ok(movimiento);
+    }
+    //Obtener lista de respuestaes
+    @GetMapping
+    public ResponseEntity<Page<DatosMuestraMovimiento>> listaMovimientos(Pageable paginacion) {
+        var listaDeMovimientosAbiertos = movimientoService.obtenerListaDeMovimientosAbiertos(paginacion);
+
+        return ResponseEntity.ok(listaDeMovimientosAbiertos);
     }
 
     //Obtener un movimiento

@@ -1,9 +1,11 @@
 package com.api.documentacion.repository;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,7 +15,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Page<Solicitud> findByActivoTrue(Pageable paginacion);
 
-    Boolean existsByIdAndCerradoTrue(Long id);
+//    Boolean existsByIdAndCerradoTrue(Long id);
 
     Boolean existsByIdAndActivoTrue(Long id);
 
@@ -25,7 +27,4 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Solicitud findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(Long numeroSolicitud, Long emisorId);
 
-    Page<Solicitud> findByCerradoFalse(Pageable paginacion);
-
-    Page<Solicitud> findByCerradoFalseOrderByFechaIngresoSolicitudDesc(Pageable paginacion);
 }

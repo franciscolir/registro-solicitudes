@@ -13,9 +13,7 @@ public record DatosMuestraSolicitud(
         String emisor,
         String titulo,
         String descripcion,
-        String fechaSolicitud,
-        String fechaIngresoDepartamento,
-        String estado
+        String fechaSolicitud
 ) {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -27,9 +25,7 @@ public record DatosMuestraSolicitud(
                 solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
-                formatDate2(solicitud.getFechaSolicitud()),
-                formatDate(solicitud.getFechaIngresoSolicitud()),
-                solicitud.getEstado().toString()
+                formatDate2(solicitud.getFechaSolicitud())
         );
     }
 

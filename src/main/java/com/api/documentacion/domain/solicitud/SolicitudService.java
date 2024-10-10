@@ -28,19 +28,16 @@ public class SolicitudService {
         var emisor = emisorRepository.getReferenceById(datos.emisor());
 
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
-        var fechaIngresoSolicitud = LocalDateTime.now();
-        var estado = Estado.RECIBIDO;
 
         var solicitud = new Solicitud(null,
                 datos.numeroSolicitud(),
+                datos.providenciaId(),
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
                 fechaSolicitud,
-                fechaIngresoSolicitud,
-                estado,
-                false,
-                true
+                true,
+                null
         );
         solicitudRepository.save(solicitud);
 
@@ -55,7 +52,6 @@ public class SolicitudService {
         var id = validaYObtieneIdConNumeroSolicitud(numeroSolicitud,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
         var fechaSolicitud = stringFormatter2(solicitud.getFechaSolicitud());
-        var fechaIngreso = stringFormatter(solicitud.getFechaIngresoSolicitud());
 
         return new DatosMuestraSolicitud(
                 solicitud.getId(),
@@ -63,9 +59,7 @@ public class SolicitudService {
                 solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
-                fechaSolicitud,
-                fechaIngreso,
-                solicitud.getEstado().toString());
+                fechaSolicitud);
     }
     //___________________________________________________
 
@@ -77,13 +71,6 @@ public class SolicitudService {
         return solicitudRepository.findByActivoTrue(paginacion).map(DatosMuestraSolicitud::new);
     }//_______
 
-
-    //GET_LISTA__________________________________________
-    //obtiene una lista con todas las solicitudes
-    public Page<DatosMuestraSolicitud> listaDeSolicitudesPendientes(Pageable paginacion) {
-
-        return solicitudRepository.findByCerradoFalseOrderByFechaIngresoSolicitudDesc(paginacion).map(DatosMuestraSolicitud::new);
-    };
     //___________________________________________________
 
 
@@ -105,25 +92,8 @@ public class SolicitudService {
         var solicitudActializada = solicitudRepository.getReferenceById(datos.id());
 
         return new DatosMuestraSolicitud(solicitudActializada);
-    }   //__________
-
-
-        //declinar una solicitud
-    public DatosMuestraSolicitud declinarSolicitud (DatosDeclinarSolicitud datos){
-        validaSiExisteIdAndActivoTrue(datos.id());
-        var fechaDeclinacion = LocalDateTime.now();
-        var estado = Estado.DECLINADO;
-        var solicitud = solicitudRepository.getReferenceById(datos.id());
-        solicitud.declinarSolicitud(
-                datos.id(),
-                datos.comentario(),
-                fechaDeclinacion
-        );
-        cerrarSolicitud(datos.id(),estado);
-        var solicitudActializada = solicitudRepository.getReferenceById(datos.id());
-
-        return new DatosMuestraSolicitud(solicitudActializada);
     }
+
     //______________________________________________________
 
 
@@ -133,7 +103,7 @@ public class SolicitudService {
 
         validaSiExisteIdAndActivoTrue(datos.id());
         var solicitud = solicitudRepository.getReferenceById(datos.id());
-        solicitud.eliminarSolicitud(datos.id(), datos.comentario());
+        solicitud.eliminarSolicitud(datos.id());
     }
     //______________________________________________________
 
@@ -165,18 +135,6 @@ public class SolicitudService {
 
         return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
     }
-
-
-
-
-
-    //valida si solicitud ya fue respondida
-    public void validaSiSolicitudFueRespondida(Long id) {
-        validaSiExisteIdAndActivoTrue(id);
-        if(solicitudRepository.existsByIdAndCerradoTrue(id)){
-            throw new ValidacionDeIntegridad("Solicitud se encuentra cerrada");
-        }
-    }//__________
 
 
     //______________________________________________________
@@ -212,15 +170,7 @@ public class SolicitudService {
         var outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         return fecha.format(outputFormatter);
-    }//__________
-
-
-        //cerrar solicitud una vez respondida o declinada y cambia su estado
-    public void cerrarSolicitud (Long id, Estado estado) {
-        var solicitud = solicitudRepository.getReferenceById(id);
-        solicitud.cierraSolicitud(id, estado);
     }
-
 
     //______________________________________________________
 

@@ -43,13 +43,7 @@ public class SolicitudController {
         return ResponseEntity.ok(listaSolicitudes);
     }
 
-    //Obtener lista de solicitudes pendientes de respuesta
-    @GetMapping("/{pendientes}")
-    public ResponseEntity<Page<DatosMuestraSolicitud>> listaSolicitudesPendientes(Pageable paginacion){
-        var listaSolicitudes = solicitudService.listaDeSolicitudesPendientes(paginacion);
 
-        return ResponseEntity.ok(listaSolicitudes);
-    }
 
 
 
@@ -62,16 +56,6 @@ public class SolicitudController {
         return ResponseEntity.ok(response);
     }
 
-    //Declinar solicitud
-    @PutMapping("/{declinar}")
-    @Transactional
-    public ResponseEntity declinarSolicitud (@RequestBody @Valid DatosDeclinarSolicitud datos){
-        System.out.println(datos+"#################");
-        var response = solicitudService.declinarSolicitud(datos);
-
-
-        return ResponseEntity.ok(response);
-    }
 
     //Eliminar solicitud
     @DeleteMapping

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public record DatosActualizaRespuesta(
         @NotNull(message = "id es obligatorio")
         Long id,
-        Long solicitudId,
         Long respuestaId,
         String titulo,
         String descripcion,

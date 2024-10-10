@@ -14,7 +14,7 @@ public interface RespuestaRepository extends JpaRepository<Respuesta,Long> {
 
     Page<Respuesta> findByActivoTrue(Pageable paginacion);
 
-    Respuesta findByidAndActivoTrue(Long id);
+
 
     Boolean existsByIdAndActivoTrue(Long id);
 
@@ -22,7 +22,5 @@ public interface RespuestaRepository extends JpaRepository<Respuesta,Long> {
 
     Boolean existsByNumeroRespuestaAndActivoTrue(Long numeroRespuesta);
 
-    Boolean existsBySolicitudIdAndActivoTrue(Long id);
 
-    Respuesta findBySolicitudIdAndActivoTrue(Long id);
 }

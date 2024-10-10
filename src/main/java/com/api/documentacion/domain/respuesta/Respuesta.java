@@ -38,14 +38,10 @@ public class Respuesta {
 
     private Boolean activo;
 
-    @OneToOne
-    @JoinColumn(name = "solicitud_id")
-    private Solicitud solicitud;
-
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Movimiento> movimientos;  // Relación OneToMany
 
-    public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo, Solicitud solicitud) {
+    public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo) {
         this.id = id;
         this.numeroRespuesta = numeroRespuesta;
         this.usuario = usuario;
@@ -55,7 +51,6 @@ public class Respuesta {
         this.fechaRespuesta = fechaRespuesta;
         this.fechaEnvio = fechaEnvio;
         this.activo = activo;
-        this.solicitud = solicitud;
     }
 
     public void actualizaRespuesta (Long id, Long numeroRespuesta, String titulo, String descripcion, LocalDate fechaRespuesta){

@@ -1,8 +1,11 @@
 package com.api.documentacion.domain.movimiento;
 
 import com.api.documentacion.domain.movimiento.dto.*;
+import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +31,7 @@ public class MovimientoService {
         var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         var movimiento = new Movimiento(null,
+                null,
                 fechaAsignacion,
                 null,
                 null,
@@ -51,6 +55,14 @@ public class MovimientoService {
     //___________________________________________________
 
     //GET___________________________________________
+    //obtiene movimiento al ingresar solicitud
+
+    public Page<DatosMuestraMovimiento> obtenerListaDeMovimientosAbiertos(Pageable paginacion) {
+
+        return movimientoRepository.findByActivoTrueAndCerradoFalse(paginacion).map(DatosMuestraMovimiento::new);
+    }
+
+
     //obtiene movimiento al asignar
 
     public DatosMuestraMovimientoAsignacion obtenerMovimientoAsignacion(Long idSolicitud) {

@@ -141,13 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
+//MOVIMIENTO DE SOLICITUDES PENDIENTES #########################################
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('tableIngreso');
 
     const loadData = async () => {
         try {
-            const solicitudesResponse = await axios.get('http://localhost:8080/solicitudes/pendientes?size=10');
+            const solicitudesResponse = await axios.get('http://localhost:8080/movimientos?size=10');
             const solicitudes = solicitudesResponse.data.content;
 
             if (Array.isArray(solicitudes)) {
@@ -155,119 +155,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 let rows = ''; // Variable para acumular las filas
 
                 // Iterar sobre cada solicitud
-                for (const item of solicitudes) {
-                    let consulta2;
-                    let consulta3;
-
-                    try {
-                        // Hacer consulta individual para la columna 2
-                        const consulta2Response = await axios.get(`http://localhost:8080/movimientos/asignado/${item.id}`);
-                        consulta2 = consulta2Response.data;
-
-                        // Solo realizar la segunda llamada si consulta2.resuelto es true
-                      
-                        if (consulta2.resuelto === true) {
-                            const consulta3Response = await axios.get(`http://localhost:8080/movimientos/resuelto/${item.id}`); // Cambia esto al endpoint correcto
-                            consulta3 = consulta3Response.data;
-                        }
-
-                    } catch (consultaError) {
-                        console.error('Error al obtener datos de movimientos:', consultaError);
-                        consulta2 = null; // Manejo de error: asignar null si no se puede obtener
-                        consulta3 = null; // Manejo de error para la tercera consulta
-                    }
-
-                
-console.log(consulta2.resuelto+"#######################")
-console.log(typeof consulta2.resuelto+"#######################")
-                    if (consulta2.resuelto==true) {
-                       
-                        const botonesOpciones =  `
-                     <div class="btn-group d-md-table-cell d-none">
-                          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
-                          <ul class="dropdown-menu">
-                                <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
-                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
-                            </ul>
-                      </div>
-                  ` 
-                    } 
-                    else if (item && item.asignado && consulta2 && consulta2.resuelto) {
-                         botonesOpciones =  `
-                        <div class="btn-group d-md-table-cell d-none">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
-                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li> 
-                            </ul>
-                        </div>
-                    ` 
-                    }else {
-                         botonesOpciones =  `
-                        <div class="btn-group d-md-table-cell d-none">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
-                                <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
-                                <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>     
-                            </ul>
-                        </div>
-                    ` 
-                    }
-
+                solicitudes.forEach(item => {
+                    const botonesOpciones = getBotonesOpciones(item);
+                    
                     rows += `
                         <tr>
-                            <th id="numeroSolicitud" scope="row">
-                            ${item.numeroSolicitud}
-                          
-                            </th>
-                           
+                            <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
                                     <li>${item.emisor}</li> 
                                     <li>${item.titulo}</li>  
                                     <li>${item.fechaSolicitud}</li> 
                                 </ul>
-
-                            </td>
-
-                            <td class="fila d-md-table-cell d-none">
-                                ${consulta2 ? `
-                                    <ul>
-                                        <li>${consulta2.nombreUsuario || 'No hay datos'}</li> 
-                                        <li>${consulta2.fechaAsignacion || 'No hay datos'}</li>  
-                                        <li>${consulta2.comentarioAsignacion || 'No hay datos'}</li> 
-                                        <li>${consulta2.estado || 'No hay datos'}</li> 
-                                    </ul>
-                                   
-                                ` : '<div>No hay datos</div>'}
                             </td>
                             <td class="fila d-md-table-cell d-none">
-                            ${consulta3 ? `
-                                    <ul>
-                                        <li>${consulta3.certificado || 'No hay datos'}</li> 
-                                        <li>${consulta3.fechaResuelto || 'No hay datos'}</li>  
-                                        <li>${consulta3.comentarioResuelto || 'No hay datos'}</li> 
-                                    </ul>
-                        
-                                ` : '<div>No hay datos</div>'
-
-                            }</td> <!-- Nueva columna para datos del tercer endpoint -->
-                                    
-                            <td>
-                                ${botonesOpciones}
-                            </td> <!-- Nueva columna para datos del tercer endpoint -->
+                                <ul>
+                                    <li>${item.nombreUsuario || 'No hay datos'}</li> 
+                                    <li>${item.fechaAsignacion || 'No hay datos'}</li>  
+                                    <li>${item.comentarioAsignacion || 'No hay datos'}</li> 
+                                    <li>${item.estado || 'No hay datos'}</li> 
+                                </ul>
+                            </td>
+                            <td class="fila d-md-table-cell d-none">
+                                <ul>
+                                    <li>${item.certificado || 'No hay datos'}</li> 
+                                    <li>${item.fechaResuelto || 'No hay datos'}</li>  
+                                    <li>${item.comentarioResuelto || 'No hay datos'}</li> 
+                                </ul>
+                            </td>
+                            <td>${botonesOpciones}</td>
                             <td class="d-md-none">
                                 <div>
                                     <strong>Emisor:</strong> ${item.emisor} <br>
                                     <strong>Título:</strong> ${item.titulo} <br>
                                     <strong>Fecha Solicitud:</strong> ${item.fechaSolicitud} <br>
-                                    <strong>Asignado a:</strong> ${consulta2 ? consulta2.nombreUsuario || 'No hay datos' : 'No hay datos'} <br>
-                                    <strong>Estado:</strong> ${consulta2 ? consulta2.estado || 'No hay datos' : 'No hay datos'} <br>
-                                     <strong>N° Certificado:</strong> ${consulta3 ? consulta3.certificado  || 'No hay datos' : 'No hay datos'} <br>
-                                    <strong>Fecha Certificado:</strong> ${consulta3 ? consulta3.fechaResuelto || 'No hay datos' : 'No hay datos'} <br>
-
-
+                                    <strong>Asignado a:</strong> ${item.nombreUsuario || 'No hay datos'} <br>
+                                    <strong>Estado:</strong> ${item.estado || 'No hay datos'} <br>
+                                    <strong>N° Certificado:</strong> ${item.certificado || 'No hay datos'} <br>
+                                    <strong>Fecha Certificado:</strong> ${item.fechaResuelto || 'No hay datos'} <br>
                                 </div>
                                 <div class="btn-group">
                                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
@@ -281,7 +206,7 @@ console.log(typeof consulta2.resuelto+"#######################")
                             </td>
                         </tr>
                     `;
-                }
+                });
 
                 // Asignar todas las filas acumuladas a la tabla
                 tableBody.innerHTML = rows;
@@ -292,7 +217,42 @@ console.log(typeof consulta2.resuelto+"#######################")
             console.error('Error:', error);
             alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
         }
-    }
+    };
+
+    const getBotonesOpciones = (item) => {
+        if (item.asignado == true && item.resuelto == true) {
+            return `
+                <div class="btn-group d-md-table-cell d-none">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li> 
+                    </ul>
+                </div>
+            `;
+        } else if (item.asignado == true) {
+            return `
+                <div class="btn-group d-md-table-cell d-none">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
+                    </ul>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="btn-group d-md-table-cell d-none">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>     
+                    </ul>
+                </div>
+            `;
+        }
+    };
 
     loadData();
 });

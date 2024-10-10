@@ -43,13 +43,7 @@ public class RespuestaController {
 
         return ResponseEntity.ok(respuesta);
     }
-    //Obtener una respuesta
-    @GetMapping("respuesta/{solicitudId}/{emisorId}")
-    public ResponseEntity<DatosMuestraRespuesta> obtenerRespuestaPorSolicitudId(@PathVariable Long solicitudId, @PathVariable Long emisorId) {
-        var respuesta = respuestaService.obtenerRespuestaPorSolicitudId(solicitudId,emisorId);
 
-        return ResponseEntity.ok(respuesta);
-    }
 
     //Obtener lista de respuestaes
     @GetMapping

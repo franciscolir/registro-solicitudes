@@ -4,7 +4,6 @@ import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosRegistraRespuesta;
-import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
@@ -28,8 +27,6 @@ public class RespuestaService {
     @Autowired
     RespuestaRepository respuestaRepository;
     @Autowired
-    SolicitudRepository solicitudRepository;
-    @Autowired
     SolicitudService solicitudService;
     @Autowired
     UsuarioService usuarioService;
@@ -41,8 +38,6 @@ public class RespuestaService {
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
-        solicitudService.validaSiSolicitudFueRespondida(datos.solicitudId());
-        var solicitud = solicitudRepository.getReferenceById(datos.solicitudId());
         validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
         var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
         var fechaEnvioRespuesta = LocalDateTime.now();
@@ -54,14 +49,9 @@ public class RespuestaService {
                 datos.comentario(),
                 fechaRespuesta,
                 fechaEnvioRespuesta,
-                true,
-                solicitud
+                true
         );
         respuestaRepository.save(respuesta);
-
-        //actualiza Solicitud, cambia su estado a RESUELTO y cerrado true.
-        var estado = Estado.RESUELTO;
-        solicitudService.cerrarSolicitud(datos.solicitudId(), estado);
 
         return new DatosMuestraRespuesta(respuesta);
     }
@@ -78,12 +68,6 @@ public class RespuestaService {
         return new DatosMuestraRespuesta(respuesta);
     }//___________
 
-    public DatosMuestraRespuesta obtenerRespuestaPorSolicitudId(Long solicitudId, Long emisorId) {
-        var id = validaSiExisteRegistroYDevuelveIdRespuesta(solicitudId, emisorId);
-        var respuesta = respuestaRepository.getReferenceById(id);
-
-        return new DatosMuestraRespuesta(respuesta);
-    }
     //___________________________________________________
 
 
@@ -148,14 +132,6 @@ public class RespuestaService {
         return respuestaRepository.findByNumeroRespuestaAndActivoTrue(numeroRespuesta).getId();
     }//___________
 
-
-    private Long validaSiExisteRegistroYDevuelveIdRespuesta(Long solicitudId, Long emisorId) {
-        var id = solicitudService.validaYObtieneIdConNumeroSolicitud(solicitudId,emisorId);
-        if(!respuestaRepository.existsBySolicitudIdAndActivoTrue(id)){
-            throw new ValidacionDeIntegridad(" id de solicitud no corresponde a respuesta");
-        }
-        return respuestaRepository.findBySolicitudIdAndActivoTrue(id).getId();
-    }
 
     //______________________________________________________
 

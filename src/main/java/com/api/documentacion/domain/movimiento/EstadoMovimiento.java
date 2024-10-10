@@ -4,5 +4,6 @@ public enum EstadoMovimiento {
 
     PENDIENTE,
     RESUELTO,
-    CERRADO
+    CERRADO,
+    RECHAZADO
 }
