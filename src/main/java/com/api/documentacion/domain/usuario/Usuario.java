@@ -3,6 +3,7 @@ package com.api.documentacion.domain.usuario;
 import com.api.documentacion.domain.Certificado;
 import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.movimiento.Movimiento;
+import com.api.documentacion.domain.unidad.Unidad;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,7 +42,7 @@ public class Usuario {
     private Set<Evento> eventos = new HashSet<>();
 
     @OneToOne(mappedBy = "usuario")
-    private Certificado certificado;  // Relación inversa
+    private Unidad unidad;  // Relación inversa
 
     @OneToOne(mappedBy = "usuario")
     private Movimiento movimiento;  // Relación inversa
