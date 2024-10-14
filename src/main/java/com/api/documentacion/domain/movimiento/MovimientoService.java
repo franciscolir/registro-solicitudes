@@ -57,11 +57,17 @@ public class MovimientoService {
     //GET___________________________________________
     //obtiene movimiento al ingresar solicitud
 
-    public Page<DatosMuestraMovimiento> obtenerListaDeMovimientosAbiertos(Pageable paginacion) {
+    public Page<DatosMuestraMovimiento> obtenerListaDeMovimientosPendientes(Pageable paginacion) {
 
         return movimientoRepository.findByActivoTrueAndCerradoFalse(paginacion).map(DatosMuestraMovimiento::new);
     }
 
+    //obtiene movimiento al ingresar solicitud
+
+    public Page<DatosMuestraMovimientoSolicitudes> obtenerListaDeMovimientosSolicitudes(Pageable paginacion) {
+
+        return movimientoRepository.findByActivoTrue(paginacion).map(DatosMuestraMovimientoSolicitudes::new);
+    }
 
     //PUT________________________________________________
     //actualiza movimiento

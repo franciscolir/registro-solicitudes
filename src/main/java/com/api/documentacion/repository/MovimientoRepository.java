@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface MovimientoRepository extends JpaRepository<Movimiento,Long> {
 
 
-    Movimiento findIdBySolicitudId(Long idSolicitud);
+
 
     Page<Movimiento> findByActivoTrueAndCerradoFalse(Pageable paginacion);
+
+    Page<Movimiento> findByActivoTrue(Pageable paginacion);
 }

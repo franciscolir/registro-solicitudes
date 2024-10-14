@@ -27,12 +27,20 @@ public class MovimientoController {
 
         return ResponseEntity.ok(movimiento);
     }
-    //Obtener lista de respuestaes
-    @GetMapping
-    public ResponseEntity<Page<DatosMuestraMovimiento>> listaMovimientos(Pageable paginacion) {
-        var listaDeMovimientosAbiertos = movimientoService.obtenerListaDeMovimientosAbiertos(paginacion);
+    //Obtener lista de movimientos
+    @GetMapping("/pendientes")
+    public ResponseEntity<Page<DatosMuestraMovimiento>> listaMovimientosPendientes(Pageable paginacion) {
+        var listaDeMovimientosAbiertos = movimientoService.obtenerListaDeMovimientosPendientes(paginacion);
 
         return ResponseEntity.ok(listaDeMovimientosAbiertos);
+    }
+
+    //Obtener lista de movimientos enfocado en mostrar solicitudes
+    @GetMapping
+    public ResponseEntity<Page<DatosMuestraMovimientoSolicitudes>> listaMovimientosSolicitudes(Pageable paginacion) {
+        var listaDeMovimientosSolicitudes = movimientoService.obtenerListaDeMovimientosSolicitudes(paginacion);
+
+        return ResponseEntity.ok(listaDeMovimientosSolicitudes);
     }
 
 

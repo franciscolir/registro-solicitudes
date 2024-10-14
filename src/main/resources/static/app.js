@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadData = async () => {
         try {
-            const solicitudesResponse = await axios.get('http://localhost:8080/movimientos?size=10');
+            const solicitudesResponse = await axios.get('http://localhost:8080/movimientos/pendientes?size=10');
             const solicitudes = solicitudesResponse.data.content;
 
             if (Array.isArray(solicitudes)) {

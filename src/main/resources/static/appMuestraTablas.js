@@ -165,18 +165,19 @@ function getTableConfig(type) {
 
     switch (type) {
       case "solicitudes":
-          config.apiUrl = `${baseUrl}solicitudes${paginacionUrl}&sort=fechaIngresoSolicitud,desc`;
+          config.apiUrl = `${baseUrl}movimientos${paginacionUrl}&sort=fechaIngreso,desc`;
           config.headers = ["N° Solicitud", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Fecha Ingreso", "Estado"];
           config.title = "Solicitudes";
           config.formatRow = (registro) => `
-              <td>${registro.numeroSolicitud}</td>
+              <td>${registro.solicitud}</td>
               <td>${registro.emisor}</td>
               <td>${registro.titulo}</td>
               <td>${registro.descripcion}</td>
               <td>${registro.fechaSolicitud}</td>
-              <td>${registro.fechaIngresoDepartamento}</td>
+              <td>${registro.fechaIngreso}</td>
               <td>${formatText(registro.estado)}</td>
-          `;
+          `
+        
           config.buttonHtml = `
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Ingresar Solicitud</button>
           `;
@@ -184,6 +185,7 @@ function getTableConfig(type) {
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">Aplicar Filtros</button>
           <button type="button" class="btn btn-secondary" onclick="clearFilters('solicitudes')">Limpiar Filtros</button>
       `;
+    
 
           break;
 
@@ -238,20 +240,13 @@ function getTableConfig(type) {
 function renderTable(data, formatRow) {
     const tableBody = document.querySelector("#dataTable tbody");
     tableBody.innerHTML = ""; // Limpia la tabla existente
-
+    console.log('Datos recibidos tabla Solicitudes:', data);
     data.forEach(item => {
         const row = document.createElement("tr");
         row.innerHTML = formatRow(item);
         tableBody.appendChild(row);
     });
-/*
-    if (data.length > 0) {
-        fillEmisorSelect();
-        fillEstadoSelect();
-        fillEventoSelect();
-        fillEstablecimientoSelect();
-        fillInvitadoSelect();
-    }*/
+
 }
 
 
