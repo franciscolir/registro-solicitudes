@@ -6,7 +6,7 @@ public record DatosRegistraMovimiento(
 
         @NotNull(message = "numero de registro es obligatorio")
         Long solicitud,
-        Long usuario,
+        Long unidad,
         String comentarioAsignacion
 ) {
 

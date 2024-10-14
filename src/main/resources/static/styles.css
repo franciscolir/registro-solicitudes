@@ -139,6 +139,11 @@ th {
     width: auto;
     height: 40px;
 }
+.btn-option{
+    background-color: #D06344;
+    color: #ffffff;
+    font-weight: bold;
+}
 
 #declinarButton{
 color: #000;
@@ -193,6 +198,9 @@ color: #000;
     color: #fff;
 }
 
+.title {
+    font-weight: bold;
+}
 
 
 /*Jumbotron de bootstrap*/

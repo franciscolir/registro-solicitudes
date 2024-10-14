@@ -4,8 +4,7 @@ import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.util.Set;
 
 @Table(name = "unidades")
 @Entity(name = "Unidad")
@@ -24,13 +23,11 @@ public class Unidad {
     private String nombreUnidad;
     private String descripcion;
 
-
     private Boolean activo;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @OneToMany(mappedBy = "unidad", cascade = CascadeType.ALL)
+    private Set<Usuario> usuarios;
 
     @OneToOne(mappedBy = "unidad")
-    private Movimiento movimiento;  // Relación inversa
+    private Movimiento movimiento;
 }

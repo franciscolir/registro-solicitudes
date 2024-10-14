@@ -3,6 +3,7 @@ package com.api.documentacion.domain.movimiento;
 import com.api.documentacion.domain.Certificado;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
+import com.api.documentacion.domain.unidad.Unidad;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,6 @@ public class Movimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDateTime fechaIngreso;
     private LocalDateTime fechaAsignacion;
     private LocalDateTime fechaResuelto;
@@ -47,8 +47,8 @@ public class Movimiento {
     private Solicitud solicitud;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    @JoinColumn(name = "unidad_id")
+    private Unidad unidad;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")

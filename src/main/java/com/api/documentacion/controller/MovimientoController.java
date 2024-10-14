@@ -2,7 +2,6 @@ package com.api.documentacion.controller;
 
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.movimiento.MovimientoService;
-import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class MovimientoController {
     //ingresar un registro de movimiento de solicitud
     @PostMapping
     @Transactional
-    public ResponseEntity<DatosMuestraMovimientoAsignacion> ingresarRegistro(@RequestBody @Valid DatosRegistraMovimiento datos) {
+    public ResponseEntity<DatosMuestraMovimiento> ingresarRegistro(@RequestBody @Valid DatosRegistraMovimiento datos) {
         var movimiento = movimientoService.registrar(datos);
 
         return ResponseEntity.ok(movimiento);
@@ -36,23 +35,11 @@ public class MovimientoController {
         return ResponseEntity.ok(listaDeMovimientosAbiertos);
     }
 
-    //Obtener un movimiento
-    @GetMapping("/asignado/{id}")
-    public ResponseEntity<DatosMuestraMovimientoAsignacion> obtenerMovimientoAsignacion(@PathVariable("id") Long id) {
-        var movimiento  =  movimientoService.obtenerMovimientoAsignacion(id);
-        return ResponseEntity.ok(movimiento);
-    }
-    //Obtener un movimiento
-    @GetMapping("/resuelto/{id}")
-    public ResponseEntity<DatosMuestraMovimientoResuelto> obtenerMovimientoResuelto(@PathVariable("id") Long id) {
-        var movimiento  =  movimientoService.obtenerMovimientoResuelto(id);
-        return ResponseEntity.ok(movimiento);
-    }
 
     //Actualizar un movimiento
     @PutMapping("/resolver")
     @Transactional
-    public ResponseEntity<DatosMuestraMovimientoResuelto> actualizarMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
+    public ResponseEntity<DatosMuestraMovimiento> actualizarMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
         var movimiento = movimientoService.actualizaMovimiento(datos);
         return ResponseEntity.ok(movimiento);
     }

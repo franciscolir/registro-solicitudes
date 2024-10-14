@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Service
 public class MovimientoService {
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UnidadRepository unidadRepository;
     @Autowired
     CertificadoRepository certificadoRepository;
     @Autowired
@@ -25,11 +25,11 @@ public class MovimientoService {
 
     //POST___________________________________________
 
-    public DatosMuestraMovimientoAsignacion registrar(DatosRegistraMovimiento datos) {
+    public DatosMuestraMovimiento registrar(DatosRegistraMovimiento datos) {
 
-            var fechaAsignacion = LocalDateTime.now();
+        var fechaAsignacion = LocalDateTime.now();
         var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
-        var usuario = usuarioRepository.getReferenceById(datos.usuario());
+        var unidad = unidadRepository.getReferenceById(datos.unidad());
         var movimiento = new Movimiento(null,
                 null,
                 fechaAsignacion,
@@ -41,15 +41,15 @@ public class MovimientoService {
                 true,
                 datos.comentarioAsignacion(),
                 null,
-                EstadoMovimiento.PENDIENTE,
+                EstadoMovimiento.EN_PROCESO,
                 solicitud,
-                usuario,
+                unidad,
                 null,
                 null
         );
         movimientoRepository.save(movimiento);
 
-        return new DatosMuestraMovimientoAsignacion(movimiento);
+        return new DatosMuestraMovimiento(movimiento);
     }
 
     //___________________________________________________
@@ -63,29 +63,9 @@ public class MovimientoService {
     }
 
 
-    //obtiene movimiento al asignar
-
-    public DatosMuestraMovimientoAsignacion obtenerMovimientoAsignacion(Long idSolicitud) {
-
-        var id = movimientoRepository.findIdBySolicitudId(idSolicitud).getId();
-        var movimiento = movimientoRepository.getReferenceById(id);
-
-        return new DatosMuestraMovimientoAsignacion(movimiento);
-    }
-    //obtiene movimiento al resolver
-
-    public DatosMuestraMovimientoResuelto obtenerMovimientoResuelto(Long idSolicitud) {
-
-        var id = movimientoRepository.findIdBySolicitudId(idSolicitud).getId();
-        var movimiento = movimientoRepository.getReferenceById(id);
-
-        return new DatosMuestraMovimientoResuelto(movimiento);
-    }
-    //___________________________________________________
-
     //PUT________________________________________________
-    //resuelve movimiento
-    public DatosMuestraMovimientoResuelto actualizaMovimiento (DatosActualizaMovimiento datos){
+    //actualiza movimiento
+    public DatosMuestraMovimiento actualizaMovimiento (DatosActualizaMovimiento datos){
 
         var movimiento = movimientoRepository.getReferenceById(datos.id());
 
@@ -102,7 +82,7 @@ public class MovimientoService {
 
         var movimientoActualizado = movimientoRepository.getReferenceById(datos.id());
 
-        return new DatosMuestraMovimientoResuelto(movimientoActualizado);
+        return new DatosMuestraMovimiento(movimientoActualizado);
     }//______________
 
     //cierra movimiento

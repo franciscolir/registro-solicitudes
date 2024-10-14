@@ -41,11 +41,9 @@ public class Usuario {
     @ManyToMany(mappedBy = "invitados")
     private Set<Evento> eventos = new HashSet<>();
 
-    @OneToOne(mappedBy = "usuario")
-    private Unidad unidad;  // Relación inversa
-
-    @OneToOne(mappedBy = "usuario")
-    private Movimiento movimiento;  // Relación inversa
+    @ManyToOne
+    @JoinColumn(name = "unidad_id")
+    private Unidad unidad;
 
 
     public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Perfil perfil, Boolean activo, LocalDateTime fechaIngresoSistema) {

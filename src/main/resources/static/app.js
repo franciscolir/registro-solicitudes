@@ -157,33 +157,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Iterar sobre cada solicitud
                 solicitudes.forEach(item => {
                     const botonesOpciones = getBotonesOpciones(item);
+                    const estadoFormatted = item.estado
+                    .toLowerCase()                  // Convierte todo el texto a minúsculas
+                    .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
+                    .replace(/\b\w/g, letra => letra.toUpperCase()); // Convierte la primera letra de cada palabra a mayúscula
                     
                     rows += `
                         <tr>
                             <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
-                                <a>solicitud</a>
+                                <p class="title">solicitud</p>
                                     <li>${item.emisor}</li> 
                                     <li>${item.titulo}</li>  
                                     <li>${item.fechaSolicitud}</li> 
-                                    <li>${item.estado || 'No hay datos'}</li> 
+                                    <li>${estadoFormatted || 'No hay datos'}</li> 
                                 </ul>
                             </td>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
-                                <a>asignado a:</a>
-                                    <li>${item.nombreUsuario || 'No hay datos'}</li> 
-                                    <li>${item.fechaAsignacion || 'No hay datos'}</li>  
-                                    <li>${item.comentarioAsignacion || 'No hay datos'}</li> 
+                                <p class="title">asignado a:</p>
+                                    <li>${item.nombreUnidad || 'Sin asignar'}</li> 
+                                    <li>${item.fechaAsignacion != null ? 'el ' + item.fechaAsignacion : '-'}</li>
+                                    <li>${item.comentarioAsignacion || '-'}</li> 
                                 </ul>
                             </td>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
-                                <a>salida</a>
-                                    <li>${item.certificado || 'No hay datos'}</li> 
-                                    <li>${item.fechaResuelto || 'No hay datos'}</li>  
-                                    <li>${item.comentarioResuelto || 'No hay datos'}</li> 
+                                <p class="title">salida</p>
+                                    <li>${item.certificado != null ? 'Certificado N° ' + item.certificado : 'Pendiente'}</li>
+
+                                    <li>${item.fechaResuelto || '-'}</li>  
+                                    <li>${item.comentarioResuelto || '-'}</li> 
                                 </ul>
                             </td>
                             <td>${botonesOpciones}</td>
@@ -193,16 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <strong>Título:</strong> ${item.titulo} <br>
                                     <strong>Fecha Solicitud:</strong> ${item.fechaSolicitud} <br>
                                     <strong>Asignado a:</strong> ${item.nombreUsuario || 'No hay datos'} <br>
-                                    <strong>Estado:</strong> ${item.estado || 'No hay datos'} <br>
-                                    <strong>N° Certificado:</strong> ${item.certificado || 'No hay datos'} <br>
+                                    <strong>Estado:</strong> ${estadoFormatted || 'No hay datos'} <br>
+                                    <strong>Certificado N° </strong> ${item.certificado || 'No hay datos'} <br>
                                     <strong>Fecha Certificado:</strong> ${item.fechaResuelto || 'No hay datos'} <br>
                                 </div>
                                 <div class="btn-group">
                                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                                     <ul class="dropdown-menu">
-                                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver</a></li>
-                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
-                                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link text-success" onclick="" data-bs-toggle="modal" data-bs-target="#">ver</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link" onclick="" data-bs-toggle="modal" data-bs-target="#">asignar unidad</a></li>
+                                        <li class="dropdown-item"><a class="dropdown-link" onclick="" data-bs-toggle="modal" data-bs-target="#respuestaModal" >ingresar respuesta</a></li>
                                         <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
                                     </ul>
                                 </div>
@@ -226,9 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.asignado == true && item.resuelto == true) {
             return `
                 <div class="btn-group d-md-table-cell d-none">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar respuesta</a></li>
+                         <li class="dropdown-item"><a class="dropdown-link" onclick="" data-bs-toggle="modal" data-bs-target="#respuestaModal" >ingresar Memo</a></li>
                         <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li> 
                     </ul>
                 </div>
@@ -236,9 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (item.asignado == true) {
             return `
                 <div class="btn-group d-md-table-cell d-none">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar certificado</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link" onclick="">ingresar Certificado</a></li>
                         <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
                     </ul>
                 </div>
@@ -246,9 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             return `
                 <div class="btn-group d-md-table-cell d-none">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                    <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar unidad</a></li>
+                        <li class="dropdown-item"><a class="dropdown-link" onclick="">asignar Unidad</a></li>
                         <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
                         <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>     
                     </ul>

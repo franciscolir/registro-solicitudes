@@ -2,7 +2,7 @@ package com.api.documentacion.domain.movimiento;
 
 public enum EstadoMovimiento {
     INGRESADO,
-    PENDIENTE,
+    EN_PROCESO,
     RESUELTO,
     CERRADO,
     RECHAZADO
