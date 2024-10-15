@@ -27,23 +27,25 @@ public class MovimientoService {
 
     public DatosMuestraMovimiento registrar(DatosRegistraMovimiento datos) {
 
-        var fechaAsignacion = LocalDateTime.now();
+        var fechaIngreso = LocalDateTime.now();
         var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
-        var unidad = unidadRepository.getReferenceById(datos.unidad());
         var movimiento = new Movimiento(null,
+                fechaIngreso,
                 null,
-                fechaAsignacion,
                 null,
                 null,
-                true,
+                null,
                 false,
                 false,
+                false,
                 true,
-                datos.comentarioAsignacion(),
+                false,
                 null,
-                EstadoMovimiento.EN_PROCESO,
+                null,
+                null,
+                EstadoMovimiento.INGRESADO,
                 solicitud,
-                unidad,
+                null,
                 null,
                 null
         );
@@ -70,14 +72,34 @@ public class MovimientoService {
     }
 
     //PUT________________________________________________
+    // movimiento asignar
+    public DatosMuestraMovimiento asignarMovimiento (DatosAsignarMovimiento datos){
+
+        var movimiento = movimientoRepository.getReferenceById(datos.id());
+
+        var fechaAsignar = LocalDateTime.now();
+        var unidad = unidadRepository.getReferenceById(datos.unidad());
+        movimiento.asignarMovimiento(
+                datos.id(),
+                true,
+                fechaAsignar,
+                datos.comentarioAsignado(),
+                EstadoMovimiento.EN_PROCESO,
+                unidad
+        );
+
+        var movimientoActualizado = movimientoRepository.getReferenceById(datos.id());
+
+        return new DatosMuestraMovimiento(movimientoActualizado);
+    }//______________
     //actualiza movimiento
-    public DatosMuestraMovimiento actualizaMovimiento (DatosActualizaMovimiento datos){
+    public DatosMuestraMovimiento resolverMovimiento (DatosActualizaMovimiento datos){
 
         var movimiento = movimientoRepository.getReferenceById(datos.id());
 
             var fechaResuelto = LocalDateTime.now();
             var certificado = certificadoRepository.getReferenceById(datos.certificado());
-            movimiento.actualizaMovimiento(
+            movimiento.resolverMovimiento(
                     datos.id(),
                     true,
                     fechaResuelto,
@@ -92,7 +114,7 @@ public class MovimientoService {
     }//______________
 
     //cierra movimiento
-        public DatosMuestraMovimiento cierraMovimiento (DatosCierraMovimiento datos){
+        public DatosMuestraMovimiento cerrarMovimiento (DatosCierraMovimiento datos){
             var movimiento = movimientoRepository.getReferenceById(datos.id());
 
             var fechaCierre = LocalDateTime.now();
@@ -110,6 +132,25 @@ public class MovimientoService {
 
         return new DatosMuestraMovimiento(movimientoActualizado);
     }
+
+    //rechazar movimiento
+    public DatosMuestraMovimiento rechazarMovimiento (DatosRechazarMovimiento datos){
+
+        var movimiento = movimientoRepository.getReferenceById(datos.id());
+
+        var fechaRechazar = LocalDateTime.now();
+        movimiento.rechazaMovimiento(
+                datos.id(),
+                true,
+                fechaRechazar,
+                EstadoMovimiento.RECHAZADO,
+                datos.comentarioRechazar()
+        );
+
+        var movimientoActualizado = movimientoRepository.getReferenceById(datos.id());
+
+        return new DatosMuestraMovimiento(movimientoActualizado);
+    }//______________
     //______________________________________________________
 
     //DELETE________________________________________________

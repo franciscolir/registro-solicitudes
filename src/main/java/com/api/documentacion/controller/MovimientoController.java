@@ -43,12 +43,19 @@ public class MovimientoController {
         return ResponseEntity.ok(listaDeMovimientosSolicitudes);
     }
 
+    //Asignar un movimiento
+    @PutMapping("/asignar")
+    @Transactional
+    public ResponseEntity<DatosMuestraMovimiento> asignarMovimiento(@RequestBody @Valid DatosAsignarMovimiento datos){
+        var movimiento = movimientoService.asignarMovimiento(datos);
+        return ResponseEntity.ok(movimiento);
+    }
 
-    //Actualizar un movimiento
+    //Resolver un movimiento
     @PutMapping("/resolver")
     @Transactional
-    public ResponseEntity<DatosMuestraMovimiento> actualizarMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
-        var movimiento = movimientoService.actualizaMovimiento(datos);
+    public ResponseEntity<DatosMuestraMovimiento> resolverMovimiento(@RequestBody @Valid DatosActualizaMovimiento datos){
+        var movimiento = movimientoService.resolverMovimiento(datos);
         return ResponseEntity.ok(movimiento);
     }
 
@@ -56,7 +63,15 @@ public class MovimientoController {
     @PutMapping("/cerrar")
     @Transactional
     public ResponseEntity<DatosMuestraMovimiento> cierraMovimiento(@RequestBody @Valid DatosCierraMovimiento datos){
-        var movimiento = movimientoService.cierraMovimiento(datos);
+        var movimiento = movimientoService.cerrarMovimiento(datos);
+        return ResponseEntity.ok(movimiento);
+    }
+
+    //Cierra un movimiento
+    @PutMapping("/rechazar")
+    @Transactional
+    public ResponseEntity<DatosMuestraMovimiento> rechazarMovimiento(@RequestBody @Valid DatosRechazarMovimiento datos){
+        var movimiento = movimientoService.rechazarMovimiento(datos);
         return ResponseEntity.ok(movimiento);
     }
 

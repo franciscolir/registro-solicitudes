@@ -161,7 +161,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     .toLowerCase()                  // Convierte todo el texto a minúsculas
                     .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
                     .replace(/\b\w/g, letra => letra.toUpperCase()); // Convierte la primera letra de cada palabra a mayúscula
-                    
+                    const form = `<form>
+    <div class="mb-3">
+        <select class="form-select" id="unidad" aria-describedby="unidadHelp">
+            <option value="" disabled selected>Seleccionar Unidad</option>
+            <!-- Opciones del select -->
+        </select>
+     </div>
+
+   <li> <div class="mb-3">
+        <input type="text" class="form-control" id="inputComentarioAsignar" aria-describedby="comentarioHelp" placeholder="Comentario">
+     </div>
+     </li>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+`;
+
+
                     rows += `
                         <tr>
                             <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
@@ -175,20 +193,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </ul>
                             </td>
                             <td class="fila d-md-table-cell d-none">
-                                <ul>
-                                <p class="title">asignado a:</p>
-                                    <li>${item.nombreUnidad || 'Sin asignar'}</li> 
-                                    <li>${item.fechaAsignacion != null ? 'el ' + item.fechaAsignacion : '-'}</li>
-                                    <li>${item.comentarioAsignacion || '-'}</li> 
+                               <ul>
+                                    <p class="title">Asignado a:</p>
+                                    ${item.nombreUnidad  ? `
+                                        <li>${item.nombreUnidad}</li>
+                                        <li>${'el ' + item.fechaAsignacion}</li>
+                                        <li>${item.comentarioAsignacion}</li>
+                                    ` : `
+                                        <li>${item.rechazado ?`
+                                        <p> ${estadoFormatted} </p> 
+                                        <li>${item.comentarioRechazado}</li>
+                                        `: form}</li>
+                                    `}
                                 </ul>
+
                             </td>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
                                 <p class="title">salida</p>
+                                
                                     <li>${item.certificado != null ? 'Certificado N° ' + item.certificado : 'Pendiente'}</li>
 
-                                    <li>${item.fechaResuelto || '-'}</li>  
-                                    <li>${item.comentarioResuelto || '-'}</li> 
+                                    <li>${item.fechaResuelto}</li>  
+                                    <li>${item.comentarioResuelto}</li> 
                                 </ul>
                             </td>
                             <td>${botonesOpciones}</td>

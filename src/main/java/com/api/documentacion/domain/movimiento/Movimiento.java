@@ -1,6 +1,7 @@
 package com.api.documentacion.domain.movimiento;
 
 import com.api.documentacion.domain.Certificado;
+import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.unidad.Unidad;
@@ -30,14 +31,17 @@ public class Movimiento {
     private LocalDateTime fechaAsignacion;
     private LocalDateTime fechaResuelto;
     private LocalDateTime fechaCierre;
+    private LocalDateTime fechaRechazado;
 
     private Boolean asignado;
     private Boolean resuelto;
     private Boolean cerrado;
     private Boolean activo;
+    private Boolean rechazado;
 
     private String comentarioAsignacion;
     private String comentarioResuelto;
+    private String comentarioRechazado;
 
     @Enumerated(EnumType.STRING)
     private EstadoMovimiento estado;
@@ -59,7 +63,22 @@ public class Movimiento {
     private Respuesta respuesta;
 
 
-    public void actualizaMovimiento (Long id, Boolean resuelto, LocalDateTime fechaResuelto, String comentarioResuelto, EstadoMovimiento estado, Certificado certificado){
+    public void asignarMovimiento (Long id, Boolean asignado, LocalDateTime fechaAsignacion, String comentarioAsignacion, EstadoMovimiento estado, Unidad unidad){
+
+        this.id = id;
+        if(asignado != null)
+            this.asignado = asignado;
+        if(Movimiento.this.fechaAsignacion != null)
+            this.fechaAsignacion = fechaAsignacion;
+        if(Movimiento.this.comentarioAsignacion != null)
+            this.comentarioAsignacion = comentarioAsignacion;
+        this.estado = estado;
+        if(Movimiento.this.unidad != null)
+            this.unidad = unidad;
+
+    }
+
+    public void resolverMovimiento (Long id, Boolean resuelto, LocalDateTime fechaResuelto, String comentarioResuelto, EstadoMovimiento estado, Certificado certificado){
 
         this.id = id;
         if(resuelto != null)
@@ -73,6 +92,7 @@ public class Movimiento {
             this.certificado = certificado;
 
     }
+
     public void cierraMovimiento (Long id, Boolean cerrado, LocalDateTime fechaCierre, EstadoMovimiento estado, Respuesta respuesta){
 
         this.id = id;
@@ -84,6 +104,19 @@ public class Movimiento {
         if(respuesta != null)
             this.respuesta = respuesta;
     }
+
+    public void rechazaMovimiento (Long id, Boolean rechazado, LocalDateTime fechaRechazado, EstadoMovimiento estado, String comentarioRechazado){
+
+        this.id = id;
+        if(rechazado != null)
+            this.rechazado = rechazado;
+        if(fechaRechazado != null)
+            this.fechaRechazado = fechaRechazado;
+        this.estado = estado;
+        if(comentarioRechazado != null)
+            this.comentarioRechazado = comentarioRechazado;
+    }
+
 
 
     public void eliminarMovimiento (Long id){

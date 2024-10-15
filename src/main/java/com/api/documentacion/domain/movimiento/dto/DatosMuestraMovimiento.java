@@ -25,7 +25,10 @@ public record DatosMuestraMovimiento (
         String titulo,
         String fechaSolicitud,
         Boolean asignado,
-        Boolean resuelto
+        Boolean resuelto,
+        Boolean rechazado,
+        String comentarioRechazado,
+        String fechaRechazado
 
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -47,9 +50,11 @@ public record DatosMuestraMovimiento (
                 movimiento.getSolicitud() != null ? movimiento.getSolicitud().getTitulo() : null,
                 formatDate(Objects.requireNonNull(movimiento.getSolicitud()).getFechaSolicitud()),
                 movimiento.getAsignado(),
-                movimiento.getResuelto()
+                movimiento.getResuelto(),
+                movimiento.getRechazado(),
+                movimiento.getComentarioRechazado(),
+                formatDateTime(movimiento.getFechaRechazado())
         );
-
 }
 
     private static String formatDateTime(LocalDateTime dateTime) {
