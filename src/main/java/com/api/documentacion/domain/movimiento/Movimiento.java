@@ -46,19 +46,19 @@ public class Movimiento {
     @Enumerated(EnumType.STRING)
     private EstadoMovimiento estado;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "solicitud_id")
     private Solicitud solicitud;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "unidad_id")
-    private Unidad unidad;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "unidad_id") // Nombre de la columna en la tabla movimientos
+    private Unidad unidad; // Relación ManyToOne
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")
     private Certificado certificado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "respuesta_id")
     private Respuesta respuesta;
 
@@ -68,12 +68,12 @@ public class Movimiento {
         this.id = id;
         if(asignado != null)
             this.asignado = asignado;
-        if(Movimiento.this.fechaAsignacion != null)
+        if(fechaAsignacion != null)
             this.fechaAsignacion = fechaAsignacion;
-        if(Movimiento.this.comentarioAsignacion != null)
+        if(comentarioAsignacion != null)
             this.comentarioAsignacion = comentarioAsignacion;
         this.estado = estado;
-        if(Movimiento.this.unidad != null)
+        if(unidad != null)
             this.unidad = unidad;
 
     }

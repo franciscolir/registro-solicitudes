@@ -6,8 +6,8 @@ public record DatosRegistraMovimiento(
 
         @NotNull(message = "numero de registro es obligatorio")
         Long solicitud,
-        Long unidad,
-        String comentarioAsignacion
+        @NotNull(message = "numero de emisor es obligatorio")
+        Long emisor
 ) {
 
 }

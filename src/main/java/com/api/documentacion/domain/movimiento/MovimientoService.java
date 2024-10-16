@@ -2,6 +2,7 @@ package com.api.documentacion.domain.movimiento;
 
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
+import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,13 +23,16 @@ public class MovimientoService {
     SolicitudRepository solicitudRepository;
     @Autowired
     MovimientoRepository movimientoRepository;
+    @Autowired
+    SolicitudService solicitudService;
 
     //POST___________________________________________
 
     public DatosMuestraMovimiento registrar(DatosRegistraMovimiento datos) {
 
         var fechaIngreso = LocalDateTime.now();
-        var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
+        var id = solicitudService.validaYObtieneIdConNumeroSolicitud(datos.solicitud(), datos.emisor());
+        var solicitud = solicitudRepository.getReferenceById(id);
         var movimiento = new Movimiento(null,
                 fechaIngreso,
                 null,
@@ -61,7 +65,7 @@ public class MovimientoService {
 
     public Page<DatosMuestraMovimiento> obtenerListaDeMovimientosPendientes(Pageable paginacion) {
 
-        return movimientoRepository.findByActivoTrueAndCerradoFalse(paginacion).map(DatosMuestraMovimiento::new);
+        return movimientoRepository.findByActivoTrueAndCerradoFalseAndRechazadoFalse(paginacion).map(DatosMuestraMovimiento::new);
     }
 
     //obtiene movimiento al ingresar solicitud

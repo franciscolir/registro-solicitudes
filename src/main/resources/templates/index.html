@@ -14,6 +14,8 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/static/styleTime.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
@@ -53,7 +55,8 @@
        
                 <div class="col-md-9">
                     <table class="table" id="tableIngreso">
-                        <h2>Registro de solicitudes</h2>
+                        <h2>Registro de solicitudes<button class="btn btn-outline-secondary" type="button"
+                            onclick="showTable('solicitudes')">Ingresar</button></h2>
                         <thead class="tableResumen" >
                           <tr>
                             <th scope="col">#</th>
@@ -96,7 +99,7 @@
             </div>
         </section>
 
-        <!-- Modal para Rechazar Solicitud -->
+        <!-- Modal para Rechazar Solicitud 
         <div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -108,7 +111,7 @@
                     <div class="modal-body">
                         <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
 
-                        <!-- Formulario -->
+                       
                         <form id="rechazarForm" class="needs-validation"
                             onsubmit="event.preventDefault(); enviarFormularioRechazar();">
                             <div class="mb-3">
@@ -129,7 +132,7 @@
                 </div>
             </div>
         </div>
-
+    -->
 
         <section class="bloqueDocumentos">
             <div class="container-fluid">
@@ -365,7 +368,12 @@
 
                         <!-- Formulario -->
                         <form id="myForm" class="needs-validation"
-                            onsubmit="event.preventDefault(); enviarFormulario();">
+                            onsubmit="event.preventDefault(); enviarFormularios();">
+                            <div class="form-group">
+                                <label for="providencia">Número de Providencia:</label>
+                                <input type="number" id="providencia" name="providencia" class="form-control"
+                                    required>
+                            </div>
                             <div class="form-group">
                                 <label for="emisor">Emisor:</label>
                                 <select id="emisor" name="emisor" class="form-control" required>
@@ -375,7 +383,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="numeroSolicitud">Número de Solicitud:</label>
-                                <input type="number" id="numeroSolicitud" name="numeroSolicitud" class="form-control"
+                                <input type="number" id="numeroSolicitudForm" name="numeroSolicitud" class="form-control"
                                     required>
                             </div>
                             <div class="form-group">
@@ -605,6 +613,7 @@
 
     <!-- Javascript -->
     <script src="/static/app.js"></script>
+    <script src="/static/appTablaMovimientoSolicitudes.js"></script>
     <script src="/static/appModalBuscadores.js"></script>
     <script src="/static/appModalEvento.js"></script>
     <script src="/static/appModalRespuesta.js"></script>

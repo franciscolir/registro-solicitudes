@@ -13,7 +13,7 @@ public interface MovimientoRepository extends JpaRepository<Movimiento,Long> {
 
 
 
-    Page<Movimiento> findByActivoTrueAndCerradoFalse(Pageable paginacion);
+    Page<Movimiento> findByActivoTrueAndCerradoFalseAndRechazadoFalse(Pageable paginacion);
 
     Page<Movimiento> findByActivoTrue(Pageable paginacion);
 }

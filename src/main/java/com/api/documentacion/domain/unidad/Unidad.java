@@ -25,9 +25,15 @@ public class Unidad {
 
     private Boolean activo;
 
-    @OneToMany(mappedBy = "unidad", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "unidad",fetch = FetchType.LAZY)
     private Set<Usuario> usuarios;
 
-    @OneToOne(mappedBy = "unidad")
-    private Movimiento movimiento;
+    @OneToMany(mappedBy = "unidad", fetch = FetchType.LAZY)
+    private Set<Movimiento> movimientos; // Relación OneToMany
+
+
+    public void eliminarUnidad(Long id) {
+        this.id = id;
+        this.activo = false;
+    }
 }

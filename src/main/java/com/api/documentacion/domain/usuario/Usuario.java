@@ -38,10 +38,10 @@ public class Usuario {
 
     private LocalDateTime fechaIngresoSistema;
 
-    @ManyToMany(mappedBy = "invitados")
+    @ManyToMany(mappedBy = "invitados",fetch = FetchType.LAZY)
     private Set<Evento> eventos = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_id")
     private Unidad unidad;
 

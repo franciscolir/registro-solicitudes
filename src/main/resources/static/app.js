@@ -139,8 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
+/*
 //MOVIMIENTO DE SOLICITUDES PENDIENTES #########################################
 document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('tableIngreso');
@@ -161,61 +160,77 @@ document.addEventListener('DOMContentLoaded', () => {
                     .toLowerCase()                  // Convierte todo el texto a minúsculas
                     .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
                     .replace(/\b\w/g, letra => letra.toUpperCase()); // Convierte la primera letra de cada palabra a mayúscula
-                    const form = `<form>
-    <div class="mb-3">
-        <select class="form-select" id="unidad" aria-describedby="unidadHelp">
-            <option value="" disabled selected>Seleccionar Unidad</option>
-            <!-- Opciones del select -->
-        </select>
-     </div>
-
-   <li> <div class="mb-3">
-        <input type="text" class="form-control" id="inputComentarioAsignar" aria-describedby="comentarioHelp" placeholder="Comentario">
-     </div>
-     </li>
-
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
-
-`;
-
-
-                    rows += `
-                        <tr>
-                            <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
-                            <td class="fila d-md-table-cell d-none">
-                                <ul>
-                                <p class="title">solicitud</p>
-                                    <li>${item.emisor}</li> 
-                                    <li>${item.titulo}</li>  
-                                    <li>${item.fechaSolicitud}</li> 
-                                    <li>${estadoFormatted || 'No hay datos'}</li> 
-                                </ul>
-                            </td>
-                            <td class="fila d-md-table-cell d-none">
-                               <ul>
-                                    <p class="title">Asignado a:</p>
-                                    ${item.nombreUnidad  ? `
-                                        <li>${item.nombreUnidad}</li>
-                                        <li>${'el ' + item.fechaAsignacion}</li>
-                                        <li>${item.comentarioAsignacion}</li>
-                                    ` : `
-                                        <li>${item.rechazado ?`
-                                        <p> ${estadoFormatted} </p> 
-                                        <li>${item.comentarioRechazado}</li>
-                                        `: form}</li>
-                                    `}
-                                </ul>
+                    const form1 = `<form id="form1"> 
+                    <div class="mb-3">
+                        <select class="form-select" id="unidad" aria-describedby="unidadHelp">
+                            <option value="" disabled selected>Seleccionar Unidad</option>
+                            <!-- Opciones del select -->
+                        </select>
+                    </div>
+                    <li> 
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="inputComentarioAsignar" aria-describedby="comentarioHelp" placeholder="Comentario">
+                        </div>
+                    </li>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>`;
+                
+                const form2 = `<form id="form2"> 
+                    <div class="mb-3">
+                        <!-- Aquí puedes agregar más campos si es necesario -->
+                    </div>
+                    <li> 
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="inputComentarioRechazar" aria-describedby="comentarioHelp" placeholder="Comentario"> 
+                        </div>
+                    </li>
+                    <button type="submit" class="btn btn-warning">Rechazar</button> 
+                </form>`;
+                
+                rows += `
+                    <tr>
+                        <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
+                        <td class="fila d-md-table-cell d-none">
+                            <ul>
+                                <p class="title">Solicitud</p>
+                                <li>${item.emisor}</li> 
+                                <li>${item.titulo}</li>  
+                                <li>${item.fechaSolicitud}</li> 
+                                <li>${estadoFormatted || 'No hay datos'}</li> 
+                            </ul>
+                        </td>
+                        <td class="fila d-md-table-cell d-none">
+                            <ul>
+                                <p class="title">Asignado a:</p>
+                                ${item.nombreUnidad ? `
+                                    <li>${item.nombreUnidad}</li>
+                                    <li>${'el ' + item.fechaAsignacion}</li>
+                                    <li>${item.comentarioAsignacion}</li>
+                                ` : `
+                                    <li>
+                                        ${item.rechazado ? `
+                                            <p>${estadoFormatted}</p> 
+                                            <li>${item.comentarioRechazado}</li>
+                                        ` : `
+                                            <button type="button" class="btn btn-primary" onclick="selectForm(1)">Asignar Unidad</button>
+                                            <button type="button" class="btn btn-danger" onclick="selectForm(2)">Rechazar</button>
+                                            <div id="formContainer${item.solicitud}"></div>
+                                        `}
+                                    </li>
+                                `}
+                            </ul>
 
                             </td>
                             <td class="fila d-md-table-cell d-none">
                                 <ul>
                                 <p class="title">salida</p>
-                                
+                                ${item.rechazado ? `
+                                    <li>${estadoFormatted}</li>
+                                     ` : `
                                     <li>${item.certificado != null ? 'Certificado N° ' + item.certificado : 'Pendiente'}</li>
-
-                                    <li>${item.fechaResuelto}</li>  
-                                    <li>${item.comentarioResuelto}</li> 
+                                    <li>${item.fechaResuelto || ""}</li>  
+                                    <li>${item.comentarioResuelto || ""}</li> 
+                                    `}
                                 </ul>
                             </td>
                             <td>${botonesOpciones}</td>
@@ -253,7 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
         }
     };
-
+    function selectForm(formNumber) {
+        const formContainer = document.getElementById(`formContainer${item.solicitud}`);
+        if (formNumber === 1) {
+            formContainer.innerHTML = form1;
+        } else if (formNumber === 2) {
+            formContainer.innerHTML = form2;
+        }
+    }
     const getBotonesOpciones = (item) => {
         if (item.asignado == true && item.resuelto == true) {
             return `
@@ -288,6 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
     };
-
+ 
     loadData();
 });
+
+*/
+
