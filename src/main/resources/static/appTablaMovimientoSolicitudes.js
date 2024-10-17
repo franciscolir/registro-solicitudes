@@ -65,7 +65,12 @@ const loadData = async () => {
                                     <li class="list-group">${estadoFormatted}</li>
                                 ` : `
                                     <li class="list-group">${item.certificado != null ? 'Certificado N° ' + item.certificado : 'Pendiente'}</li>
-                                    <li class="list-group">${item.fechaResuelto || ""}</li>
+                                    <li class="list-group">
+                                        ${item.fechaResuelto 
+                                            ? item.fechaResuelto 
+                                            : `<button id="abrirFormulario" data-unidad="${item.unidad}" data-movimiento="${item.id}">Ingresar Certificado</button>`}
+                                    </li>
+
                                     <li class="list-group">${item.comentarioResuelto || ""}</li>
                                 `}
                             </ul>

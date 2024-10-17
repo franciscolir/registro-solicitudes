@@ -25,6 +25,14 @@ background-color: #D06344;
     color: #084C77;
 }
 
+.enlace-certificado {
+    color:  #084C77; /* Cambia el color a lo que desees */
+    text-decoration: underline; /* Para subrayar el enlace, opcional */
+}
+
+.enlace-certificado:hover {
+    color: darkblue; /* Cambia el color al pasar el mouse, opcional */
+}
 
 
 .navbar {

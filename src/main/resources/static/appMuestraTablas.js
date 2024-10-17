@@ -203,6 +203,7 @@ function getTableConfig(type) {
           `;
           config.buttonHtml = `
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#respuestaModal">Ingresar Respuesta</button>
+                 <button id="abrirRespuesta">Agregar Respuesta</button>
                  `;
           config.filtroHtml = `
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalRespuestas">Aplicar Filtros</button>

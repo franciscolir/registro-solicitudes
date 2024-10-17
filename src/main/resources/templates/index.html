@@ -55,8 +55,7 @@
        
                 <div class="col-md-9">
                     <table class="table" id="tableIngreso">
-                        <h2>Registro de solicitudes<button class="btn btn-outline-secondary" type="button"
-                            onclick="showTable('solicitudes')">Ingresar</button></h2>
+                        <h2>Registro de solicitudes <button id="abrirSolicitud">Agregar Solicitud</button></h2>
                         <thead class="tableResumen" >
                           <tr>
                             <th scope="col">#</th>
@@ -99,40 +98,7 @@
             </div>
         </section>
 
-        <!-- Modal para Rechazar Solicitud 
-        <div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="rechazarModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="rechazarModalLabel">Rechazar solicitud</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="alertMessageRechazar" class="alert alert-danger" style="display:none;"></div>
 
-                       
-                        <form id="rechazarForm" class="needs-validation"
-                            onsubmit="event.preventDefault(); enviarFormularioRechazar();">
-                            <div class="mb-3">
-                                <label for="numeroRechazar">Número de Solicitud:</label>
-                                <div id="numeroRechazar"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="comentarioRechazar">Comentario:</label>
-                                <textarea id="comentarioRechazar" name="comentario"
-                                    placeholder="Indicar Motivo de Rechazo" class="form-control" required></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    -->
 
         <section class="bloqueDocumentos">
             <div class="container-fluid">
@@ -179,9 +145,20 @@
             </div>
         </section>
 
+
     </main>
 
+    <div id="formularioContainer"></div>
 
+
+    
+   
+ 
+    
+    
+    
+
+    
 
 
 
@@ -618,7 +595,7 @@
     <script src="/static/appModalEvento.js"></script>
     <script src="/static/appModalRespuesta.js"></script>
     <script src="/static/appModalSolicitud.js"></script>
-    <script src="/static/appModalRechazar.js"></script>
+    <script src="/static/appMuestraForms.js"></script>
     <script src="/static/appMuestraTablas.js"></script>
     <script src="/static/appTime.js"></script>
 

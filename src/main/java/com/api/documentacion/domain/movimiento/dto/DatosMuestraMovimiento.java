@@ -28,7 +28,8 @@ public record DatosMuestraMovimiento (
         Boolean resuelto,
         Boolean rechazado,
         String comentarioRechazado,
-        String fechaRechazado
+        String fechaRechazado,
+        Long unidad
 
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -53,7 +54,8 @@ public record DatosMuestraMovimiento (
                 movimiento.getResuelto(),
                 movimiento.getRechazado(),
                 movimiento.getComentarioRechazado(),
-                formatDateTime(movimiento.getFechaRechazado())
+                formatDateTime(movimiento.getFechaRechazado()),
+                movimiento.getUnidad().getId()
         );
 }
 
