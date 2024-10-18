@@ -24,7 +24,7 @@ const loadData = async () => {
                         <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
                         <td class="fila d-md-table-cell d-none">
                             <ul class="list-group">
-                                <p class="title">Solicitud</p>
+                                <h3 class="title">Solicitud</h3>
                                 <li>${item.emisor}</li>
                                 <li class="list-group">${item.titulo}</li>
                                 <li class="list-group">${item.fechaSolicitud}</li>
@@ -33,7 +33,7 @@ const loadData = async () => {
                         </td>
                         <td class="fila d-md-table-cell d-none">
                             <ul class="list-group">
-                                <p class="title">Asignado a:</p>
+                                <h3 class="title">Asignado a:</h3>
                                 ${item.nombreUnidad ? `
                                     <li>${item.nombreUnidad}</li>
                                     <li class="list-group">${'el ' + item.fechaAsignacion}</li>
@@ -41,7 +41,7 @@ const loadData = async () => {
                                 ` : `
                                     <li class="list-group">
                                         ${item.rechazado ? `
-                                            <p>${estadoFormatted}</p>
+                                            <h5>${estadoFormatted}</h5>
                                             <li class="list-group">${item.comentarioRechazado}</li>
                                         ` : `
                                             <label>
@@ -58,23 +58,20 @@ const loadData = async () => {
                                 `}
                             </ul>
                         </td>
-                        <td class="fila d-md-table-cell d-none">
-                            <ul class="list-group">
-                                <p class="title">Certificado</p>
-                                ${item.rechazado ? `
-                                    <li class="list-group">${estadoFormatted}</li>
-                                ` : `
-                                    <li class="list-group">${item.certificado != null ? 'Certificado N° ' + item.certificado : 'Pendiente'}</li>
-                                    <li class="list-group">
-                                        ${item.fechaResuelto 
-                                            ? item.fechaResuelto 
-                                            : `<button id="abrirFormulario" data-unidad="${item.unidad}" data-movimiento="${item.id}">Ingresar Certificado</button>`}
-                                    </li>
-
-                                    <li class="list-group">${item.comentarioResuelto || ""}</li>
-                                `}
-                            </ul>
-                        </td>
+                           <td class="mb-3 fila d-md-table-cell d-none">
+            <ul class="mb-3 list-group">
+                <h3 class="title">Certificado</h3>
+                ${item.rechazado ? `
+                    <li class="list-group">${estadoFormatted}</li>
+                ` : `
+                    <li class="list-group">${item.certificado != null ? 'Certificado N° ' + item.certificado : ` 'Pendiente'
+                    `}
+                    </li>
+                    <li class="list-group"> ${item.fechaResuelto || ""}</li>
+                    <li class="list-group">${item.comentarioResuelto || ""}</li>
+                `}
+            </ul>
+        </td>
                         <td>${botonesOpciones}</td>
                         <td class="d-md-none">
                             <div>
@@ -128,6 +125,7 @@ const getBotonesOpciones = (item) => {
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
+                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormulario"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
                 </ul>
             </div>
         `;
@@ -136,7 +134,6 @@ const getBotonesOpciones = (item) => {
             <div class="btn-group d-md-table-cell d-none">
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a class="dropdown-link text-danger" onclick="captarParametros(${item.id}, ${item.numeroSolicitud}, 'rechazarModal', 'numeroRechazar')">rechazar</a></li>
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
                 </ul>
             </div>

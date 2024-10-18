@@ -41,6 +41,7 @@
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a></li>
             </ul>
+            <button id="abrirSolicitud" class="btn btn-outline-secondary ms-auto">Ingresar Solicitud</button>
             <button type="submit" class="btn btn-outline-success ms-auto" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar oficio</button>
         </div>
     </nav>
@@ -55,7 +56,7 @@
        
                 <div class="col-md-9">
                     <table class="table" id="tableIngreso">
-                        <h2>Registro de solicitudes <button id="abrirSolicitud">Agregar Solicitud</button></h2>
+                        <h2 class="titulo-principal">Solicitudes en proceso</h2>
                         <thead class="tableResumen" >
                           <tr>
                             <th scope="col">#</th>
@@ -591,11 +592,12 @@
     <!-- Javascript -->
     <script src="/static/app.js"></script>
     <script src="/static/appTablaMovimientoSolicitudes.js"></script>
+    <script type="module" src="/static/appGetAxios.js"></script>
     <script src="/static/appModalBuscadores.js"></script>
     <script src="/static/appModalEvento.js"></script>
     <script src="/static/appModalRespuesta.js"></script>
     <script src="/static/appModalSolicitud.js"></script>
-    <script src="/static/appMuestraForms.js"></script>
+    <script type="module" src="/static/appMuestraForms.js"></script>
     <script src="/static/appMuestraTablas.js"></script>
     <script src="/static/appTime.js"></script>
 
