@@ -74,10 +74,15 @@ async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimie
     const formularioDiv = document.createElement("div");
     formularioDiv.className = "formulario-oculto";
 
-    // Asignar valores a los campos
-    formConfig.fields.find(field => field.name === 'unidad').value = unidad; // ID de la unidad
-    formConfig.fields.find(field => field.name === 'nombreUnidad').value = "Unidad:  "+nombreUnidad; // Solo se muestra al usuario
-    formConfig.fields.find(field => field.name === 'movimiento').value = movimiento; // Valor del movimiento
+       // Asignar valores a los campos, verificando que existan
+       const unidadField = formConfig.fields.find(field => field.name === 'unidad');
+       const nombreUnidadField = formConfig.fields.find(field => field.name === 'nombreUnidad');
+       const movimientoField = formConfig.fields.find(field => field.name === 'movimiento');
+   
+    if (unidadField) unidadField.value = unidad; // ID de la unidad
+    if (nombreUnidadField) nombreUnidadField.value = nombreUnidad; // Solo se muestra al usuario
+    if (movimientoField) movimientoField.value = movimiento; // Valor del movimiento
+
 
     const fieldsHtml = formConfig.fields.map(field =>
         formConfig.formatRow(field)
@@ -131,6 +136,7 @@ document.body.addEventListener("click", (event) => {
             const movimiento = event.target.getAttribute("data-movimiento");
             crearFormulario('certificado', unidad, nombreUnidad, movimiento);
         } else if (event.target.id === "abrirSolicitud") {
+            const movimiento = event.target.getAttribute("data-movimiento");
             crearFormulario('solicitud');
         } else if (event.target.id === "abrirRespuesta") {
             crearFormulario('respuesta');
