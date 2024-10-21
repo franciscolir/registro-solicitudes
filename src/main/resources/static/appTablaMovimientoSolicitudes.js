@@ -1,12 +1,15 @@
+
+
 // Variable global para tableBody
 let tableBody;
 
 
-const loadData = async () => {
+export const loadData = async () => {
+    
     try {
         const solicitudesResponse = await axios.get('http://localhost:8080/movimientos/pendientes?size=10');
         const solicitudes = solicitudesResponse.data.content;
-
+        
         if (Array.isArray(solicitudes)) {
             tableBody.innerHTML = ''; // Limpiar el cuerpo de la tabla
             let rows = ''; // Variable para acumular las filas

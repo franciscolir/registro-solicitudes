@@ -1,10 +1,13 @@
 
+
 let data = []; // Variable global para almacenar los datos obtenidos
 
 // Función para mostrar el main y ocultar la tabla
-function resetView() {
+export function resetView() {
     document.getElementById("mainContent").classList.remove("d-none");
     document.getElementById("tableSection").classList.add("d-none");
+  // Si ya hay un formulario abierto, lo eliminamos
+  cerrarFormularioExistente()
 }
 
 // Función para limpiar filtros
@@ -114,6 +117,8 @@ function filterData(data, filters) {
 function showTable(type) {
     document.getElementById("mainContent").classList.add("d-none");
     document.getElementById("tableSection").classList.remove("d-none");
+// Si ya hay un formulario abierto, lo eliminamos
+   cerrarFormularioExistente()
 
     const tableConfig = getTableConfig(type);
     const { title, headers, formatRow, buttonHtml, filtroHtml } = tableConfig;
@@ -346,6 +351,13 @@ function formatText(text) {
       .replace(/\b\w/g, (letra) => letra.toUpperCase());
 }
 
+function cerrarFormularioExistente() {
+    const existingForm = document.querySelector(".formulario-oculto");
+    if (existingForm) {
+        // Si ya hay un formulario abierto, lo eliminamos
+        existingForm.remove();
+    }
+}
 
 // Inicializa la tabla al cargar la página
 resetView();

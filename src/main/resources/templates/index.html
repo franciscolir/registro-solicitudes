@@ -34,7 +34,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="navbar-nav d-flex justify-content-center">
-                <li class="nav-item"><a class="nav-link" href="#" onclick="resetView()">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="resetView();">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('certificados')">Certificados</a></li>
@@ -239,48 +239,7 @@
             </div>
         </div>
 
-        <!-- Modal para Aplicar Filtros Respuestas -->
-        <div class="modal fade" id="filterModalRespuestas" tabindex="-1" aria-labelledby="filterModalLabelRespuestas"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="filterModalLabelRespuestas">Aplicar Filtros (Respuestas)</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="filterFormRespuestas">
-                            <div class="mb-3">
-                                <label for="filterNumeroRespuesta" class="form-label">Buscar por N° Respuesta</label>
-                                <input type="number" class="form-control" id="filterNumeroRespuesta"
-                                    placeholder="Buscar por N°">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterTituloRespuesta" class="form-label">Buscar por Título</label>
-                                <input type="text" class="form-control" id="filterTituloRespuesta"
-                                    placeholder="Buscar por título">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterDescripcionRespuesta" class="form-label">Buscar por
-                                    Descripción</label>
-                                <input type="text" class="form-control" id="filterDescripcionRespuesta"
-                                    placeholder="Buscar por descripción">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterSolicitudRespuesta" class="form-label">Buscar por N° Solicitud</label>
-                                <input type="number" class="form-control" id="filterSolicitudRespuesta"
-                                    placeholder="Buscar por N°">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="applyFilters('respuestas')"
-                            data-bs-dismiss="modal">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
         <!-- Modal para Aplicar Filtros Eventos -->
         <div class="modal fade" id="filterModalEventos" tabindex="-1" aria-labelledby="filterModalLabelEventos"
             aria-hidden="true">
@@ -485,67 +444,6 @@
         </div>
     </div>
 
-    <!-- Modal para Registrar Respuesta -->
-    <div class="modal fade" id="respuestaModal" tabindex="-1" role="dialog" aria-labelledby="respuestaModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="respuestaModalLabel">Ingresar Respuesta</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Alerta para mostrar el mensaje de éxito o error -->
-                    <div id="alertMessageRespuesta" class="alertRespuesta" style="display:none;"></div>
-
-                    <!-- Formulario -->
-                    <form id="respuestaForm" class="needs-validation"
-                        onsubmit="event.preventDefault(); enviarFormularioRespuesta();">
-                        <div class="form-group">
-                            <label for="numeroSolicitudR">Número de Solicitud:</label>
-                            <input type="number" id="numeroSolicitudR" name="numeroSolicitudR" value=""
-                                class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="numeroRespuesta">Número de Respuesta:</label>
-                            <input type="number" id="numeroRespuesta" name="numeroRespuesta" class="form-control"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="funcionario">Funcionario:</label>
-                            <select id="funcionario" name="funcionario" class="form-control" required>
-                                <option value="" disabled selected></option>
-                                <!-- Opciones se llenarán dinámicamente -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="titulo">Título:</label>
-                            <input type="text" id="tituloRespuesta" name="titulo" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcionRespuesta">Descripción:</label>
-                            <textarea id="descripcionRespuesta" name="descripcion" class="form-control"
-                                required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="comentarioRespuesta">Comentario:</label>
-                            <textarea id="comentarioRespuesta" name="comentario" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="fechaRespuesta">Fecha de Respuesta:</label>
-                            <input type="date" id="fechaRespuesta" name="fechaRespuesta" class="form-control" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
@@ -591,11 +489,10 @@
 
     <!-- Javascript -->
     <script src="/static/app.js"></script>
-    <script src="/static/appTablaMovimientoSolicitudes.js"></script>
-    <script type="module" src="/static/appGetAxios.js"></script>
+    <script type="module" src="/static/appTablaMovimientoSolicitudes.js"></script>
     <script src="/static/appModalBuscadores.js"></script>
     <script src="/static/appModalEvento.js"></script>
-    <script src="/static/appModalRespuesta.js"></script>
+    <script type="module" src="/static/appPostForm.js"></script>
     <script src="/static/appModalSolicitud.js"></script>
     <script type="module" src="/static/appMuestraForms.js"></script>
     <script src="/static/appMuestraTablas.js"></script>
