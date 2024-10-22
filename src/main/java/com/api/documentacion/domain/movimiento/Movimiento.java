@@ -1,18 +1,15 @@
 package com.api.documentacion.domain.movimiento;
 
-import com.api.documentacion.domain.Certificado;
-import com.api.documentacion.domain.emisor.Estado;
+import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.unidad.Unidad;
-import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "movimientos")

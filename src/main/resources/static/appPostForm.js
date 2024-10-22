@@ -1,5 +1,4 @@
 import { loadData } from './appTablaMovimientoSolicitudes.js';
-import { resetView } from './appMuestraTablas.js';
 
 export async function enviarFormulario(form, endpoint) {
     const formData = new FormData(form);
@@ -48,4 +47,11 @@ export async function enviarFormulario(form, endpoint) {
             alertMessage.style.display = 'none';
         }, 3000);
     }
+}
+
+function resetView() {
+    document.getElementById("mainContent").classList.remove("d-none");
+    document.getElementById("tableSection").classList.add("d-none");
+  // Si ya hay un formulario abierto, lo eliminamos
+  cerrarFormularioExistente()
 }

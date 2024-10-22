@@ -9,8 +9,8 @@ async function getFormConfig(formType) {
         field.type === "select" ? `
             <label for="${field.name}" class="form-label">${field.label}</label>
             <select id="${field.name}" name="${field.name}" class="form-control" ${field.required ? 'required' : ''}>
-                <option value="" disabled selected>Seleccione un funcionario</option>
-                ${field.options.map(option => `<option value="${option.id}">${option.nombre}</option>`).join('')}
+                <option value="" disabled selected>Seleccione un ${field.name}</option>
+                ${field.options.map(option => `<option value="${option.id}">${option.nombre || option.establecimiento}</option>`).join('')}
             </select>
             ` :
         field.name === "nombreUnidad" ? `
@@ -50,11 +50,25 @@ async function getFormConfig(formType) {
             formatRow: commonFormatRow,
             buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
             fields: [
-                { label: "Número:", type: "number", name: "numeroSolicitud", required: true },
-                { label: "Título:", type: "text", name: "tituloSolicitud", required: true },
-                { label: "Descripción:", type: "textarea", name: "descripcionSolicitud", required: true },
-                { label: "Fecha:", type: "date", name: "fechaSolicitud", required: true },
-                { label: "Estado:", type: "text", name: "estadoSolicitud", required: true }
+                { label: "Número de Providencia:", type: "number", name: "providencia", required: true },
+                { label: "Emisor:", type: "select", name: "emisor", required: true, options: [] }, // Opciones se llenarán dinámicamente
+                { label: "Número de Solicitud:", type: "number", name: "numeroSolicitud", required: true },
+                { label: "Título:", type: "text", name: "titulo", required: true },
+                { label: "Descripción:", type: "textarea", name: "descripcion", required: false },
+                { label: "Fecha de Solicitud:", type: "date", name: "fechaSolicitud", required: true }
+            ]
+        },
+        evento: {
+            url: "eventos",
+            title: "Ingresar Evento",
+            formatRow: commonFormatRow,
+            buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
+            fields: [
+                { label: "Tipo:", type: "select", name: "tipo", required: true, options: [] }, // Se llenará dinámicamente
+                { label: "Descripción:", type: "text", name: "descripcion", required: true },
+                { label: "Fecha y Hora:", type: "datetime-local", name: "fecha", required: true },
+                { label: "Establecimiento:", type: "select", name: "establecimiento", required: true, options: [] }, // Se llenará dinámicamente
+                { label: "Invitados:", type: "select", name: "invitados", required: false, multiple: true, options: [] } // Se llenará dinámicamente
             ]
         },
         respuesta: {
@@ -105,6 +119,15 @@ async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimie
             funcionarioField.options = funcionarios;
         }
     }
+           // Obtener emisores y llenar el select
+    if (formType === 'solicitud') {
+        const establecimientos = await obtenerEmisores();
+        console.log('Establecimientos obtenidos:', establecimientos); // Verifica aquí
+        const establecimientoField = formConfig.fields.find(field => field.name === 'emisor' || 'establecimiento');
+        if (establecimientoField) {
+            establecimientoField.options = establecimientos;
+        }
+    }
 
     const fieldsHtml = formConfig.fields.map(field => formConfig.formatRow(field)).join("");
 
@@ -125,6 +148,8 @@ async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimie
     agregarManejadores(formularioDiv, formType, formConfig.url);
     document.getElementById("formularioContainer").appendChild(formularioDiv);
     formularioDiv.style.display = "block";
+    //cerrar tabla cuando abre form
+    document.getElementById("tableSection").classList.add("d-none");
 }
 
 
@@ -166,18 +191,36 @@ function agregarManejadores(formularioDiv, formType, endpoint) {
 
 document.body.addEventListener("click", (event) => {
     if (event.target) {
-        if (event.target.id === "abrirFormulario") {
-            const unidad = event.target.getAttribute("data-unidad");
-            const nombreUnidad = event.target.getAttribute("data-nombreunidad");
-            const movimiento = event.target.getAttribute("data-movimiento");
-            crearFormulario('certificado', unidad, nombreUnidad, movimiento);
-        } else if (event.target.id === "abrirSolicitud") {
-            crearFormulario('solicitud');
-        } else if (event.target.id === "abrirRespuesta") {
-            crearFormulario('respuesta');
+        switch (event.target.id) {
+            case "abrirFormCertificado":
+                const unidad = event.target.getAttribute("data-unidad");
+                const nombreUnidad = event.target.getAttribute("data-nombreunidad");
+                const movimiento = event.target.getAttribute("data-movimiento");
+                crearFormulario('certificado', unidad, nombreUnidad, movimiento);
+                break;
+
+            case "abrirFormSolicitud":
+                crearFormulario('solicitud');
+                break;
+
+            case "abrirFormRespuesta":
+                crearFormulario('respuesta');
+                break;
+
+            case "abrirFormEvento":
+                crearFormulario('evento');
+                break;
+
+            case "abrirFormProyecto":
+                crearFormulario('proyecto');
+                break;
+
+            default:
+                break;
         }
     }
 });
+
 
 function cerrarFormularioExistente() {
     const existingForm = document.querySelector(".formulario-oculto");
@@ -186,12 +229,20 @@ function cerrarFormularioExistente() {
     }
 }
 
+async function obtenerEmisores() {
+    return await obtenerDatos('http://localhost:8080/emisores');
+}
+
 async function obtenerFuncionarios() {
+    return await obtenerDatos('http://localhost:8080/usuarios');
+}
+
+async function obtenerDatos(url) {
     try {
-        const response = await axios.get('http://localhost:8080/usuarios');
+        const response = await axios.get(url);
         return response.data.content; // Asume que los datos son un array de objetos con { id, nombre }
     } catch (error) {
-        console.error('Error al obtener funcionarios:', error);
+        console.error(`Error al obtener datos de ${url}:`, error);
         return [];
     }
 }

@@ -304,3 +304,28 @@ th {
     font-size: 23px;
     color: black;
 }
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: transparent; /* Elimina el cambio de color de fondo al pasar el mouse */
+}
+
+.dropdown-item .form-control:hover,
+.dropdown-item .form-control:focus {
+    border-color: inherit; /* Mantiene el borde original */
+    box-shadow: none; /* Elimina el efecto de sombra al hacer foco */
+}
+
+.form-control:focus {
+    color: inherit; /* Mantiene el color original del texto */
+    background-color: inherit; /* Mantiene el fondo original */
+    border-color: inherit; /* Mantiene el color del borde original */
+    box-shadow: none; /* Elimina el efecto de sombra */
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.5); /* Cambia el color del placeholder si es necesario */
+    opacity: 1; /* Asegúrate de que el placeholder sea visible */
+}
+
+

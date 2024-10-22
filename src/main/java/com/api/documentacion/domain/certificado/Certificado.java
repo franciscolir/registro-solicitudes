@@ -1,8 +1,7 @@
-package com.api.documentacion.domain;
+package com.api.documentacion.domain.certificado;
 
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.unidad.Unidad;
-import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,4 +36,26 @@ public class Certificado {
 
     @OneToOne(mappedBy = "certificado")
     private Movimiento movimiento;  // Relación inversa
+
+
+    public void actualizaCertificado (Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado){
+
+        this.id = id;
+        if(numeroCertificado != null)
+            this.numeroCertificado = numeroCertificado;
+        if(titulo != null)
+            this.titulo = titulo;
+        if(descripcion != null)
+            this.descripcion = descripcion;
+        if(fechaCertificado != null)
+            this.fechaCertificado = fechaCertificado;
+    }
+
+    public void elimiarCertificado (Long id ){
+        this.id = id;
+
+        this.activo = false;
+    }
+
+
 }

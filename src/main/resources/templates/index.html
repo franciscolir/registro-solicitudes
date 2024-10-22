@@ -41,7 +41,7 @@
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a></li>
             </ul>
-            <button id="abrirSolicitud" class="btn btn-outline-secondary ms-auto">Ingresar Solicitud</button>
+            <button id="abrirFormSolicitud" class="btn btn-outline-secondary ms-auto">Ingresar Solicitud</button>
             <button type="submit" class="btn btn-outline-success ms-auto" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar oficio</button>
         </div>
     </nav>
@@ -189,55 +189,6 @@
         </table>
 
 
-        <!-- Modal para Aplicar Filtros -->
-        <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="filterModalLabel">Aplicar Filtros (Solicitudes)</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="filterFormSolicitudes">
-                            <div class="mb-3">
-                                <label for="filterNumeroSolicitud" class="form-label">Buscar por N° Solicitud</label>
-                                <input type="number" class="form-control" id="filterNumeroSolicitud"
-                                    placeholder="Buscar por N°">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterEmisor" class="form-label">Seleccionar Establecimiento</label>
-                                <select class="form-control" id="filterEmisor">
-                                    <option value="" disabled selected>Seleccione un establecimiento</option>
-                                    <!-- Opciones dinámicas aquí -->
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterTitulo" class="form-label">Buscar por Título</label>
-                                <input type="text" class="form-control" id="filterTitulo"
-                                    placeholder="Buscar por título">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterDescripcion" class="form-label">Buscar por Descripción</label>
-                                <input type="text" class="form-control" id="filterDescripcion"
-                                    placeholder="Buscar por descripción">
-                            </div>
-                            <div class="mb-3">
-                                <label for="filterEstado" class="form-label">Seleccionar Estado</label>
-                                <select class="form-control" id="filterEstado">
-                                    <option value="" disabled selected>Seleccione un estado</option>
-                                    <!-- Opciones dinámicas aquí -->
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="applyFilters('solicitudes')"
-                            data-bs-dismiss="modal">Aplicar Filtros</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
       
         <!-- Modal para Aplicar Filtros Eventos -->
@@ -287,65 +238,7 @@
 
     </section>
 
-    <section class="modals">
-        <!-- Modal para Solicitudes -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="solicitudModalLabel">Ingresar Solicitud</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Alerta para mostrar el mensaje de éxito o error -->
-                        <div id="alertMessage" class="alert" style="display:none;"></div>
-
-                        <!-- Formulario -->
-                        <form id="myForm" class="needs-validation"
-                            onsubmit="event.preventDefault(); enviarFormularios();">
-                            <div class="form-group">
-                                <label for="providencia">Número de Providencia:</label>
-                                <input type="number" id="providencia" name="providencia" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="emisor">Emisor:</label>
-                                <select id="emisor" name="emisor" class="form-control" required>
-                                    <option value="" disabled selected>Seleccione un emisor</option>
-                                    <!-- Opciones se llenarán dinámicamente -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="numeroSolicitud">Número de Solicitud:</label>
-                                <input type="number" id="numeroSolicitudForm" name="numeroSolicitud" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Título:</label>
-                                <input type="text" id="titulo" name="titulo" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="descripcion">Descripción:</label>
-                                <textarea id="descripcion" name="descripcion" class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="fechaSolicitud">Fecha de Solicitud:</label>
-                                <input type="date" id="fechaSolicitud" name="fechaSolicitud" class="form-control"
-                                    required>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+ 
         <!-- Modal para Registrar Evento -->
         <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
             aria-hidden="true">

@@ -91,7 +91,7 @@ export const loadData = async () => {
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="" data-bs-toggle="modal" data-bs-target="#">ver</a></li>
                                     <li class="dropdown-item"><a class="dropdown-link" onclick="" data-bs-toggle="modal" data-bs-target="#respuestaModal">ingresar respuesta</a></li>
-                                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormulario"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormCertificado"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
                                 </ul>
                             </div>
                         </td>
@@ -116,8 +116,7 @@ const getBotonesOpciones = (item) => {
             <div class="btn-group d-md-table-cell d-none">
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a class="dropdown-link" onclick="" data-bs-toggle="modal" data-bs-target="#respuestaModal">ingresar Memo</a></li>
-                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirRespuesta"  data-movimiento="${item.id}"onclick="">ingresar Respuesta</a></li>
+                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}"onclick="">ingresar Respuesta</a></li>
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
                 </ul>
             </div>
@@ -128,7 +127,7 @@ const getBotonesOpciones = (item) => {
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
-                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormulario"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
+                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormCertificado"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
                 </ul>
             </div>
         `;
@@ -304,3 +303,4 @@ const showAlert = (message, type, id) => {
         alertDiv.remove();
     };
 };
+
