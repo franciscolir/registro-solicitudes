@@ -36,11 +36,19 @@ public class MovimientoController {
     }
 
     //Obtener lista de movimientos enfocado en mostrar solicitudes
-    @GetMapping
+    @GetMapping("/solicitudes")
     public ResponseEntity<Page<DatosMuestraMovimientoSolicitudes>> listaMovimientosSolicitudes(Pageable paginacion) {
         var listaDeMovimientosSolicitudes = movimientoService.obtenerListaDeMovimientosSolicitudes(paginacion);
 
         return ResponseEntity.ok(listaDeMovimientosSolicitudes);
+    }
+
+    //Obtener lista de movimientos enfocado en mostrar respuestas
+    @GetMapping("/respuestas")
+    public ResponseEntity<Page<DatosMuestraMovimientoRespuestas>> listaMovimientosRespuestas(Pageable paginacion) {
+        var listaDeMovimientosRespuestas = movimientoService.obtenerListaDeMovimientosRespuestas(paginacion);
+
+        return ResponseEntity.ok(listaDeMovimientosRespuestas);
     }
 
     //Asignar un movimiento

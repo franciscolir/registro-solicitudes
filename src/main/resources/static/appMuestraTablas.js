@@ -1,5 +1,9 @@
+import { getNumero } from './app.js'; // Ajusta la ruta según tu estructura de proyecto
+
+
+
 // Función para mostrar el main y ocultar la tabla
-function resetView() {
+export function resetView() {
     document.getElementById("mainContent").classList.remove("d-none");
     document.getElementById("tableSection").classList.add("d-none");
     cerrarFormularioExistente();
@@ -8,7 +12,7 @@ function resetView() {
 let data = []; // Variable global para almacenar los datos obtenidos
 
 // Función para limpiar filtros
-function clearFilters(modalType) {
+export function clearFilters(modalType) {
     const filterIds = {
         solicitudes: [
             "filterNumeroSolicitud",
@@ -117,7 +121,7 @@ function filterData(data, filters) {
 }
 
 // Función para mostrar la tabla
-function showTable(type) {
+export function showTable(type) {
     document.getElementById("mainContent").classList.add("d-none");
     document.getElementById("tableSection").classList.remove("d-none");
     cerrarFormularioExistente();
@@ -133,7 +137,7 @@ function showTable(type) {
 }
 
 // Función para renderizar los encabezados de la tabla
-function renderTableHeaders(headers) {
+export function renderTableHeaders(headers) {
     const tableHeaders = document.getElementById("tableHeaders");
     tableHeaders.innerHTML = "";
     headers.forEach(header => {
@@ -154,11 +158,15 @@ function renderTableFiltro(filtroHtml) {
 }
 
 // Función para obtener la configuración de la tabla
-function getTableConfig(type) {
+async function getTableConfig(type) {
     const baseUrl = "http://localhost:8080/";
     const pageSize = 100;
     const page = 0;
     const paginacionUrl = `?page=${page}&size=${pageSize}`;
+
+    const numeroRespuesta = await getNumero();
+    const numeroRespuestaIncrementado = numeroRespuesta + 1;
+
 
     let config = {
         apiUrl: "",
@@ -171,7 +179,7 @@ function getTableConfig(type) {
 
     switch (type) {
         case "solicitudes":
-            config.apiUrl = `${baseUrl}movimientos${paginacionUrl}&sort=fechaIngreso,desc`;
+            config.apiUrl = `${baseUrl}movimientos/solicitudes${paginacionUrl}&sort=fechaIngreso,desc`;
             config.headers = ["N°", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Ingreso", "Estado"];
             config.title = "Solicitudes";
             config.formatRow = (registro) => `
@@ -190,8 +198,8 @@ function getTableConfig(type) {
             break;
 
         case "respuestas":
-            config.apiUrl = `${baseUrl}respuestas${paginacionUrl}&sort=numeroRespuesta,desc`;
-            config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Ingreso a departamento", "N° de Solicitud respondida"];
+            config.apiUrl = `${baseUrl}movimientos/respuestas`;
+            config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Salida de departamento", "N° de Solicitud respondida"];
             config.title = "Respuestas";
             config.formatRow = (registro) => `
                 <td>${registro.numeroRespuesta}</td>
@@ -199,15 +207,21 @@ function getTableConfig(type) {
                 <td>${registro.descripcion}</td>
                 <td>${registro.fechaRespuesta}</td>
                 <td>${registro.fechaEnvio}</td>
-                <td>${registro.solicitudId}</td>
+                <td>${registro.numeroSolicitud}</td>
             `;
             config.buttonHtml = `
-                <button id="abrirFormRespuesta">Agregar Respuesta</button>
+
+            
+
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Ingresar Respuesta </button>
+    <ul class="dropdown-menu">
+        
+        <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="0" data-ultimaRespuesta ="${numeroRespuestaIncrementado}" onclick="">Proceso interno</a></li>       
+        <li class="dropdown-item"><a class="dropdown-link text-primary"  onclick="resetView();">Solicitud Pendiente</a></li>
+        
+    </ul>
             `;
-            config.filtroHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModalRespuestas">Aplicar Filtros</button>
-                <button type="button" class="btn btn-secondary" onclick="clearFilters('respuestas')">Limpiar Filtros</button>
-            `;
+            config.filtroHtml = filtroRespuesta;
             break;
 
         case "eventos":
@@ -223,7 +237,7 @@ function getTableConfig(type) {
             config.buttonHtml = `
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Agendar</button>
             `;
-            config.filtroHtml = filtroSolicitude;
+            config.filtroHtml = filtroEvento;
             break;
 
         case "certificados":
@@ -251,7 +265,7 @@ function getTableConfig(type) {
 }
 
 // Función para renderizar la tabla
-function renderTable(data, formatRow) {
+export function renderTable(data, formatRow) {
     const tableBody = document.querySelector("#dataTable tbody");
     tableBody.innerHTML = "";
     console.log('Datos recibidos tabla:', data);
@@ -400,15 +414,44 @@ const filtroSolicitudes = `
                                     <!-- Opciones dinámicas aquí -->
                                 </select>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="applyFilters('solicitudes')">Buscar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                         <button type="button" class="btn btn-primary" onclick="applyFilters('solicitudes')">Buscar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
             </div>
-        </div>`;
+        </li>
+    </ul>`;
+
+
+    const filtroRespuesta = `
+
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtro </button>
+    <ul class="dropdown-menu">
+        <li class="dropdown-item">
+            <button type="button" class="btn btn-success" onclick="clearFilters('respuestas')">Limpiar</button>
+        </li>
+        <li class="dropdown-item">
+            <div id="filtroDropdown" class="dropdown-filtro">
+                        <form id="filterFormSolicitudes">
+                            <div class="mb-3">
+                                <input type="number" class="form-control" id="filterNumeroRespuesta" placeholder="Buscar por N°">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="filterTituloRespuesta" placeholder="Buscar por título">
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" class="form-control" id="filterSolicitudRespuesta" placeholder="Buscar por N°">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="applyFilters('respuestas')">Buscar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+            </div>
+        </li>
+    </ul>`;
+
 
 const filtroCertificado = `
                                    
@@ -442,7 +485,38 @@ const filtroCertificado = `
     </ul>
 `;
 
-
+const filtroEvento = `
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtro </button>
+    <ul class="dropdown-menu">
+        <li class="dropdown-item">
+            <button type="button" class="btn btn-success" onclick="clearFilters('eventos')">Limpiar</button>
+        </li>
+        <li class="dropdown-item">
+            <div id="filtroDropdown" class="dropdown-filtro">
+                <form id="filterFormSolicitudes">
+                    <div class="mb-3">
+                        <select class="form-control" id="filterEvento"></select>
+                            <option value="" disabled selected>Seleccione un tipo de evento</option>
+                            <!-- Opciones dinámicas aquí -->
+                        </select>
+                    </div>
+                     <div class="mb-3">
+                        <input type="text" class="form-control" id="filterDescripcionEvento" placeholder="Buscar por descripción">
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-control" id="filterEstablecimiento">
+                            <option value="" disabled selected>Seleccione un establecimiento</option>
+                            <!-- Opciones dinámicas aquí -->
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="applyFilters('eventos')">Buscar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </li>
+    </ul>`;
 
 
 

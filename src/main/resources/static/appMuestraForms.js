@@ -1,8 +1,8 @@
-import {enviarFormulario} from './appPostForm.js';
+
 
 async function getFormConfig(formType) {
     const commonFormatRow = (field) => `
-    <div class="mb-3" ${field.name === "movimiento" ? 'style="display:none;"' : ''}>
+     <div class="mb-3" ${field.hidden ? 'style="display:none;"' : ''}>
         ${field.name === "unidad" ? `
             <input type="hidden" id="${field.name}" name="${field.name}" value="${field.value || ''}">
         ` :  
@@ -17,6 +17,10 @@ async function getFormConfig(formType) {
             <label class="form-label"></label>
             <span class="form-control-plaintext nombreUnidadForm">${field.value || ''}</span>
         ` : 
+        field.name === "numeroRespuesta" ? `
+        <label class="form-label">Número de Respuesta</label>
+        <input type="number" id="${field.name}" name="${field.name}" class="form-control" value="${field.value || ''}" required>
+    ` :   
         field.type === "textarea" ? `
             <label for="${field.name}" class="form-label">${field.label}</label>
             <textarea id="${field.name}" name="${field.name}" class="form-control" ${field.required ? 'required' : ''}></textarea>
@@ -77,8 +81,8 @@ async function getFormConfig(formType) {
             formatRow: commonFormatRow,
             buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
             fields: [
-                { label: "Número de Solicitud:", type: "number", name: "numeroSolicitudR", required: true },
-                { label: "Número de Respuesta:", type: "number", name: "numeroRespuesta", required: true },
+                { label: "", type: "number", name: "movimientoId", required: true, value: "", hidden: true }, // Mantener oculto
+                { label: "", type: "number", name: "numeroRespuesta", required: true },
                 { label: "Funcionario:", type: "select", name: "funcionario", required: true, options: [] },
                 { label: "Título:", type: "text", name: "titulo", required: true },
                 { label: "Descripción:", type: "textarea", name: "descripcion", required: true },
@@ -91,7 +95,7 @@ async function getFormConfig(formType) {
     return forms[formType] || null;
 }
 
-async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimiento = "") {
+async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimiento = "", respuesta = "") {
     cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
 
     document.getElementById("mainContent").classList.add("d-none");
@@ -105,11 +109,14 @@ async function crearFormulario(formType, unidad = "", nombreUnidad = "", movimie
     // Asignar valores a los campos
     const unidadField = formConfig.fields.find(field => field.name === 'unidad');
     const nombreUnidadField = formConfig.fields.find(field => field.name === 'nombreUnidad');
-    const movimientoField = formConfig.fields.find(field => field.name === 'movimiento');
+    const movimientoField = formConfig.fields.find(field => field.name === 'movimiento' || 'movimientoId');
+    const respuestaField = formConfig.fields.find(field => field.name === 'numeroRespuesta')
 
     if (unidadField) unidadField.value = unidad;
     if (nombreUnidadField) nombreUnidadField.value = nombreUnidad;
     if (movimientoField) movimientoField.value = movimiento;
+    if (respuestaField) respuestaField.value = respuesta;
+    console.log(respuesta+"respuesta")
 
     // Obtener funcionarios y llenar el select
     if (formType === 'respuesta') {
@@ -190,12 +197,23 @@ function agregarManejadores(formularioDiv, formType, endpoint) {
 }
 
 document.body.addEventListener("click", (event) => {
-    if (event.target) {
+    const target = event.target.closest('[data-unidad], [data-nombreUnidad], [data-movimiento], [data-ultimoNumeroRespuesta]');
+    
+    if (target) {
+        const unidad = event.target.getAttribute("data-unidad");
+        const nombreUnidad = event.target.getAttribute("data-nombreUnidad");
+        const movimiento = event.target.getAttribute("data-movimiento");
+        const respuesta = event.target.getAttribute("data-ultimaRespuesta");
+
+        console.log("ID del elemento:", event.target.id);
+        console.log("Unidad:", unidad);
+        console.log("Nombre Unidad:", nombreUnidad);
+        console.log("Movimiento:", movimiento);
+        console.log("Respuesta:", respuesta);
+
         switch (event.target.id) {
+            
             case "abrirFormCertificado":
-                const unidad = event.target.getAttribute("data-unidad");
-                const nombreUnidad = event.target.getAttribute("data-nombreunidad");
-                const movimiento = event.target.getAttribute("data-movimiento");
                 crearFormulario('certificado', unidad, nombreUnidad, movimiento);
                 break;
 
@@ -204,7 +222,7 @@ document.body.addEventListener("click", (event) => {
                 break;
 
             case "abrirFormRespuesta":
-                crearFormulario('respuesta');
+                crearFormulario('respuesta', movimiento, respuesta);
                 break;
 
             case "abrirFormEvento":
@@ -247,157 +265,3 @@ async function obtenerDatos(url) {
     }
 }
 
-
-
-/*import { obtenerUnidades } from './appGetAxios.js';
-
-function getFormConfig(formType) {
-    const commonFormatRow = (field, options = []) => `
-        <div class="mb-3">
-            <label for="${field.name}" class="form-label">${field.label}</label>
-            ${field.type === "select" ? `
-                <select id="${field.name}" name="${field.name}" class="form-control" ${field.required ? 'required' : ''}>
-                    <option value="" disabled selected>Seleccione una unidad</option>
-                    ${options.map(option => `<option value="${option.id}">${option.nombre}</option>`).join('')}
-                </select>
-                ` :
-                field.type === "textarea" ? `
-                <textarea id="${field.name}" name="${field.name}" class="form-control" ${field.required ? 'required' : ''}></textarea>` :
-                `<input type="${field.type}" id="${field.name}" name="${field.name}" class="form-control" ${field.required ? 'required' : ''}>`
-            }
-        </div>
-    `;
-
-    const forms = {
-        certificado: {
-            title: "Ingresar Certificado",
-            formatRow: commonFormatRow,
-            buttonHtml: `<button type="submit" class="btn btn-primary me-4">Enviar</button>`,
-            fields: [
-                { label: "Número de Certificado:", type: "number", name: "numeroCertificado", required: true },
-                { label: "Título:", type: "text", name: "titulo", required: true },
-                { label: "Descripción:", type: "textarea", name: "descripcion", required: true },
-                { label: "Fecha del Certificado:", type: "date", name: "fechaCertificado", required: true },
-                { label: "Unidad:", type: "select", name: "unidad", required: true },
-                { label: "Movimiento:", type: "number", name: "movimiento", required: true }
-            ]
-        },
-        solicitud: {
-            title: "Ingresar Solicitud",
-            formatRow: commonFormatRow,
-            buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
-            fields: [
-                { label: "Número:", type: "number", name: "numeroSolicitud", required: true },
-                { label: "Título:", type: "text", name: "tituloSolicitud", required: true },
-                { label: "Descripción:", type: "textarea", name: "descripcionSolicitud", required: true },
-                { label: "Fecha:", type: "date", name: "fechaSolicitud", required: true },
-                { label: "Estado:", type: "text", name: "estadoSolicitud", required: true }
-            ]
-        },
-        respuesta: {
-            title: "Ingresar Respuesta",
-            formatRow: commonFormatRow,
-            buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
-            fields: [
-                { label: "Número:", type: "number", name: "numeroRespuesta", required: true },
-                { label: "Título:", type: "text", name: "tituloRespuesta", required: true },
-                { label: "Descripción:", type: "textarea", name: "descripcionRespuesta", required: true },
-                { label: "Fecha:", type: "date", name: "fechaRespuesta", required: true },
-                { label: "Estado:", type: "text", name: "estadoRespuesta", required: true }
-            ]
-        }
-    };
-
-    return forms[formType] || null;
-}
-
-async function crearFormulario(formType, unidad = "", movimiento = "") {
-    document.getElementById("mainContent").classList.add("d-none");
-
-    const formConfig = getFormConfig(formType);
-    if (!formConfig) return;
-
-    const formularioDiv = document.createElement("div");
-    formularioDiv.className = "formulario-oculto";
-
-    // Obtener unidades
-    const unidades = await obtenerUnidades();
-
-    const fieldsHtml = formConfig.fields.map(field =>
-        formConfig.formatRow(field, field.name === 'unidad' ? unidades : [])
-    ).join("");
-
-    formularioDiv.innerHTML = `
-        <div class="formulario-contenido">
-            <h2 class="titulo-principal">${formConfig.title}</h2>
-            <form class="${formType}Form forms">
-                ${fieldsHtml}
-                <div class="mb-3">
-                    ${formConfig.buttonHtml}
-                    <button class="btn btn-cerrar btn-secondary ms-5">Cerrar</button>
-                </div>
-            </form>
-        </div>
-    `;
-
-    agregarManejadores(formularioDiv, formType);
-    document.getElementById("formularioContainer").appendChild(formularioDiv);
-    formularioDiv.style.display = "block";
-}
-
-function agregarManejadores(formularioDiv, formType) {
-    const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
-    const form = formularioDiv.querySelector(`.${formType}Form`);
-
-    if (btnCerrar) {
-        btnCerrar.addEventListener("click", () => {
-            formularioDiv.remove(); // Cierra el formulario eliminándolo
-            document.getElementById("mainContent").classList.remove("d-none");
-        });
-    }
-
-    if (form) {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault(); // Evitar el envío del formulario
-            alert(`${formType.charAt(0).toUpperCase() + formType.slice(1)} enviado`);
-            formularioDiv.remove(); // Cierra el formulario eliminándolo
-        });
-    } else {
-        console.error(`No se encontró el formulario con la clase: ${formType}Form`);
-    }
-}
-
-document.body.addEventListener("click", (event) => {
-    if (event.target) {
-        if (event.target.id === "abrirFormulario") {
-            const unidad = event.target.getAttribute("data-unidad");
-            const movimiento = event.target.getAttribute("data-movimiento");
-            crearFormulario('certificado', unidad, movimiento);
-        } else if (event.target.id === "abrirSolicitud") {
-            crearFormulario('solicitud');
-        } else if (event.target.id === "abrirRespuesta") {
-            crearFormulario('respuesta');
-        }
-    }
-});
-
-
-
-
-
-// Uso de las funciones
-
-document.getElementById("abrirFormulario").addEventListener("click", function() {
-    const unidad = this.getAttribute("data-unidad");
-    const movimiento = this.getAttribute("data-movimiento");
-    crearFormulario('certificado', unidad, movimiento);
-});
-
-document.getElementById("abrirSolicitud").addEventListener("click", function() {
-    crearFormulario('solicitud');
-});
-
-document.getElementById("abrirRespuesta").addEventListener("click", function() {
-    crearFormulario('respuesta');
-});
-*/

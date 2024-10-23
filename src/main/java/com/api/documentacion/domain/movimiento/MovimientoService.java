@@ -61,19 +61,26 @@ public class MovimientoService {
     //___________________________________________________
 
     //GET___________________________________________
-    //obtiene movimiento al ingresar solicitud
+    //obtiene lista de movimiento
 
     public Page<DatosMuestraMovimiento> obtenerListaDeMovimientosPendientes(Pageable paginacion) {
 
         return movimientoRepository.findByActivoTrueAndCerradoFalseAndRechazadoFalse(paginacion).map(DatosMuestraMovimiento::new);
     }
 
-    //obtiene movimiento al ingresar solicitud
+    //obtiene movimiento enfocado en solicitud
 
     public Page<DatosMuestraMovimientoSolicitudes> obtenerListaDeMovimientosSolicitudes(Pageable paginacion) {
 
         return movimientoRepository.findByActivoTrue(paginacion).map(DatosMuestraMovimientoSolicitudes::new);
     }
+
+    //obtiene movimiento enfocado en respuestas
+    public Page<DatosMuestraMovimientoRespuestas> obtenerListaDeMovimientosRespuestas(Pageable paginacion) {
+
+        return movimientoRepository.findByActivoTrue(paginacion).map(DatosMuestraMovimientoRespuestas::new);
+    }
+    //______________________________________________________
 
     //PUT________________________________________________
     // movimiento asignar
@@ -164,6 +171,7 @@ public class MovimientoService {
         var movimiento = movimientoRepository.getReferenceById(id);
         movimiento.eliminarMovimiento(id);
     }
-    //______________________________________________________
+
+
 
 }
