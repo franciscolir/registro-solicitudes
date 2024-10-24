@@ -3,12 +3,11 @@
 // Variable global para tableBody
 let tableBody;
 
+let ultimoNumeroRespuesta1;
 // Importar la función para obtener el número de respuesta
-import { getNumero } from './app.js'; // Ajusta la ruta según tu estructura de proyecto
 
 
-
-export const loadData = async () => {
+const loadData = async () => {
     
     try {
         const solicitudesResponse = await axios.get('http://localhost:8080/movimientos/pendientes?size=10');
@@ -20,11 +19,11 @@ export const loadData = async () => {
 
 
             // Llama a getNumero y almacena el valor
-            const numeroRespuesta = await getNumero();
+            
 
             // Iterar sobre cada solicitud
             solicitudes.forEach(item => {
-                const botonesOpciones = getBotonesOpciones(item, numeroRespuesta);
+                const botonesOpciones = getBotonesOpciones(item);
                 const estadoFormatted = item.estado
                     .toLowerCase()
                     .replace(/_/g, ' ')
@@ -98,7 +97,7 @@ export const loadData = async () => {
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="" data-bs-toggle="modal" data-bs-target="#">ver</a></li>
-                                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${numeroRespuesta}" onclick="">ingresar Respuesta</a></li>
+                                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${ultimoNumeroRespuesta1}" onclick="">ingresar Respuesta</a></li>
                     
                                     <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormCertificado"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
                                 </ul>
@@ -119,19 +118,14 @@ export const loadData = async () => {
     }
 };
 
-const getBotonesOpciones = (item, numeroRespuesta) => {
+const getBotonesOpciones = (item) => {
     
-    console.log(`Número Respuesta: ${numeroRespuesta}`);
-    console.log(`Unidad: ${item.unidad}`);
-    console.log(`Nombre Unidad: ${item.nombreUnidad}`);
-    console.log(`Movimiento: ${item.id}`);
-
     if (item.asignado === true && item.resuelto === true) {
         return `
             <div class="btn-group d-md-table-cell d-none">
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${numeroRespuesta}" onclick="">ingresar Respuesta</a></li>
+                    <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${ultimoNumeroRespuesta1}" onclick="">ingresar Respuesta</a></li>
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
                 </ul>
             </div>
@@ -321,3 +315,26 @@ const showAlert = (message, type, id) => {
     };
 };
 
+// Cargar la última respuesta
+ const loadDataUltimaRespuesta1 = async () => {
+       try {
+        const response = await axios.get('http://localhost:8080/respuestas?size=1&sort=id,desc');
+        const data = response.data.content;
+
+        if (Array.isArray(data) && data.length > 0) {
+            
+            const item = data[0];
+           
+            // Almacenar el número obtenido
+            ultimoNumeroRespuesta1 = item.numeroRespuesta+1;
+            console.log(ultimoNumeroRespuesta1 +" ultimo numero appTablaMovimiento")
+        } else {
+            console.error('La propiedad `content` no es un array o está vacío.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+    }
+};
+
+loadDataUltimaRespuesta1();

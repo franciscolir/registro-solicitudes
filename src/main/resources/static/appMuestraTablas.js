@@ -1,18 +1,20 @@
-import { getNumero } from './app.js'; // Ajusta la ruta según tu estructura de proyecto
-
-
-
 // Función para mostrar el main y ocultar la tabla
-export function resetView() {
+function resetView() {
     document.getElementById("mainContent").classList.remove("d-none");
     document.getElementById("tableSection").classList.add("d-none");
     cerrarFormularioExistente();
 }
 
 let data = []; // Variable global para almacenar los datos obtenidos
+let ultimoNumeroRespuesta;
+
+
+
+
+
 
 // Función para limpiar filtros
-export function clearFilters(modalType) {
+function clearFilters(modalType) {
     const filterIds = {
         solicitudes: [
             "filterNumeroSolicitud",
@@ -121,13 +123,16 @@ function filterData(data, filters) {
 }
 
 // Función para mostrar la tabla
-export function showTable(type) {
+function showTable(type) {
+    
     document.getElementById("mainContent").classList.add("d-none");
     document.getElementById("tableSection").classList.remove("d-none");
     cerrarFormularioExistente();
+    loadDataUltimaRespuesta2();
 
     const tableConfig = getTableConfig(type);
     const { title, headers, formatRow, buttonHtml, filtroHtml } = tableConfig;
+   
 
     document.getElementById("tableTitle").innerText = title;
     renderTableHeaders(headers);
@@ -137,15 +142,20 @@ export function showTable(type) {
 }
 
 // Función para renderizar los encabezados de la tabla
-export function renderTableHeaders(headers) {
+function renderTableHeaders(headers) {
     const tableHeaders = document.getElementById("tableHeaders");
     tableHeaders.innerHTML = "";
-    headers.forEach(header => {
-        const th = document.createElement("th");
-        th.innerText = header;
-        tableHeaders.appendChild(th);
-    });
+    if (headers && Array.isArray(headers)) {
+        headers.forEach(header => {
+            const th = document.createElement("th");
+            th.innerText = header;
+            tableHeaders.appendChild(th);
+        });
+    } else {
+        console.warn('Headers no está definido o no es un array');
+    }
 }
+
 
 // Función para renderizar el botón de registro
 function renderTableButtons(buttonHtml) {
@@ -158,15 +168,12 @@ function renderTableFiltro(filtroHtml) {
 }
 
 // Función para obtener la configuración de la tabla
-async function getTableConfig(type) {
+function getTableConfig(type) {
     const baseUrl = "http://localhost:8080/";
     const pageSize = 100;
     const page = 0;
     const paginacionUrl = `?page=${page}&size=${pageSize}`;
-
-    const numeroRespuesta = await getNumero();
-    const numeroRespuestaIncrementado = numeroRespuesta + 1;
-
+    const ultimoNUmero = ultimoNumeroRespuesta
 
     let config = {
         apiUrl: "",
@@ -192,7 +199,7 @@ async function getTableConfig(type) {
                 <td>${formatText(registro.estado)}</td>
             `;
             config.buttonHtml = `
-                <button type="button" class="btn btn-primary" id="abrirFormSolicitud">Ingresar Solicitud</button>
+                <button type="button" class="btn btn-primary" id="abrirFormSolicitud" data-form="0">Ingresar Solicitud</button>
             `;
             config.filtroHtml = filtroSolicitudes;
             break;
@@ -211,12 +218,10 @@ async function getTableConfig(type) {
             `;
             config.buttonHtml = `
 
-            
-
     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Ingresar Respuesta </button>
     <ul class="dropdown-menu">
         
-        <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="0" data-ultimaRespuesta ="${numeroRespuestaIncrementado}" onclick="">Proceso interno</a></li>       
+        <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="0" data-ultimaRespuesta ="${ultimoNUmero}" onclick="">Proceso interno</a></li>       
         <li class="dropdown-item"><a class="dropdown-link text-primary"  onclick="resetView();">Solicitud Pendiente</a></li>
         
     </ul>
@@ -252,20 +257,21 @@ async function getTableConfig(type) {
                 <td>${registro.fechaCertificado}</td>
             `;
             config.buttonHtml = `
-                <button id="abrirFormCertificado">Agregar Certificado</button>
+                <button id="abrirFormCertificado" data-form="0" >Agregar Certificado</button>
             `;
             config.filtroHtml = filtroCertificado;
             break;
 
         default:
-            return null;
+            return { apiUrl: "", headers: [], title: "", formatRow: () => "", buttonHtml: "", filtroHtml: "" };
+
     }
 
     return config;
 }
 
 // Función para renderizar la tabla
-export function renderTable(data, formatRow) {
+function renderTable(data, formatRow) {
     const tableBody = document.querySelector("#dataTable tbody");
     tableBody.innerHTML = "";
     console.log('Datos recibidos tabla:', data);
@@ -423,7 +429,6 @@ const filtroSolicitudes = `
         </li>
     </ul>`;
 
-
     const filtroRespuesta = `
 
     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtro </button>
@@ -486,7 +491,7 @@ const filtroCertificado = `
 `;
 
 const filtroEvento = `
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtro </button>
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Filtro </button>
     <ul class="dropdown-menu">
         <li class="dropdown-item">
             <button type="button" class="btn btn-success" onclick="clearFilters('eventos')">Limpiar</button>
@@ -518,12 +523,6 @@ const filtroEvento = `
         </li>
     </ul>`;
 
-
-
-// Inicializa la tabla al cargar la página
-resetView();
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const filterForm = document.getElementById('dropdown-menu');
 
@@ -533,3 +532,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+// Cargar la última respuesta
+const loadDataUltimaRespuesta2 = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/respuestas?size=1&sort=id,desc');
+        const data = response.data.content; // Asegúrate de que 'content' exista
+
+        if (Array.isArray(data) && data.length > 0) {
+            const item = data[0];
+            
+            // Almacenar el número obtenido
+            ultimoNumeroRespuesta = item.numeroRespuesta + 1;
+            console.log(ultimoNumeroRespuesta + " ultimo numero appTablaMovimiento");
+        } else {
+            console.error('La propiedad `content` no es un array o está vacío.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+    }
+};
+
+
+// Inicializa la tabla al cargar la página
+resetView();

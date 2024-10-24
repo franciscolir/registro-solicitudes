@@ -1,6 +1,5 @@
-import { loadData } from './appTablaMovimientoSolicitudes.js';
 
-export async function enviarFormulario(form, endpoint) {
+async function enviarFormulario(form, endpoint) {
     const formData = new FormData(form);
 
     // Elemento de alerta

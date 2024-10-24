@@ -2,7 +2,7 @@
 let numeroObtenido = null;
 
 // FUNCION CAPTA PARAMETROS DEL ACORDEON ####################
-export function captarParametros(id, numeroSolicitud, nombreModal, nombreDiv) {
+function captarParametros(id, numeroSolicitud, nombreModal, nombreDiv) {
     console.log(id, numeroSolicitud, nombreModal, nombreDiv, "##############################");
 
     const $respuestaModal = document.getElementById(nombreModal);
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ULTIMA RESPUESTA ###################################
 // Cargar la última respuesta
-export const loadDataUltimaRespuesta = async () => {
+const loadDataUltimaRespuesta = async () => {
     const ultimaRespuesta = document.getElementById('ultimaRespuesta');
 
     try {
@@ -108,7 +108,3 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDataUltimaRespuesta();
 });
 
-// Función para acceder al número obtenido
-export function getNumero() {
-    return numeroObtenido;
-}
