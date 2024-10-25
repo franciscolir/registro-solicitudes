@@ -1,32 +1,22 @@
+let ultimoNumeroRespuesta3;
+let ultimoNumeroCertificado;
+
+console.log(ultimoNumeroCertificado);
+
 function getFormConfig(formType) {
-  const commonFormatRow = (field) => `
-      <div class="mb-3" ${field.hidden ? 'style="display:none;"' : ""}>
-               ${
-                 field.name === "unidad"
-                   ? `
-                ${
+  const commonFormatRow = (field) =>  `
+  <div class="mb-3" ${field.hidden ? 'style="display:none;"' : ""}>
+      ${
+          field.name === "unidad"
+              ? `
+              ${
                   field.value
-                    ? `
-                    <input type="hidden" id="${field.name}" name="${field.name}" value="${field.value}">
-                `
-                    : `
-                    <label for="${
-                      field.name
-                    }" class="form-label">Seleccione una Unidad</label>
-                    <select id="${field.name}" name="${
-                        field.name
-                      }" class="form-control" required>
-                        <option value="" disabled selected>Seleccione una unidad</option>
-                  ${field.options
-                    .map(
-                      (option) =>
-                        `<option value="${option.id}">${option.nombre}</option>`
-                    )
-                    .join("")}
-                    </select>
-                `
-                }
-            `
+                      ? `
+                      <input type="hidden" id="${field.name}" name="${field.name}" value="${field.value}">
+                      `
+                      : ''
+              }
+              `
                    : field.type === "select"
                    ? `
             <label for="${field.name}" class="form-label">${field.label}</label>
@@ -49,23 +39,22 @@ function getFormConfig(formType) {
             </select>
             `
                    : field.name === "nombreUnidad"
-                   ? `
-          
-            <span class="form-control-plaintext">${field.value || ""}</span>
+                   ? ` <span class="form-control-plaintext">${field.value || ""}</span>
         `
                    : field.name === "numeroRespuesta"
-                   ? `
-        <label class="form-label">Número de Respuesta</label>
-        <input type="number" id="${field.name}" name="${
-                       field.name
-                     }" class="form-control" value="${
-                       field.value || ""
-                     }" required>
-    `
+                   ? ` <label class="form-label">Número de Respuesta</label>
+                   <span class="form-control-plaintext">${field.value || ""}</span>
+                    
+                `
+                    : field.name === "numeroCertificado"
+                    ? ` <label class="form-label">Número de Certificado</label>
+                    <span class="form-control-plaintext">${field.value || ""}</span>
+                    
+                `
                    : field.type === "textarea"
                    ? `
-            <label for="${field.name}" class="form-label">${field.label}</label>
-            <textarea id="${field.name}" name="${
+                    <label for="${field.name}" class="form-label">${field.label}</label>
+                    <textarea id="${field.name}" name="${
                        field.name
                      }" class="form-control" ${
                        field.required ? "required" : ""
@@ -84,8 +73,8 @@ function getFormConfig(formType) {
 `;
 
   const forms = {
-    certificado: {
-      url: "certificado",
+    certificados: {
+      url: "certificados",
       title: "Ingresar Certificado",
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-4">Enviar</button>`,
@@ -100,7 +89,7 @@ function getFormConfig(formType) {
         }, // Campo oculto
         { label: "", type: "text", name: "nombreUnidad", required: true },
         {
-          label: "Número:",
+          label: "",
           type: "number",
           name: "numeroCertificado",
           required: true,
@@ -255,7 +244,7 @@ function getFormConfig(formType) {
     },
   };
 
-  console.log(formType + " form");
+
   return forms[formType] || null;
 }
 
@@ -264,10 +253,12 @@ async function crearFormulario(
   unidad = "",
   nombreUnidad = "",
   movimiento = "",
-  respuesta = ""
+  respuesta = "",
+  certificado = ""
 ) {
+    console.log(unidad + "unidad dentro de creraForm y antes de loasd ###############");
   cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
-
+  
   document.getElementById("mainContent").classList.add("d-none");
 
   const formConfig = await getFormConfig(formType);
@@ -289,12 +280,16 @@ async function crearFormulario(
   const respuestaField = formConfig.fields.find(
     (field) => field.name === "numeroRespuesta"
   );
+  const certificadoField = formConfig.fields.find(
+    (field) => field.name === "numeroCertificado"
+  );
 
   if (unidadField) unidadField.value = unidad;
   if (nombreUnidadField) nombreUnidadField.value = nombreUnidad;
   if (movimientoField) movimientoField.value = movimiento;
   if (respuestaField) respuestaField.value = respuesta;
-  console.log(respuesta + "respuesta");
+  if (certificadoField) certificadoField.value = certificado;
+  
 
   // Obtener funcionarios y llenar el select
   if (formType === "respuesta") {
@@ -318,13 +313,13 @@ async function crearFormulario(
     }
   }
 
-     // Obtener unidades y llenar el select
-     if (formType === "certificado") {
-        const unidades = await obtenerUnidades();
-        if (unidadField) {
-            unidadField.options = unidades;
-        }
+  // Obtener unidades y llenar el select
+  if (formType === "certificados") {
+    const unidades = await obtenerUnidades();
+    if (unidadField) {
+      unidadField.options = unidades;
     }
+  }
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
     .join("");
@@ -342,15 +337,16 @@ async function crearFormulario(
             </form>
         </div>
     `;
-
-  agregarManejadores(formularioDiv, formType, formConfig.url);
+    console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
+    loadDataUltimoCertificado (unidad);
+  agregarManejadores(formularioDiv, formType, formConfig.url, movimiento);
   document.getElementById("formularioContainer").appendChild(formularioDiv);
   formularioDiv.style.display = "block";
   //cerrar tabla cuando abre form
   document.getElementById("tableSection").classList.add("d-none");
 }
 
-function agregarManejadores(formularioDiv, formType, endpoint) {
+function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
   const form = formularioDiv.querySelector(`.${formType}Form`);
   const mensajeDiv = formularioDiv.querySelector("#mensaje");
@@ -376,7 +372,17 @@ function agregarManejadores(formularioDiv, formType, endpoint) {
         setTimeout(() => {
           formularioDiv.remove();
           document.getElementById("mainContent").classList.remove("d-none");
-        }, 2000); // Elimina el formulario después de 2 segundos
+        }, 2000); // Elimina el formulario después de 2 
+
+        //crear formulario paralelo para actualizar estado de 
+        if (formType === 'certificados'){
+          crearFormParalelo(movimiento, ultimoNumeroCertificado)
+        
+        }
+        if (formType === 'respuestas'){
+          crearFormParalelo(movimiento, ultimoNumeroRespuesta3)
+
+        }
       } catch (error) {
         mensajeDiv.textContent = "Hubo un error al enviar el formulario";
         mensajeDiv.style.display = "block";
@@ -388,6 +394,7 @@ function agregarManejadores(formularioDiv, formType, endpoint) {
 }
 
 document.body.addEventListener("click", async (event) => {
+    loadDataUltimaRespuesta3 ();
   const target = await event.target.closest(
     "[data-unidad], [data-nombreUnidad], [data-movimiento], [data-ultimoNumeroRespuesta], [data-form]"
   );
@@ -396,17 +403,14 @@ document.body.addEventListener("click", async (event) => {
     const unidad = event.target.getAttribute("data-unidad");
     const nombreUnidad = event.target.getAttribute("data-nombreUnidad");
     const movimiento = event.target.getAttribute("data-movimiento");
-    const respuesta = event.target.getAttribute("data-ultimaRespuesta");
+    //const respuesta = event.target.getAttribute("data-ultimaRespuesta");
 
-    console.log("ID del elemento:", event.target.id);
-    console.log("Unidad:", unidad);
-    console.log("Nombre Unidad:", nombreUnidad);
-    console.log("Movimiento:", movimiento);
-    console.log("Respuesta:", respuesta);
+    console.log(movimiento+" numero movimineto en form")
 
     switch (event.target.id) {
       case "abrirFormCertificado":
-        crearFormulario("certificado", unidad, nombreUnidad, movimiento);
+        crearFormulario("certificados", unidad, nombreUnidad, movimiento, null, ultimoNumeroCertificado);
+        
         break;
 
       case "abrirFormSolicitud":
@@ -414,7 +418,8 @@ document.body.addEventListener("click", async (event) => {
         break;
 
       case "abrirFormRespuesta":
-        crearFormulario("respuesta", movimiento, respuesta);
+        
+        crearFormulario("respuesta", null, null, movimiento, ultimoNumeroRespuesta3,null);
         break;
 
       case "abrirFormEvento":
@@ -423,8 +428,7 @@ document.body.addEventListener("click", async (event) => {
 
       case "abrirFormProyecto":
         crearFormulario("proyecto");
-        break;
-
+        break;  
       default:
         break;
     }
@@ -458,3 +462,106 @@ async function obtenerDatos(url) {
     return [];
   }
 }
+
+
+function crearFormParalelo(id, documento) {
+  // Crea un formulario oculto
+  const form = document.createElement('form');
+  form.method = 'POST'; // O el método que necesites
+  form.action = 'tu_endpoint_aqui'; // Define el endpoint donde enviar los datos
+  form.style.display = 'none'; // Oculta el formulario
+
+  // Agrega los parámetros al formulario
+  const idInput = document.createElement('input');
+  idInput.type = 'hidden';
+  idInput.name = 'id';
+  idInput.value = id;
+
+  const documentoInput = document.createElement('input');
+  documentoInput.type = 'hidden';
+  documentoInput.name = 'documento';
+  documentoInput.value = documento;
+
+  // Agregar los inputs al formulario
+  form.appendChild(idInput);
+  form.appendChild(documentoInput);
+
+  // Agregar el formulario al documento
+  document.body.appendChild(form);
+
+  // Manejo de eventos para enviar el formulario
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+    try {
+      const resultado = await enviarFormulario(form, form.action);
+      mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
+      
+      // Eliminar el formulario después de enviarlo
+      form.remove();
+    } catch (error) {
+      mostrarMensaje('Hubo un error al enviar el formulario', 'error');
+    }
+  });
+
+  // Enviar el formulario automáticamente
+  form.submit();
+}
+
+// Función para mostrar mensajes
+function mostrarMensaje(mensaje, tipo) {
+  const mensajeDiv = document.createElement('div');
+  mensajeDiv.textContent = mensaje;
+  mensajeDiv.className = tipo === 'success' ? 'mensaje-exito' : 'mensaje-error';
+  document.body.appendChild(mensajeDiv);
+
+  // Ocultar el mensaje después de 2 segundos
+  setTimeout(() => {
+    mensajeDiv.remove();
+  }, 2000);
+}
+
+
+
+// Cargar la última respuesta
+const loadDataUltimaRespuesta3 = async () => {
+    try {
+     const response = await axios.get('http://localhost:8080/respuestas?size=1&sort=id,desc');
+     const data = response.data.content;
+
+     if (Array.isArray(data) && data.length > 0) {
+         
+         const item = data[0];
+        
+         // Almacenar el número obtenido
+         ultimoNumeroRespuesta3 = item.numeroRespuesta+1;
+         console.log(ultimoNumeroRespuesta3 +" ultimo numero appTablaMovimiento")
+     } else {
+         console.error('La propiedad `content` no es un array o está vacío.');
+     }
+ } catch (error) {
+     console.error('Error:', error);
+     alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+ }
+};
+// Cargar la última respuesta
+const loadDataUltimoCertificado = async (unidad) => {
+  try {
+   const response = await axios.get(`http://localhost:8080/certificados/unidad/${unidad}?size=1&sort=numeroCertificado,desc`);
+   const data = response.data.content;
+
+   if (Array.isArray(data) && data.length > 0) {
+       
+       const item = data[0];
+      
+       // Almacenar el número obtenido
+       ultimoNumeroCertificado = item.numeroCertificado+1;
+       console.log(ultimoNumeroCertificado +" ultimo numero appTablaMovimiento")
+   } else {
+       console.error('La propiedad `content` no es un array o está vacío.');
+   }
+} catch (error) {
+   console.error('Error:', error);
+   alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+}
+};

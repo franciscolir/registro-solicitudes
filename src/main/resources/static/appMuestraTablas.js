@@ -7,6 +7,50 @@ function resetView() {
 
 let data = []; // Variable global para almacenar los datos obtenidos
 let ultimoNumeroRespuesta;
+let unidad;
+console.log(unidad+ "unidad al declarar variable")
+
+
+
+const loadUnidades = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/unidades');
+        
+        // Validar que response.data exista y contenga content
+        const data = response.data.content;
+      
+
+        if (Array.isArray(data) && data.length > 0) {
+            const selectUnidad = document.getElementById('selectUnidad');
+            selectUnidad.innerHTML = ''; // Limpiar opciones anteriores
+            selectUnidad.innerHTML = `<option value="" disabled selected>Seleccione una unidad</option>`; // Opción por defecto
+
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.id; // Usar item.id
+                option.textContent = item.nombre; // Usar item.nombre
+                selectUnidad.appendChild(option);
+                //unidad = item.id;
+            });
+             // Agregar evento para actualizar el botón cuando se selecciona una unidad
+    selectUnidad.addEventListener('change', (event) => {
+       const unidadSeleccionada = event.target.value;
+       console.log(unidadSeleccionada+" unidad dentro de load")
+       unidad = unidadSeleccionada;
+       console.log(unidad +" unidad despues de asignar dentro de load")
+        //const boton = document.getElementById('abrirFormCertificado');
+        //boton.setAttribute('data-unidad', unidadSeleccionada);
+
+     
+    });
+        } else {
+            console.error('La propiedad `content` no es un array o está vacío.');
+        }
+    } catch (error) {
+        console.error(error);
+        alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+    }return unidad
+};
 
 
 
@@ -257,8 +301,27 @@ function getTableConfig(type) {
                 <td>${registro.fechaCertificado}</td>
             `;
             config.buttonHtml = `
-                <button id="abrirFormCertificado" data-form="0" >Agregar Certificado</button>
-            `;
+            <button id="ingresarCertificadoBtn" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadUnidades();"> Ingresar Certificado </button>
+           <ul class="dropdown-menu">
+                <li class="dropdown-item">
+                    <div id="formDropdown" class="dropdown-form">
+                        <form id="selectUnidadForm">
+                            <div class="mb-3">
+                                <select class="form-control" id="selectUnidad">
+                                    <option value="" disabled selected>Seleccione una unidad</option>
+                                    <!-- Opciones dinámicas aquí -->
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="abrirFormCertificado" type="button" data-unidad="${unidad}">Seleccionar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        `;
+           
             config.filtroHtml = filtroCertificado;
             break;
 
@@ -545,7 +608,7 @@ const loadDataUltimaRespuesta2 = async () => {
             
             // Almacenar el número obtenido
             ultimoNumeroRespuesta = item.numeroRespuesta + 1;
-            console.log(ultimoNumeroRespuesta + " ultimo numero appTablaMovimiento");
+           
         } else {
             console.error('La propiedad `content` no es un array o está vacío.');
         }
@@ -554,6 +617,8 @@ const loadDataUltimaRespuesta2 = async () => {
         alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
     }
 };
+
+
 
 
 // Inicializa la tabla al cargar la página

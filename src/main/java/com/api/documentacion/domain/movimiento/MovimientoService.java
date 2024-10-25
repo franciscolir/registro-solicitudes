@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.movimiento;
 
+import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.domain.solicitud.SolicitudService;
@@ -162,6 +163,8 @@ public class MovimientoService {
 
         return new DatosMuestraMovimiento(movimientoActualizado);
     }//______________
+       
+
     //______________________________________________________
 
     //DELETE________________________________________________

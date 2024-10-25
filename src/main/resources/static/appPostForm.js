@@ -5,6 +5,11 @@ async function enviarFormulario(form, endpoint) {
     // Elemento de alerta
     const alertMessage = document.getElementById('mensaje');
 
+      // Mostrar todos los elementos del formulario en la consola
+      console.log("Elementos del formulario:");
+      for (const [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+      }
     try {
         const response = await axios.post(`http://localhost:8080/${endpoint}`, formData, {
             headers: {

@@ -44,6 +44,14 @@ public class CertificadoController {
         return ResponseEntity.ok(certificado);
     }
 
+    //Obtener ultimo certificado por unidad
+    @GetMapping("/unidad/{unidadId}")
+    public ResponseEntity<Page<DatosMuestraCertificado>>  obtenerUltimoCertificadoPorUnidad(@PathVariable Long unidadId, Pageable paginacion) {
+        var certificado = certificadoService.obtenerUltimoCertificado(unidadId, paginacion);
+
+        return ResponseEntity.ok(certificado);
+    }
+
 
     //Obtener lista de certificadoes
     @GetMapping

@@ -21,6 +21,7 @@ public class Certificado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JoinColumn(name = "numero_certificado")
     private Long numeroCertificado;//numero asignado al documento por emisor. Ingreso manual
 
     private String titulo;
@@ -57,5 +58,17 @@ public class Certificado {
         this.activo = false;
     }
 
-
+    @Override
+    public String toString() {
+        return "Certificado{" +
+                "id=" + id +
+                ", numeroCertificado=" + numeroCertificado +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", fechaCertificado=" + fechaCertificado +
+                ", activo=" + activo +
+                ", unidad=" + unidad +
+                ", movimiento=" + movimiento +
+                '}';
+    }
 }

@@ -12,6 +12,7 @@ import com.api.documentacion.repository.CertificadoRepository;
 import com.api.documentacion.repository.UnidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,7 @@ public class CertificadoService {
         if (datos.movimiento() != null) {
             movimiento = movimientoRepository.getReferenceById(datos.movimiento());
         }
+        System.out.println(movimiento+"  movimiento##################");
         validaSiExisteNumeroCertificadoAndActivoTrue(datos.numeroCertificado());
         var fechaCertificado = dateFormatter(datos.fechaCertificado());
         var certificado = new Certificado(null,
@@ -52,8 +54,14 @@ public class CertificadoService {
                 unidad,
                 movimiento
         );
-        certificadoRepository.save(certificado);
 
+        certificadoRepository.save(certificado);
+        //certificado.setMovimiento(movimiento);
+        if (movimiento != null) {
+            movimiento.setCertificado(certificado);
+        }
+
+        System.out.println(certificado+"  certificado##################");
         return new DatosMuestraCertificado(certificado);
     }
     //___________________________________________________
@@ -69,6 +77,14 @@ public class CertificadoService {
         return new DatosMuestraCertificado(certificado);
     }//___________
 
+    //obtiene el ultimo certificado con el numero de usuario
+    public Page<DatosMuestraCertificado> obtenerUltimoCertificado(Long unidadId, Pageable paginacion) {
+        var unidad = unidadRepository.getReferenceById(unidadId);
+
+        return certificadoRepository.obtenerUltimoCertificadoPorUnidad(unidad, paginacion).map(DatosMuestraCertificado::new);
+
+    }
+
     //___________________________________________________
 
 
@@ -78,6 +94,8 @@ public class CertificadoService {
 
         return certificadoRepository.findByActivoTrue(paginacion).map(DatosMuestraCertificado::new);
     }
+
+
     //___________________________________________________
 
 
@@ -151,6 +169,7 @@ public class CertificadoService {
 
         return LocalDate.parse(fecha, formatter);
     }//__________
+
 
 
 }

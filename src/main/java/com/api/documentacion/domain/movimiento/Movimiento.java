@@ -5,16 +5,14 @@ import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.unidad.Unidad;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Table(name = "movimientos")
 @Entity(name = "Movimiento")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -51,7 +49,7 @@ public class Movimiento {
     @JoinColumn(name = "unidad_id") // Nombre de la columna en la tabla movimientos
     private Unidad unidad; // Relación ManyToOne
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")
     private Certificado certificado;
 
@@ -119,5 +117,32 @@ public class Movimiento {
     public void eliminarMovimiento (Long id){
         this.id = id;
         this.activo = false;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Movimiento{" +
+                "id=" + id +
+                ", fechaIngreso=" + fechaIngreso +
+                ", fechaAsignacion=" + fechaAsignacion +
+                ", fechaResuelto=" + fechaResuelto +
+                ", fechaCierre=" + fechaCierre +
+                ", fechaRechazado=" + fechaRechazado +
+                ", asignado=" + asignado +
+                ", resuelto=" + resuelto +
+                ", cerrado=" + cerrado +
+                ", activo=" + activo +
+                ", rechazado=" + rechazado +
+                ", comentarioAsignacion='" + comentarioAsignacion + '\'' +
+                ", comentarioResuelto='" + comentarioResuelto + '\'' +
+                ", comentarioRechazado='" + comentarioRechazado + '\'' +
+                ", estado=" + estado +
+                ", solicitud=" + solicitud +
+                ", unidad=" + unidad +
+                ", certificado=" + certificado +
+                ", respuesta=" + respuesta +
+                '}';
     }
 }
