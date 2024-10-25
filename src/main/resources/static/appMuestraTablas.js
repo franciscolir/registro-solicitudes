@@ -8,49 +8,9 @@ function resetView() {
 let data = []; // Variable global para almacenar los datos obtenidos
 let ultimoNumeroRespuesta;
 let unidad;
-console.log(unidad+ "unidad al declarar variable")
 
+//console.log(unidad+ "unidad al declarar variable")
 
-
-const loadUnidades = async () => {
-    try {
-        const response = await axios.get('http://localhost:8080/unidades');
-        
-        // Validar que response.data exista y contenga content
-        const data = response.data.content;
-      
-
-        if (Array.isArray(data) && data.length > 0) {
-            const selectUnidad = document.getElementById('selectUnidad');
-            selectUnidad.innerHTML = ''; // Limpiar opciones anteriores
-            selectUnidad.innerHTML = `<option value="" disabled selected>Seleccione una unidad</option>`; // Opción por defecto
-
-            data.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item.id; // Usar item.id
-                option.textContent = item.nombre; // Usar item.nombre
-                selectUnidad.appendChild(option);
-                //unidad = item.id;
-            });
-             // Agregar evento para actualizar el botón cuando se selecciona una unidad
-    selectUnidad.addEventListener('change', (event) => {
-       const unidadSeleccionada = event.target.value;
-       console.log(unidadSeleccionada+" unidad dentro de load")
-       unidad = unidadSeleccionada;
-       console.log(unidad +" unidad despues de asignar dentro de load")
-        //const boton = document.getElementById('abrirFormCertificado');
-        //boton.setAttribute('data-unidad', unidadSeleccionada);
-
-     
-    });
-        } else {
-            console.error('La propiedad `content` no es un array o está vacío.');
-        }
-    } catch (error) {
-        console.error(error);
-        alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
-    }return unidad
-};
 
 
 
@@ -218,6 +178,7 @@ function getTableConfig(type) {
     const page = 0;
     const paginacionUrl = `?page=${page}&size=${pageSize}`;
     const ultimoNUmero = ultimoNumeroRespuesta
+ 
 
     let config = {
         apiUrl: "",
@@ -313,7 +274,7 @@ function getTableConfig(type) {
                                 </select>
                             </div>
                             <div class="modal-footer">
-                                <button id="abrirFormCertificado" type="button" data-unidad="${unidad}">Seleccionar</button>
+                                <button id="abrirFormCertificado" type="button" data-unidad="">Seleccionar</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </form>
@@ -618,7 +579,60 @@ const loadDataUltimaRespuesta2 = async () => {
     }
 };
 
+// Renderizar el formulario
+function renderFormUnidad() {
+    const selectUnidad = document.getElementById('selectUnidad');
+    const boton = document.getElementById('abrirFormCertificado');
 
+    // Limpiar eventos anteriores
+    selectUnidad.removeEventListener('change', handleSelectChange);
+    selectUnidad.addEventListener('change', handleSelectChange);
+
+    function handleSelectChange(event) {
+        const unidadSeleccionada = event.target.value;
+        boton.setAttribute('data-unidad', unidadSeleccionada); // Asignar el valor seleccionado
+        console.log(`Unidad seleccionada: ${unidadSeleccionada}`);
+    }
+}
+
+const loadUnidades = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/unidades');
+        
+        // Validar que response.data exista y contenga content
+        const data = response.data.content;
+      
+
+        if (Array.isArray(data) && data.length > 0) {
+            const selectUnidad = document.getElementById('selectUnidad');
+            selectUnidad.innerHTML = `<option value="" disabled selected>Seleccione una unidad</option>`; // Opción por defecto
+
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.id; // Usar item.id
+                option.textContent = item.nombre; // Usar item.nombre
+                selectUnidad.appendChild(option);
+            });
+
+              // Al final, renderizamos el formulario
+              renderFormUnidad();
+             // Agregar evento para actualizar el botón cuando se selecciona una unidad
+  
+    
+            
+        } else {
+            console.error('La propiedad `content` no es un array o está vacío.');
+        }
+    } catch (error) {
+        console.error(error);
+        alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+    }
+};
+
+
+
+// Asignar el evento al botón de "Ingresar Certificado"
+document.getElementById("ingresarCertificadoBtn").addEventListener('click', loadUnidades);
 
 
 // Inicializa la tabla al cargar la página

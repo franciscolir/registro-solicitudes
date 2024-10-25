@@ -338,7 +338,19 @@ async function crearFormulario(
         </div>
     `;
     console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
-    loadDataUltimoCertificado (unidad);
+
+
+    //##################################################################################################################################
+    if (unidad=! null){
+      loadDataUltimoCertificado (unidad);
+    }else{
+
+      loadDataUltimoCertificado (unidad);
+    }
+    
+   
+    //##################################################################################################################################
+    
   agregarManejadores(formularioDiv, formType, formConfig.url, movimiento);
   document.getElementById("formularioContainer").appendChild(formularioDiv);
   formularioDiv.style.display = "block";

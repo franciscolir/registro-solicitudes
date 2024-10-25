@@ -23,6 +23,6 @@ public interface CertificadoRepository extends JpaRepository<Certificado,Long> {
 
     Certificado findByNumeroCertificadoAndActivoTrue(Long numeroCertificado);
 
-    @Query("SELECT c FROM Certificado c WHERE c.unidad = :unidad ")
+    @Query("SELECT c FROM Certificado c WHERE c.unidad = :unidad")
     Page<Certificado> obtenerUltimoCertificadoPorUnidad(@Param("unidad") Unidad unidad, Pageable pageable);
 }
