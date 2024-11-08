@@ -30,10 +30,6 @@ public class Solicitud {
     private String titulo;
     private String descripcion;
     private LocalDate fechaSolicitud;
-
-    //@Enumerated(EnumType.STRING)
-    //private Estado estado;
-    //private Boolean cerrado;
     private Boolean activo;
 
     @OneToOne(mappedBy = "solicitud")

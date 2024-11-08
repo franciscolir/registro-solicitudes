@@ -1,0 +1,6 @@
+USE documentacion;
+
+CREATE TABLE perfiles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rol ENUM('ADMIN', 'ENCARGADO', 'USUARIO')
+);

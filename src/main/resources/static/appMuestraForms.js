@@ -51,6 +51,14 @@ function getFormConfig(formType) {
                     <span class="form-control-plaintext">${field.value || ""}</span>
                     
                 `
+                   
+                  : field.name === "providenciaId"
+                  ? ` 
+                    <label class="form-label">Número de Providencia</label>
+                    <input type="text" class="form-control" id="${field.name}" name="${field.name}" value="${field.value || ""}" />
+                  `
+                  
+                
                    : field.type === "textarea"
                    ? `
                     <label for="${field.name}" class="form-label">${field.label}</label>
@@ -93,6 +101,7 @@ function getFormConfig(formType) {
           type: "number",
           name: "numeroCertificado",
           required: true,
+          value: "",
         },
         { label: "Título:", type: "text", name: "titulo", required: true },
         {
@@ -118,15 +127,15 @@ function getFormConfig(formType) {
       ],
     },
     solicitud: {
-      url: "solicitud",
+      url: "solicitudes",
       title: "Ingresar Solicitud",
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
         {
-          label: "Número de Providencia:",
+          label: "",
           type: "number",
-          name: "providencia",
+          name: "providenciaId",
           required: true,
         },
         {
@@ -142,7 +151,10 @@ function getFormConfig(formType) {
           name: "numeroSolicitud",
           required: true,
         },
-        { label: "Título:", type: "text", name: "titulo", required: true },
+        { label: "Título:", 
+          type: "text", 
+          name: "titulo", 
+          required: true },
         {
           label: "Descripción:",
           type: "textarea",
@@ -284,7 +296,9 @@ async function crearFormulario(
     (field) => field.name === "numeroCertificado"
   );
 
-  if (unidadField) unidadField.value = unidad;
+  //if (unidadField) unidadField.value = unidad;
+  if (unidadField) unidadField.value = Number(unidad);
+
   if (nombreUnidadField) nombreUnidadField.value = nombreUnidad;
   if (movimientoField) movimientoField.value = movimiento;
   if (respuestaField) respuestaField.value = respuesta;
@@ -341,17 +355,17 @@ async function crearFormulario(
 
 
     //##################################################################################################################################
-    if (unidad=! null){
-      loadDataUltimoCertificado (unidad);
-    }else{
+    //if (unidad=! null){
+      //loadDataUltimoCertificado (unidad);
+   // }else{
 
-      loadDataUltimoCertificado (unidad);
-    }
+     // loadDataUltimoCertificado (unidad);
+   // }
     
    
     //##################################################################################################################################
     
-  agregarManejadores(formularioDiv, formType, formConfig.url, movimiento);
+  agregarManejadores(formularioDiv, formType, formConfig.url, movimiento, );
   document.getElementById("formularioContainer").appendChild(formularioDiv);
   formularioDiv.style.display = "block";
   //cerrar tabla cuando abre form
@@ -387,12 +401,15 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
         }, 2000); // Elimina el formulario después de 2 
 
         //crear formulario paralelo para actualizar estado de 
+        if (formType === 'solicitudes'){
+          actualizaMovimiento(movimiento, )
+        }
         if (formType === 'certificados'){
-          crearFormParalelo(movimiento, ultimoNumeroCertificado)
+          actualizaMovimiento(movimiento, ultimoNumeroCertificado)
         
         }
         if (formType === 'respuestas'){
-          crearFormParalelo(movimiento, ultimoNumeroRespuesta3)
+          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3)
 
         }
       } catch (error) {
@@ -412,7 +429,9 @@ document.body.addEventListener("click", async (event) => {
   );
 
   if (target) {
-    const unidad = event.target.getAttribute("data-unidad");
+    //const unidad = event.target.getAttribute("data-unidad");
+    const unidad = Number(event.target.getAttribute("data-unidad"));
+
     const nombreUnidad = event.target.getAttribute("data-nombreUnidad");
     const movimiento = event.target.getAttribute("data-movimiento");
     //const respuesta = event.target.getAttribute("data-ultimaRespuesta");
@@ -476,11 +495,11 @@ async function obtenerDatos(url) {
 }
 
 
-function crearFormParalelo(id, documento) {
+function actualizaMovimiento(id, documento) {
   // Crea un formulario oculto
   const form = document.createElement('form');
   form.method = 'POST'; // O el método que necesites
-  form.action = 'tu_endpoint_aqui'; // Define el endpoint donde enviar los datos
+  form.action = 'movimiento'; // Define el endpoint donde enviar los datos
   form.style.display = 'none'; // Oculta el formulario
 
   // Agrega los parámetros al formulario

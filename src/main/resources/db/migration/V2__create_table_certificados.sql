@@ -1,3 +1,5 @@
+USE documentacion;
+
 CREATE TABLE certificados (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     numero_certificado BIGINT,
@@ -5,7 +7,5 @@ CREATE TABLE certificados (
     descripcion TEXT,
     fecha_certificado DATE,
     activo BOOLEAN,
-    registro_id BIGINT,
-    CONSTRAINT fk_certificado_registro FOREIGN KEY (registro_id)
-        REFERENCES registros(id)
+    unidad_id BIGINT
 );
