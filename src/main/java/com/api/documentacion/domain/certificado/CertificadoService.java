@@ -57,9 +57,9 @@ public class CertificadoService {
 
         certificadoRepository.save(certificado);
         //certificado.setMovimiento(movimiento);
-        if (movimiento != null) {
-            movimiento.setCertificado(certificado);
-        }
+       // if (movimiento != null) {
+         //   movimiento.setCertificado(certificado);
+        //}
 
         System.out.println(certificado+"  certificado##################");
         return new DatosMuestraCertificado(certificado);

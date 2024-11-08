@@ -418,7 +418,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   
 
       try {
-        const resultado = await enviarFormulario(form, endpoint, method = 'POST');
+        const resultado = await enviarFormulario2(form, endpoint);
         mensajeDiv.textContent = `${
           formType.charAt(0).toUpperCase() + formType.slice(1)
         } enviado con éxito`;
@@ -433,14 +433,14 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
 
         //crear formulario paralelo para actualizar estado de 
         if (formType === 'solicitud'){
-          actualizaMovimiento(numeroSolicitud, emisor, null, 'POST')
+          creaMovimiento(numeroSolicitud, emisor, 'movimiento')
         }
         if (formType === 'certificados'){
-          actualizaMovimiento(movimiento, numeroCertificado,'resolver','PUT')
+          actualizaMovimiento(movimiento, numeroCertificado,'movimiento/resolver')
         
         }
         if (formType === 'respuesta'){
-          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3,'cerrar','PUT')
+          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3,'movimiento/cerrar')
 
         }
       } catch (error) {
@@ -526,15 +526,15 @@ async function obtenerDatos(url) {
 }
 
 
-async function actualizaMovimiento(id, documento, endpoint, method) {
+async function creaMovimiento(solicitud, emisor, endpoint) {
   // Crea un objeto FormData con los datos a enviar
   const formData = new FormData();
-  formData.append('id', id);
-  formData.append('documento', documento);
+  formData.append('solicitud', solicitud);
+  formData.append('emisor', emisor);
 
   try {
     // Llamamos a la función enviarFormulario, pasando el endpoint y el método HTTP
-    const resultado = await enviarFormulario2(formData, endpoint, method);
+    const resultado = await enviarFormulario(formData, endpoint);
     
     // Mostrar mensaje de éxito
     mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
@@ -559,6 +559,26 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 
+
+async function actualizaMovimiento(id, documento, endpoint) {
+  // Crea un objeto FormData con los datos a enviar
+  const formData = new FormData();
+  formData.append('id', id);
+  formData.append('documento', documento);
+
+  try {
+    // Llamamos a la función enviarFormulario, pasando el endpoint y el método HTTP
+    const resultado = await enviarFormulario(formData, endpoint);
+    
+    // Mostrar mensaje de éxito
+    mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
+    
+  } catch (error) {
+    // Mostrar mensaje de error si ocurre un fallo
+    mostrarMensaje('Hubo un error al enviar el formulario', 'error');
+  }
+}
+
 // Función para mostrar mensajes
 function mostrarMensaje(mensaje, tipo) {
   const mensajeDiv = document.createElement('div');
@@ -571,6 +591,7 @@ function mostrarMensaje(mensaje, tipo) {
     mensajeDiv.remove();
   }, 2000);
 }
+
 
 
 
@@ -619,7 +640,7 @@ const loadDataUltimoCertificado = async (unidad) => {
 
 
 
-async function enviarFormulario(form, endpoint, method) {
+async function enviarFormulario(form, endpoint) {
   const formData = new FormData(form);
 
   // Elemento de alerta
@@ -630,17 +651,12 @@ async function enviarFormulario(form, endpoint, method) {
   for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
   }
-
   try {
-      // Verificar si el método es POST o PUT
-      const response = await axios({
-          method: method,  // Método HTTP (POST o PUT)
-          url: `http://localhost:8080/${endpoint}`, 
-          data: formData,
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
+    const response = await axios.put(`http://localhost:8080/${endpoint}`, formData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 
       if (response.status === 200) {
           // Manejar la respuesta exitosa
@@ -680,7 +696,7 @@ async function enviarFormulario(form, endpoint, method) {
 
 
 
-async function enviarFormulario2(form, endpoint, method) {
+async function enviarFormulario2(form, endpoint) {
   const formData = new FormData(form);
 
   // Elemento de alerta
@@ -693,15 +709,11 @@ async function enviarFormulario2(form, endpoint, method) {
   }
 
   try {
-      // Verificar si el método es POST o PUT
-      const response = await axios({
-          method: method,  // Método HTTP (POST o PUT)
-          url: `http://localhost:8080/${endpoint}`, 
-          data: formData,
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
+    const response = await axios.post(`http://localhost:8080/${endpoint}`, formData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 
       if (response.status === 200) {
           // Manejar la respuesta exitosa
@@ -737,4 +749,11 @@ async function enviarFormulario2(form, endpoint, method) {
           alertMessage.style.display = 'none';
       }, 3000);
   }
+}
+
+function resetView() {
+  document.getElementById("mainContent").classList.remove("d-none");
+  document.getElementById("tableSection").classList.add("d-none");
+// Si ya hay un formulario abierto, lo eliminamos
+cerrarFormularioExistente()
 }

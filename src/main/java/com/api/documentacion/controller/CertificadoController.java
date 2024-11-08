@@ -4,11 +4,6 @@ import com.api.documentacion.domain.certificado.CertificadoService;
 import com.api.documentacion.domain.certificado.dto.DatosActualizaCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosMuestraCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosRegistraCertificado;
-import com.api.documentacion.domain.respuesta.RespuestaService;
-import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
-import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
-import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
-import com.api.documentacion.domain.respuesta.dto.DatosRegistraRespuesta;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +23,12 @@ public class CertificadoController {
     CertificadoService certificadoService;
 
 
-    //ingresar una respuesta
+    //ingresar un certificado
     @PostMapping
     @Transactional
     public ResponseEntity<?> ingresarCertificadoUsuario(@RequestBody @Valid DatosRegistraCertificado datos) {
         var registroCertificado = certificadoService.registrar(datos);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(registroCertificado);
         }
 
     //Obtener una certificado

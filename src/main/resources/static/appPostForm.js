@@ -1,4 +1,4 @@
-async function enviarFormulario(form, endpoint, method = '') {
+/*async function enviarFormulario(form, endpoint, method = '') {
     const formData = new FormData(form);
 
     // Elemento de alerta
