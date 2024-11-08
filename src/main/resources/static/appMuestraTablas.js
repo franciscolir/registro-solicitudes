@@ -632,7 +632,7 @@ const loadUnidades = async () => {
 
 
 // Asignar el evento al botón de "Ingresar Certificado"
-document.getElementById("ingresarCertificadoBtn").addEventListener('click', loadUnidades);
+//document.getElementById("ingresarCertificadoBtn").addEventListener('click', loadUnidades);
 
 
 // Inicializa la tabla al cargar la página

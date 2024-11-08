@@ -48,7 +48,7 @@ function getFormConfig(formType) {
                 `
                     : field.name === "numeroCertificado"
                     ? ` <label class="form-label">Número de Certificado</label>
-                    <span class="form-control-plaintext">${field.value || ""}</span>
+                     <input type="text" class="form-control" id="${field.name}" name="${field.name}" value="${field.value || ""}" />
                     
                 `
                    
@@ -389,7 +389,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
       event.preventDefault();
 
       try {
-        const resultado = await enviarFormulario(form, endpoint);
+        const resultado = await enviarFormulario(form, endpoint, method = 'POST');
         mensajeDiv.textContent = `${
           formType.charAt(0).toUpperCase() + formType.slice(1)
         } enviado con éxito`;
@@ -401,15 +401,15 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
         }, 2000); // Elimina el formulario después de 2 
 
         //crear formulario paralelo para actualizar estado de 
-        if (formType === 'solicitudes'){
-          actualizaMovimiento(movimiento, )
+        if (formType === 'solicitud'){
+          actualizaMovimiento(solicitud, emisor, null, 'POST')
         }
         if (formType === 'certificados'){
-          actualizaMovimiento(movimiento, ultimoNumeroCertificado)
+          actualizaMovimiento(movimiento, ultimoNumeroCertificado,'resolver','PUT')
         
         }
-        if (formType === 'respuestas'){
-          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3)
+        if (formType === 'respuesta'){
+          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3,'cerrar','PUT')
 
         }
       } catch (error) {
@@ -495,11 +495,11 @@ async function obtenerDatos(url) {
 }
 
 
-function actualizaMovimiento(id, documento) {
+function actualizaMovimiento(id, documento, endpoint, method) {
   // Crea un formulario oculto
   const form = document.createElement('form');
-  form.method = 'POST'; // O el método que necesites
-  form.action = 'movimiento'; // Define el endpoint donde enviar los datos
+  form.method = method; // O el método que necesites
+  form.action = 'movimientos/'+endpoint; // Define el endpoint donde enviar los datos
   form.style.display = 'none'; // Oculta el formulario
 
   // Agrega los parámetros al formulario
@@ -525,7 +525,7 @@ function actualizaMovimiento(id, documento) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
     try {
-      const resultado = await enviarFormulario(form, form.action);
+      const resultado = await enviarFormulario(form, form.action, form.method);
       mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
       
       // Eliminar el formulario después de enviarlo

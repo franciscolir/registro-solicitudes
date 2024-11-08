@@ -1,4 +1,65 @@
+async function enviarFormulario(form, endpoint, method = '') {
+    const formData = new FormData(form);
 
+    // Elemento de alerta
+    const alertMessage = document.getElementById('mensaje');
+
+    // Mostrar todos los elementos del formulario en la consola
+    console.log("Elementos del formulario:");
+    for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    try {
+        // Verificar si el método es POST o PUT
+        const response = await axios({
+            method: method,  // Método HTTP (POST o PUT)
+            url: `http://localhost:8080/${endpoint}`, 
+            data: formData,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.status === 200) {
+            // Manejar la respuesta exitosa
+            alertMessage.className = 'alert alert-success';
+            alertMessage.textContent = 'Respuesta enviada exitosamente';
+            alertMessage.style.display = 'block';
+
+            // Ocultar el mensaje después de 2 segundos
+            setTimeout(() => {
+                alertMessage.style.display = 'none';
+                resetView(); // Ocultar formulario y volver al inicio
+                loadData(); // Recargar solo la tabla
+            }, 1800);
+        } else {
+            console.error('Error:', response.status, response.statusText);
+            // Manejar códigos de estado no 200 aquí
+        }
+    } catch (error) {
+        // Manejar el error
+        let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
+        
+        if (error.response && error.response.status === 400 && error.response.data) {
+            // Si hay un mensaje de error en la respuesta del servidor, usarlo
+            errorMessage = `Error: ${error.response.data}`;
+        }
+
+        alertMessage.className = 'alert alert-danger';
+        alertMessage.textContent = errorMessage;
+        alertMessage.style.display = 'block';
+
+        // Ocultar el mensaje después de 3 segundos
+        setTimeout(() => {
+            alertMessage.style.display = 'none';
+        }, 3000);
+    }
+}
+
+
+
+/*
 async function enviarFormulario(form, endpoint) {
     const formData = new FormData(form);
 
@@ -52,7 +113,7 @@ async function enviarFormulario(form, endpoint) {
         }, 3000);
     }
 }
-
+*/
 function resetView() {
     document.getElementById("mainContent").classList.remove("d-none");
     document.getElementById("tableSection").classList.add("d-none");
