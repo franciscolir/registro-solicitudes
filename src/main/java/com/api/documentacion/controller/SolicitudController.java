@@ -25,7 +25,7 @@ public class SolicitudController {
     public ResponseEntity<?> ingresarSolicitudUsuario(@RequestBody @Valid DatosRegistraSolicitud datos) {
         var registroSolicitud = solicitudService.registrar(datos);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(registroSolicitud);
     }
 
     //Obtener una solicitud

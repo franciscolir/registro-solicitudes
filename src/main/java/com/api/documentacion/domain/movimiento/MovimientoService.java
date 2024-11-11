@@ -32,8 +32,9 @@ public class MovimientoService {
     public DatosMuestraMovimiento registrar(DatosRegistraMovimiento datos) {
 
         var fechaIngreso = LocalDateTime.now();
-        var id = solicitudService.validaYObtieneIdConNumeroSolicitud(datos.solicitud(), datos.emisor());
-        var solicitud = solicitudRepository.getReferenceById(id);
+        //var id = solicitudService.validaYObtieneIdConNumeroSolicitud(datos.solicitud(), datos.emisor());
+        //var solicitud = solicitudRepository.getReferenceById(id);
+        var solicitud = solicitudRepository.getReferenceById(datos.solicitud());
         var movimiento = new Movimiento(null,
                 fechaIngreso,
                 null,

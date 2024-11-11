@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotNull;
 public record DatosRegistraMovimiento(
 
         @NotNull(message = "numero de registro es obligatorio")
-        Long solicitud,
-        @NotNull(message = "numero de emisor es obligatorio")
-        Long emisor
+        Long solicitud
+        //@NotNull(message = "numero de emisor es obligatorio")
+        //Long emisor
 ) {
 
 }
