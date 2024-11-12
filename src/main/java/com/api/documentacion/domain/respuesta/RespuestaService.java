@@ -39,7 +39,8 @@ public class RespuestaService {
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
-        var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
+        //var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
+        var fechaRespuesta = LocalDate.now();
         var fechaEnvioRespuesta = LocalDateTime.now();
         var respuesta = new Respuesta(null,
                 datos.numeroRespuesta(),

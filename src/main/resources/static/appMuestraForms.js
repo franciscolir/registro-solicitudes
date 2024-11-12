@@ -96,24 +96,18 @@ function getFormConfig(formType) {
           value: "",
         }, // Campo oculto
         { label: "", type: "text", name: "nombreUnidad", required: true },
-        {
+        /*{
           label: "",
           type: "number",
           name: "numeroCertificado",
           required: true,
           value: "",
-        },
+        },*/
         { label: "Título:", type: "text", name: "titulo", required: true },
         {
           label: "Descripción:",
           type: "textarea",
           name: "descripcion",
-          required: true,
-        },
-        {
-          label: "Fecha :",
-          type: "date",
-          name: "fechaCertificado",
           required: true,
         },
         {
@@ -246,12 +240,7 @@ function getFormConfig(formType) {
           name: "comentario",
           required: false,
         },
-        {
-          label: "Fecha de Respuesta:",
-          type: "date",
-          name: "fechaRespuesta",
-          required: true,
-        },
+    
       ],
     },
   };

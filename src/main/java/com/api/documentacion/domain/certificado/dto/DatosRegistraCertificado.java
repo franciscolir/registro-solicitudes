@@ -6,14 +6,14 @@ import jakarta.validation.constraints.NotNull;
 
 public record DatosRegistraCertificado(
 
-        @NotNull
-        Long numeroCertificado,
+        //@NotNull
+        //Long numeroCertificado,
         @NotBlank
         String titulo,
         @NotBlank
         String descripcion,
-        @NotBlank
-        String fechaCertificado,
+        //@NotBlank
+        //String fechaCertificado,
         @NotNull
         Long unidad,
         Long movimiento

@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class CertificadoService {
@@ -37,16 +39,24 @@ public class CertificadoService {
 
     public DatosMuestraCertificado registrar(DatosRegistraCertificado datos) {
 
+
         var unidad = unidadRepository.getReferenceById(datos.unidad());
+
+        //Trae lista de numeros de certificado segun unidad. elije el ultimo y lo aumenta en uno
+        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("numeroCertificado")));
+        List<Long> certificados = certificadoRepository.findLastCertificadoByUnidad(unidad, pageable);
+        var lastCertificado = certificados.isEmpty() ? null : certificados.get(0)+1;
+
+
         Movimiento movimiento = null;
         if (datos.movimiento() != null) {
             movimiento = movimientoRepository.getReferenceById(datos.movimiento());
         }
         System.out.println(movimiento+"  movimiento##################");
-        validaSiExisteNumeroCertificadoAndActivoTrue(datos.numeroCertificado());
-        var fechaCertificado = dateFormatter(datos.fechaCertificado());
+      
+        var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
-                datos.numeroCertificado(),
+                lastCertificado,
                 datos.titulo(),
                 datos.descripcion(),
                 fechaCertificado,

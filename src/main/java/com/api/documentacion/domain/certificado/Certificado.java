@@ -31,7 +31,7 @@ public class Certificado {
 
     private Boolean activo;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_id")
     private Unidad unidad;
 

@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.unidad;
 
+import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
@@ -31,6 +32,8 @@ public class Unidad {
     @OneToMany(mappedBy = "unidad", fetch = FetchType.LAZY)
     private Set<Movimiento> movimientos; // Relación OneToMany
 
+    @OneToMany(mappedBy = "unidad")  // Relación bidireccional
+    private Set<Certificado> certificados;  // Una unidad tiene varios certificados
 
     public void eliminarUnidad(Long id) {
         this.id = id;
