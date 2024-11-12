@@ -53,7 +53,7 @@ public class CertificadoService {
             movimiento = movimientoRepository.getReferenceById(datos.movimiento());
         }
         System.out.println(movimiento+"  movimiento##################");
-      
+
         var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
                 lastCertificado,

@@ -515,37 +515,31 @@ async function obtenerDatos(url) {
 }
 
 
-async function creaMovimiento(solicitud, emisor, endpoint) {
-  // Crea un objeto FormData con los datos a enviar
-  const formData = new FormData();
-  formData.append('solicitud', solicitud);
-  formData.append('emisor', emisor);
-
+async function creaMovimiento(solicitud) {
   try {
-    // Llamamos a la función enviarFormulario, pasando el endpoint y el método HTTP
-    const resultado = await enviarFormulario(formData, endpoint);
-    
-    // Mostrar mensaje de éxito
-    mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
-    
+    // Realizar el procesamiento necesario con la solicitud recibida
+    console.log('Creando movimiento con solicitud:', solicitud);
+
+    // Llamada a un endpoint para crear el movimiento con la solicitud
+    const response = await axios.post('http://localhost:8080/movimientos', {
+      solicitud: solicitud
+    });
+
+    if (response.status === 200) {
+      console.log('Movimiento creado con éxito:', response.data);
+      // Realiza las acciones posteriores si el movimiento se crea correctamente
+      mostrarMensaje('Movimiento creado exitosamente', 'success');
+    } else {
+      console.error('Error al crear el movimiento:', response.status, response.statusText);
+      mostrarMensaje('Hubo un error al crear el movimiento', 'error');
+    }
+
   } catch (error) {
-    // Mostrar mensaje de error si ocurre un fallo
-    mostrarMensaje('Hubo un error al enviar el formulario', 'error');
+    console.error('Error al procesar el movimiento:', error);
+    mostrarMensaje('Error al procesar el movimiento', 'error');
   }
 }
 
-// Función para mostrar mensajes
-function mostrarMensaje(mensaje, tipo) {
-  const mensajeDiv = document.createElement('div');
-  mensajeDiv.textContent = mensaje;
-  mensajeDiv.className = tipo === 'success' ? 'mensaje-exito' : 'mensaje-error';
-  document.body.appendChild(mensajeDiv);
-
-  // Ocultar el mensaje después de 2 segundos
-  setTimeout(() => {
-    mensajeDiv.remove();
-  }, 2000);
-}
 
 
 
@@ -628,7 +622,6 @@ const loadDataUltimoCertificado = async (unidad) => {
 };
 
 
-
 async function enviarFormulario(form, endpoint) {
   const formData = new FormData(form);
 
@@ -640,6 +633,7 @@ async function enviarFormulario(form, endpoint) {
   for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
   }
+
   try {
     const response = await axios.put(`http://localhost:8080/${endpoint}`, formData, {
         headers: {
@@ -647,22 +641,35 @@ async function enviarFormulario(form, endpoint) {
         }
     });
 
-      if (response.status === 200) {
-          // Manejar la respuesta exitosa
-          alertMessage.className = 'alert alert-success';
-          alertMessage.textContent = 'Respuesta enviada exitosamente';
-          alertMessage.style.display = 'block';
+    if (response.status === 200) {
+        // Manejar la respuesta exitosa
+        alertMessage.className = 'alert alert-success';
+        alertMessage.textContent = 'Respuesta enviada exitosamente';
+        alertMessage.style.display = 'block';
 
-          // Ocultar el mensaje después de 2 segundos
-          setTimeout(() => {
-              alertMessage.style.display = 'none';
-              resetView(); // Ocultar formulario y volver al inicio
-              loadData(); // Recargar solo la tabla
-          }, 1800);
-      } else {
-          console.error('Error:', response.status, response.statusText);
-          // Manejar códigos de estado no 200 aquí
-      }
+        // Ocultar el mensaje después de 2 segundos
+        setTimeout(() => {
+            alertMessage.style.display = 'none';
+            resetView(); // Ocultar formulario y volver al inicio
+            loadData(); // Recargar solo la tabla
+        }, 1800);
+
+        // Extraer solo 'solicitud' de la respuesta
+        const { id } = response.data; // Solo extraemos 'solicitud'
+
+        if (id) {
+            // Llamar a creaMovimiento pasando solo 'solicitud'
+            await creaMovimiento(id);
+        } else {
+            console.error('Error: No se encontró la solicitud en la respuesta');
+        }
+
+        // Devolver la respuesta del servidor si es necesario
+        return response.data;
+    } else {
+        console.error('Error:', response.status, response.statusText);
+        // Manejar códigos de estado no 200 aquí
+    }
   } catch (error) {
       // Manejar el error
       let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
@@ -680,8 +687,11 @@ async function enviarFormulario(form, endpoint) {
       setTimeout(() => {
           alertMessage.style.display = 'none';
       }, 3000);
+
+      throw error;  // Propagar el error para manejarlo en la llamada a `creaMovimiento`
   }
 }
+
 
 
 
