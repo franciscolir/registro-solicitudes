@@ -8,6 +8,10 @@ public record DatosRegistraMovimiento(
         Long solicitud
         //@NotNull(message = "numero de emisor es obligatorio")
         //Long emisor
+
+
+
+
 ) {
 
 }

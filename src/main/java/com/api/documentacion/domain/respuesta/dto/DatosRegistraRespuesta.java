@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 public record DatosRegistraRespuesta(
 
         @NotNull(message = "numero de movimiento es obligatorio")
-        Long movimientoId,
+        Long movimiento,
         @NotNull(message = "numero de respuesta es obligatoria")
         Long numeroRespuesta,
         @NotNull(message = "id de usuario es obligatoria")

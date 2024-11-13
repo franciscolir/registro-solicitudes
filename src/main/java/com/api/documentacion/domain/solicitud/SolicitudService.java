@@ -1,11 +1,15 @@
 package com.api.documentacion.domain.solicitud;
 
+import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
+import com.api.documentacion.domain.movimiento.dto.DatosRegistraMovimiento;
 import com.api.documentacion.domain.solicitud.dto.*;
 import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,9 @@ public class SolicitudService {
     SolicitudRepository solicitudRepository;
     @Autowired
     EmisorRepository emisorRepository;
+    @Autowired
+    @Lazy
+    MovimientoService movimientoService;
 
     //POST___________________________________________
         //registra solicitud
@@ -40,6 +47,11 @@ public class SolicitudService {
                 null
         );
         solicitudRepository.save(solicitud);
+
+        //Crea Movimiento cuando se registra solicitud
+          // var datosMovimiento = new DatosRegistraMovimiento(solicitud.getId());
+            movimientoService.registrar(solicitud);
+
 
         return new DatosMuestraSolicitud(solicitud);
     }

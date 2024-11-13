@@ -41,7 +41,7 @@ public class Movimiento {
     @Enumerated(EnumType.STRING)
     private EstadoMovimiento estado;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "solicitud_id")
     private Solicitud solicitud;
 
@@ -49,11 +49,11 @@ public class Movimiento {
     @JoinColumn(name = "unidad_id") // Nombre de la columna en la tabla movimientos
     private Unidad unidad; // Relación ManyToOne
 
-    @OneToOne( fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")
     private Certificado certificado;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "respuesta_id")
     private Respuesta respuesta;
 

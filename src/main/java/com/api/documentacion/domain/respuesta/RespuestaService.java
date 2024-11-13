@@ -1,5 +1,7 @@
 package com.api.documentacion.domain.respuesta;
 
+import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
@@ -31,7 +33,7 @@ public class RespuestaService {
     @Autowired
     UsuarioService usuarioService;
     @Autowired
-    MovimientoRepository movimientoRepository;
+    MovimientoService movimientoService;
 
     //POST___________________________________________
 
@@ -53,6 +55,12 @@ public class RespuestaService {
                 true
         );
         respuestaRepository.save(respuesta);
+
+        //Actualiza Movimiento cuando se registra respuesta
+        if (datos.movimiento() != null) {
+            var datosMovimiento = new DatosCierraMovimiento(datos.movimiento(), respuesta.getId());
+            movimientoService.cerrarMovimiento(datosMovimiento);
+        }
 
         return new DatosMuestraRespuesta(respuesta);
     }
@@ -119,7 +127,7 @@ public class RespuestaService {
     //VALIDADORES____________________________________________
     //valida id de registro
     public void validaSiExisteNumeroRespuestaAndActivoTrue (Long id) {
-        if(respuestaRepository.existsByIdAndActivoTrue(id)){
+        if(respuestaRepository.existsByNumeroRespuestaAndActivoTrue(id)){
             throw new ValidacionDeIntegridad(" El numero de respuesta ya fue registrado");
         }
     }   //__________

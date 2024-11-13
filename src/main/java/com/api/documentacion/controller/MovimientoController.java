@@ -2,6 +2,7 @@ package com.api.documentacion.controller;
 
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,11 @@ public class MovimientoController {
     //ingresar un registro de movimiento de solicitud
     @PostMapping
     @Transactional
-    public ResponseEntity<DatosMuestraMovimiento> ingresarRegistro(@RequestBody @Valid DatosRegistraMovimiento datos) {
-        var movimiento = movimientoService.registrar(datos);
+    public ResponseEntity<DatosMuestraMovimiento> ingresarRegistro(@RequestBody @Valid DatosRegistraSolicitud datos) {
+        //var movimiento = movimientoService.registrar(datos);
 
-        return ResponseEntity.ok(movimiento);
+        //return ResponseEntity.ok(movimiento);
+        return ResponseEntity.ok().build() ;
     }
     //Obtener lista de movimientos
     @GetMapping("/pendientes")

@@ -13,7 +13,7 @@ public record DatosRegistraCertificado(
         @NotBlank
         String descripcion,
         //@NotBlank
-        //String fechaCertificado,
+        String comentario,
         @NotNull
         Long unidad,
         Long movimiento

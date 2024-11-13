@@ -3,7 +3,10 @@ package com.api.documentacion.domain.certificado;
 import com.api.documentacion.domain.certificado.dto.DatosActualizaCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosMuestraCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosRegistraCertificado;
+import com.api.documentacion.domain.movimiento.EstadoMovimiento;
 import com.api.documentacion.domain.movimiento.Movimiento;
+import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.movimiento.dto.DatosActualizaMovimiento;
 import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.unidad.UnidadService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
@@ -29,7 +32,7 @@ public class CertificadoService {
     @Autowired
     CertificadoRepository certificadoRepository;
     @Autowired
-    SolicitudService solicitudService;
+    MovimientoService movimientoService;
     @Autowired
     UnidadService unidadService;
     @Autowired
@@ -48,12 +51,6 @@ public class CertificadoService {
         var lastCertificado = certificados.isEmpty() ? null : certificados.get(0)+1;
 
 
-        Movimiento movimiento = null;
-        if (datos.movimiento() != null) {
-            movimiento = movimientoRepository.getReferenceById(datos.movimiento());
-        }
-        System.out.println(movimiento+"  movimiento##################");
-
         var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
                 lastCertificado,
@@ -62,18 +59,25 @@ public class CertificadoService {
                 fechaCertificado,
                 true,
                 unidad,
-                movimiento
+                null
         );
 
         certificadoRepository.save(certificado);
-        //certificado.setMovimiento(movimiento);
-       // if (movimiento != null) {
-         //   movimiento.setCertificado(certificado);
-        //}
+
+        //Actualiza movimiento con ingreso de certificado
+
+        if (datos.movimiento() != null) {
+            var datosMovimiento = new DatosActualizaMovimiento(datos.movimiento(),
+                    datos.comentario(),
+                    certificado.getId());
+            movimientoService.resolverMovimiento(datosMovimiento);
+        }
+
 
         System.out.println(certificado+"  certificado##################");
         return new DatosMuestraCertificado(certificado);
     }
+
     //___________________________________________________
 
 

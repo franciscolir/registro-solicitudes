@@ -238,6 +238,7 @@ const loadUnidadOptions = async (id) => {
     }
 };
 
+
 const submitForm = async (event, formId, id) => {
     event.preventDefault();
 
@@ -291,6 +292,7 @@ const submitForm = async (event, formId, id) => {
         }
     }
 };
+
 
 const showAlert = (message, type, id) => {
     const alertContainer = document.getElementById(`alertContainer${id}`);

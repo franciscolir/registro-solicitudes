@@ -1,7 +1,7 @@
 let ultimoNumeroRespuesta3;
-let ultimoNumeroCertificado;
+//let ultimoNumeroCertificado;
 
-console.log(ultimoNumeroCertificado);
+//console.log(ultimoNumeroCertificado);
 
 function getFormConfig(formType) {
   const commonFormatRow = (field) =>  `
@@ -44,6 +44,7 @@ function getFormConfig(formType) {
                    : field.name === "numeroRespuesta"
                    ? ` <label class="form-label">Número de Respuesta</label>
                    <span class="form-control-plaintext">${field.value || ""}</span>
+                   <input type="hidden" id="${field.name}" name="${field.name}" value="${field.value}">
                     
                 `
                     : field.name === "numeroCertificado"
@@ -87,37 +88,12 @@ function getFormConfig(formType) {
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-4">Enviar</button>`,
       fields: [
-        {
-          label: "",
-          type: "number",
-          name: "unidad",
-          required: true,
-          hidden: false,
-          value: "",
-        }, // Campo oculto
+        { label: "", type: "number", name: "unidad",  required: true, hidden: false, value: "" }, // Campo oculto
         { label: "", type: "text", name: "nombreUnidad", required: true },
-        /*{
-          label: "",
-          type: "number",
-          name: "numeroCertificado",
-          required: true,
-          value: "",
-        },*/
         { label: "Título:", type: "text", name: "titulo", required: true },
-        {
-          label: "Descripción:",
-          type: "textarea",
-          name: "descripcion",
-          required: true,
-        },
-        {
-          label: "",
-          type: "number",
-          name: "movimiento",
-          required: true,
-          hidden: true,
-          value: "",
-        },
+        { label: "Descripción:",type: "textarea", name: "descripcion",required: true, },
+        { label: "",type: "number", name: "movimiento", required: true, hidden: true, value: "", },
+        { label: "Cometario interno", type: "textarea", name: "comentario",required: true,value: "", },
       ],
     },
     solicitud: {
@@ -126,41 +102,12 @@ function getFormConfig(formType) {
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
-        {
-          label: "",
-          type: "number",
-          name: "providenciaId",
-          required: true,
-        },
-        {
-          label: "Emisor:",
-          type: "select",
-          name: "emisor",
-          required: true,
-          options: [],
-        }, // Opciones se llenarán dinámicamente
-        {
-          label: "Número de Solicitud:",
-          type: "number",
-          name: "numeroSolicitud",
-          required: true,
-        },
-        { label: "Título:", 
-          type: "text", 
-          name: "titulo", 
-          required: true },
-        {
-          label: "Descripción:",
-          type: "textarea",
-          name: "descripcion",
-          required: false,
-        },
-        {
-          label: "Fecha de Solicitud:",
-          type: "date",
-          name: "fechaSolicitud",
-          required: true,
-        },
+        { label: "",type: "number", name: "providenciaId",  required: true, },
+        { label: "Emisor:", type: "select", name: "emisor", required: true,options: [],}, // Opciones se llenarán dinámicamente
+        { label: "Número de Solicitud:",  type: "number", name: "numeroSolicitud", required: true,},
+        { label: "Título:",  type: "text",  name: "titulo",  required: true },
+        { label: "Descripción:",type: "textarea", name: "descripcion", required: false, },
+        { label: "Fecha de Solicitud:",  type: "date",  name: "fechaSolicitud",required: true, },
       ],
     },
     evento: {
@@ -169,78 +116,25 @@ function getFormConfig(formType) {
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
-        {
-          label: "Tipo:",
-          type: "select",
-          name: "tipo",
-          required: true,
-          options: [],
-        }, // Se llenará dinámicamente
-        {
-          label: "Descripción:",
-          type: "text",
-          name: "descripcion",
-          required: true,
-        },
-        {
-          label: "Fecha y Hora:",
-          type: "datetime-local",
-          name: "fecha",
-          required: true,
-        },
-        {
-          label: "Establecimiento:",
-          type: "select",
-          name: "establecimiento",
-          required: true,
-          options: [],
-        }, // Se llenará dinámicamente
-        {
-          label: "Invitados:",
-          type: "select",
-          name: "invitados",
-          required: false,
-          multiple: true,
-          options: [],
-        }, // Se llenará dinámicamente
+        { label: "Tipo:", type: "select",   name: "tipo",   required: true,  options: [],  }, // Se llenará dinámicamente
+        { label: "Descripción:",type: "text", name: "descripcion", required: true, },
+        { label: "Fecha y Hora:",type: "datetime-local",  name: "fecha", required: true, },
+        { label: "Establecimiento:",type: "select", name: "establecimiento", required: true, options: [], }, // Se llenará dinámicamente
+        { label: "Invitados:",type: "select", name: "invitados", required: false, multiple: true, options: [], }, // Se llenará dinámicamente
       ],
     },
     respuesta: {
-      url: "respuesta",
+      url: "respuestas",
       title: "Ingresar Respuesta",
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
-        {
-          label: "",
-          type: "number",
-          name: "movimientoId",
-          required: true,
-          value: "",
-          hidden: true,
-        }, // Mantener oculto
         { label: "", type: "number", name: "numeroRespuesta", required: true },
-        {
-          label: "Funcionario:",
-          type: "select",
-          name: "funcionario",
-          required: true,
-          options: [],
-        },
+        { label: "Funcionario:",type: "select", name: "usuario", required: true,  options: [],},
         { label: "Título:", type: "text", name: "titulo", required: true },
-        {
-          label: "Descripción:",
-          type: "textarea",
-          name: "descripcion",
-          required: true,
-        },
-        {
-          label: "Comentario:",
-          type: "textarea",
-          name: "comentario",
-          required: false,
-        },
-    
+        { label: "Descripción:", type: "textarea", name: "descripcion", required: true, },
+        { label: "", type: "number", name: "movimiento",  required: true, hidden: true,value: "", }, // Mantener oculto
+        { label: "Comentario:", type: "textarea", name: "comentario", required: false,},
       ],
     },
   };
@@ -249,15 +143,9 @@ function getFormConfig(formType) {
   return forms[formType] || null;
 }
 
-async function crearFormulario(
-  formType,
-  unidad = "",
-  nombreUnidad = "",
-  movimiento = "",
-  respuesta = "",
-  certificado = ""
-) {
-    console.log(unidad + "unidad dentro de creraForm y antes de loasd ###############");
+async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimiento = "", respuesta = "", certificado = "") {
+    
+  //console.log(unidad + "unidad dentro de creraForm y antes de loasd ###############");
   cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
   
   document.getElementById("mainContent").classList.add("d-none");
@@ -287,7 +175,6 @@ async function crearFormulario(
 
   //if (unidadField) unidadField.value = unidad;
   if (unidadField) unidadField.value = Number(unidad);
-
   if (nombreUnidadField) nombreUnidadField.value = nombreUnidad;
   if (movimientoField) movimientoField.value = movimiento;
   if (respuestaField) respuestaField.value = respuesta;
@@ -298,7 +185,7 @@ async function crearFormulario(
   if (formType === "respuesta") {
     const funcionarios = await obtenerFuncionarios();
     const funcionarioField = formConfig.fields.find(
-      (field) => field.name === "funcionario"
+      (field) => field.name === "usuario"
     );
     if (funcionarioField) {
       funcionarioField.options = funcionarios;
@@ -367,9 +254,9 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   const mensajeDiv = formularioDiv.querySelector("#mensaje");
 
  // Variables para almacenar los valores
- let ultimoEmisor = null;
- let ultimoNumeroSolicitud = null;
- let ultimoNumeroCertificado = null;
+ //let ultimoEmisor = null;
+ //let ultimoNumeroSolicitud = null;
+ //let ultimoNumeroCertificado = null;
 
 
   console.log(formularioDiv+"form")
@@ -383,7 +270,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-
+/*
         // Capturar el valor de "emisor" si no es null o vacío
         const emisorElement = form.querySelector("[name='emisor']");
         if (emisorElement && emisorElement.value) {
@@ -393,18 +280,18 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
         // Capturar el valor de "numeroSolicitud" si no es null o vacío
         const numeroSolicitudElement = form.querySelector("[name='numeroSolicitud']");
         if (numeroSolicitudElement && numeroSolicitudElement.value) {
-          ultimoNumeroSolicitud = numeroSolicitudElement.value;
+          //ultimoNumeroSolicitud = numeroSolicitudElement.value;
         }
   
         // Capturar el valor de "numeroCertificado" si no es null o vacío
         const numeroCertificadoElement = form.querySelector("[name='numeroCertificado']");
         if (numeroCertificadoElement && numeroCertificadoElement.value) {
-          ultimoNumeroCertificado = numeroCertificadoElement.value;
+          //ultimoNumeroCertificado = numeroCertificadoElement.value;
         }
   
         // Verifica que los valores hayan sido capturados correctamente
         console.log(`Emisor: ${ultimoEmisor}, Número de Solicitud: ${ultimoNumeroSolicitud}, Número de Certificado: ${ultimoNumeroCertificado}`);
-  
+  */
 
       try {
         const resultado = await enviarFormulario2(form, endpoint);
@@ -419,7 +306,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
           formularioDiv.remove();
           document.getElementById("mainContent").classList.remove("d-none");
         }, 2000); // Elimina el formulario después de 2 
-
+/*
         //crear formulario paralelo para actualizar estado de 
         if (formType === 'solicitud'){
           creaMovimiento(numeroSolicitud, emisor, 'movimiento')
@@ -430,8 +317,9 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
         }
         if (formType === 'respuesta'){
           actualizaMovimiento(movimiento, ultimoNumeroRespuesta3,'movimiento/cerrar')
-
-        }
+      }
+          */
+        
       } catch (error) {
         mensajeDiv.textContent = "Hubo un error al enviar el formulario";
         mensajeDiv.style.display = "block";
@@ -456,11 +344,11 @@ document.body.addEventListener("click", async (event) => {
     const movimiento = event.target.getAttribute("data-movimiento");
     //const respuesta = event.target.getAttribute("data-ultimaRespuesta");
 
-    console.log(movimiento+" numero movimineto en form")
+    //console.log(movimiento+" numero movimineto en form")
 
     switch (event.target.id) {
       case "abrirFormCertificado":
-        crearFormulario("certificados", unidad, nombreUnidad, movimiento, null, ultimoNumeroCertificado);
+        crearFormulario("certificados", unidad, nombreUnidad, movimiento, null, null);//ultimoNumeroCertificado);
         
         break;
 
@@ -514,7 +402,7 @@ async function obtenerDatos(url) {
   }
 }
 
-
+/*
 async function creaMovimiento(solicitud) {
   try {
     // Realizar el procesamiento necesario con la solicitud recibida
@@ -561,6 +449,7 @@ async function actualizaMovimiento(id, documento, endpoint) {
     mostrarMensaje('Hubo un error al enviar el formulario', 'error');
   }
 }
+*/
 
 // Función para mostrar mensajes
 function mostrarMensaje(mensaje, tipo) {
@@ -599,6 +488,8 @@ const loadDataUltimaRespuesta3 = async () => {
      alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
  }
 };
+
+/*
 // Cargar la última respuesta
 const loadDataUltimoCertificado = async (unidad) => {
   try {
@@ -691,6 +582,10 @@ async function enviarFormulario(form, endpoint) {
       throw error;  // Propagar el error para manejarlo en la llamada a `creaMovimiento`
   }
 }
+
+*/
+
+
 
 
 
