@@ -110,8 +110,9 @@ function getFormConfig(formType) {
         { label: "Fecha de Solicitud:",  type: "date",  name: "fechaSolicitud",required: true, },
       ],
     },
+    /*
     evento: {
-      url: "eventos",
+      url: "evento",
       title: "Ingresar Evento",
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
@@ -122,7 +123,7 @@ function getFormConfig(formType) {
         { label: "Establecimiento:",type: "select", name: "establecimiento", required: true, options: [], }, // Se llenará dinámicamente
         { label: "Invitados:",type: "select", name: "invitados", required: false, multiple: true, options: [], }, // Se llenará dinámicamente
       ],
-    },
+    },*/
     respuesta: {
       url: "respuestas",
       title: "Ingresar Respuesta",
@@ -212,7 +213,8 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
   }
 
   // Obtener funcionarios y llenar el select
-  if (formType === "eventos") {
+  /*
+  if (formType === "evento") {
     //select tipo
     const tipo = await obtenerTipoEvento();
     const tipoField = formConfig.fields.find(
@@ -237,9 +239,10 @@ const invitadoField = formConfig.fields.find(
 if (invitadoField) {
   invitadoField.options = invitados;
 }
+  
 
   }
-
+*/
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
     .join("");
@@ -343,9 +346,9 @@ document.body.addEventListener("click", async (event) => {
         crearFormulario("respuesta", null, null, movimiento, ultimoNumeroRespuesta3,null);
         break;
 
-      case "abrirFormEvento":
-        crearFormulario("eventos");
-        break;
+     // case "abrirFormEvento":
+       // crearFormulario("evento");
+        //break;
 
       case "abrirFormProyecto":
         crearFormulario("proyecto");

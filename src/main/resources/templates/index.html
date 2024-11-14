@@ -148,17 +148,8 @@
     </main>
 
     <div id="formularioContainer"></div>
-
-
-    
-   
- 
-    
-    
-    
-
-    
-
+     <!-- div para Registrar Evento -->
+     <div id="formularioEventoDiv"></div>
 
 
     <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
@@ -237,66 +228,7 @@
     </section>
 
  
-        <!-- Modal para Registrar Evento -->
-        <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="eventModalLabel">Registrar Evento</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Alerta para mostrar el mensaje de éxito o error -->
-                        <div id="eventAlertMessage" class="alert" style="display:none;"></div>
-
-                        <!-- Formulario -->
-                        <form id="eventForm" class="needs-validation"
-                            onsubmit="event.preventDefault(); enviarFormularioEvent();">
-                            <div class="form-group">
-                                <label for="tipo">Tipo:</label>
-                                <select id="tipo" name="tipo" class="form-control" required>
-                                    <option value="" disabled selected>Seleccione un tipo</option>
-                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /eventos -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="descripcion">Descripción:</label>
-                                <input type="text" id="descripcionEvent" name="descripcion" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha">Fecha y Hora:</label>
-                                <input type="datetime-local" id="fechaEvento" name="fecha" class="form-control"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <label for="establecimiento">Establecimiento:</label>
-                                <select id="establecimiento" name="establecimiento" class="form-control" required>
-                                    <option value="" disabled selected>Seleccione un establecimiento</option>
-                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /establecimientos -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="invitados">Invitados:</label>
-                                <select id="invitados" name="invitados" class="form-control" multiple>
-                                    <option value="" disabled selected></option>
-                                    <!-- Opciones se llenarán dinámicamente desde el endpoint /usuarios -->
-                                </select>
-                                <small class="form-text text-muted">Mantén presionada la tecla Ctrl (o Cmd en Mac)
-                                    para seleccionar múltiples invitados.</small>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary eventRegistrar">Registrar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
 
 
 
@@ -387,7 +319,7 @@
     <script src="/static/appMuestraForms.js"></script>
     <script src="/static/appTime.js"></script>
     <script src="/static/appModalBuscadores.js"></script>
-
+    <script src="/static/appModalEvento.js"></script>
 </body>
 
 </html>
