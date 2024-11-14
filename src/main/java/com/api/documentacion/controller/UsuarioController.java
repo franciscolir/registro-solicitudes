@@ -28,4 +28,11 @@ public class UsuarioController {
         return ResponseEntity.ok(listaUsuarios);
     }
 
+    @GetMapping("/encargados")
+    public ResponseEntity<Page<DatosMuestraListaUsuarios>> listaUsuariosEncargados(Pageable paginacion) {
+        var listaUsuarios = usuarioService.listaDeUsuariosEncargados(paginacion);
+
+        return ResponseEntity.ok(listaUsuarios);
+    }
+
 }

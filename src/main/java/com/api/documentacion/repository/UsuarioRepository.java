@@ -14,4 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     Page<Usuario> findByActivoTrue(Pageable paginacion);
 
     Boolean existsByIdAndActivoTrue(Long id);
+
+    //@Query("SELECT u FROM Usuario u WHERE u.activo = true AND (u.subrogante = true OR u.encargado = true)")
+    Page<Usuario> findByActivoTrueAndSubroganteTrueOrEncargadoTrue(Pageable paginacion);
 }

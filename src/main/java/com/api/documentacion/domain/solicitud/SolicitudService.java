@@ -7,6 +7,7 @@ import com.api.documentacion.domain.solicitud.dto.*;
 import com.api.documentacion.domain.emisor.Estado;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.EmisorRepository;
+import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +28,8 @@ public class SolicitudService {
     @Autowired
     @Lazy
     MovimientoService movimientoService;
+    @Autowired
+    MovimientoRepository movimientoRepository;
 
     //POST___________________________________________
         //registra solicitud
@@ -59,19 +62,27 @@ public class SolicitudService {
 
     //GET___________________________________________
         //obtiene una solicitud con el numero de solicitud
-    public DatosMuestraSolicitud obtenerSolicitud(Long numeroSolicitud, Long emisorId) {
+    public DatosMuestraSolicitudConMovimiento obtenerSolicitud(Long numeroSolicitud, Long emisorId) {
 
         var id = validaYObtieneIdConNumeroSolicitud(numeroSolicitud,emisorId);
         var solicitud = solicitudRepository.getReferenceById(id);
         var fechaSolicitud = stringFormatter2(solicitud.getFechaSolicitud());
+        var movimientoId = movimientoRepository.findIdBySolicitudIdAndActivoTrue(id).getId();
+        var movimiento = movimientoRepository.getReferenceById(movimientoId);
 
-        return new DatosMuestraSolicitud(
+
+        return new DatosMuestraSolicitudConMovimiento(
+
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
                 solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
-                fechaSolicitud);
+                fechaSolicitud,
+                movimiento.getEstado().toString(),
+                movimiento.getFechaIngreso().toString()
+
+        );
     }
     //___________________________________________________
 

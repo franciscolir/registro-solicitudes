@@ -26,6 +26,12 @@ public class UsuarioService {
         return usuarioRepository.findByActivoTrue(paginacion).map(DatosMuestraListaUsuarios::new);
     }//_______
 
+    //obtiene una lista con todas las solicitudes
+    public Page<DatosMuestraListaUsuarios> listaDeUsuariosEncargados(Pageable paginacion) {
+
+        return usuarioRepository.findByActivoTrueAndSubroganteTrueOrEncargadoTrue(paginacion).map(DatosMuestraListaUsuarios::new);
+    }//_______
+
 
     //valida id de usuario
     public void validaSiExisteIdAndActivoTrue (Long id) {

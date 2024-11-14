@@ -134,7 +134,7 @@ function getFormConfig(formType) {
         { label: "Título:", type: "text", name: "titulo", required: true },
         { label: "Descripción:", type: "textarea", name: "descripcion", required: true, },
         { label: "", type: "number", name: "movimiento",  required: true, hidden: true,value: "", }, // Mantener oculto
-        { label: "Comentario:", type: "textarea", name: "comentario", required: false,},
+        { label: "Comentario interno:", type: "textarea", name: "comentario", required: false,},
       ],
     },
   };
@@ -183,7 +183,7 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
 
   // Obtener funcionarios y llenar el select
   if (formType === "respuesta") {
-    const funcionarios = await obtenerFuncionarios();
+    const funcionarios = await obtenerEncargados();
     const funcionarioField = formConfig.fields.find(
       (field) => field.name === "usuario"
     );
@@ -194,7 +194,7 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
   // Obtener emisores y llenar el select
   if (formType === "solicitud") {
     const establecimientos = await obtenerEmisores();
-    console.log("Establecimientos obtenidos:", establecimientos); // Verifica aquí
+   
     const establecimientoField = formConfig.fields.find(
       (field) => field.name === "emisor"
     );
@@ -210,6 +210,36 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
       unidadField.options = unidades;
     }
   }
+
+  // Obtener funcionarios y llenar el select
+  if (formType === "eventos") {
+    //select tipo
+    const tipo = await obtenerTipoEvento();
+    const tipoField = formConfig.fields.find(
+      (field) => field.name === "tipo"
+    );
+    if (tipoField) {
+      tipoField.options = tipo;
+    }
+//select establecimiento
+    const establecimientos = await obtenerEmisores();
+    const establecimientoField = formConfig.fields.find(
+      (field) => field.name === "establecimiento"
+    );
+    if (establecimientoField) {
+      establecimientoField.options = establecimientos;
+    }
+//select invitados
+const invitados = await obtenerFuncionarios();
+const invitadoField = formConfig.fields.find(
+  (field) => field.name === "invitados"
+);
+if (invitadoField) {
+  invitadoField.options = invitados;
+}
+
+  }
+
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
     .join("");
@@ -230,16 +260,6 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
     console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
 
 
-    //##################################################################################################################################
-    //if (unidad=! null){
-      //loadDataUltimoCertificado (unidad);
-   // }else{
-
-     // loadDataUltimoCertificado (unidad);
-   // }
-    
-   
-    //##################################################################################################################################
     
   agregarManejadores(formularioDiv, formType, formConfig.url, movimiento, );
   document.getElementById("formularioContainer").appendChild(formularioDiv);
@@ -253,10 +273,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   const form = formularioDiv.querySelector(`.${formType}Form`);
   const mensajeDiv = formularioDiv.querySelector("#mensaje");
 
- // Variables para almacenar los valores
- //let ultimoEmisor = null;
- //let ultimoNumeroSolicitud = null;
- //let ultimoNumeroCertificado = null;
+
 
 
   console.log(formularioDiv+"form")
@@ -270,28 +287,6 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-/*
-        // Capturar el valor de "emisor" si no es null o vacío
-        const emisorElement = form.querySelector("[name='emisor']");
-        if (emisorElement && emisorElement.value) {
-          ultimoEmisor = emisorElement.value;
-        }
-  
-        // Capturar el valor de "numeroSolicitud" si no es null o vacío
-        const numeroSolicitudElement = form.querySelector("[name='numeroSolicitud']");
-        if (numeroSolicitudElement && numeroSolicitudElement.value) {
-          //ultimoNumeroSolicitud = numeroSolicitudElement.value;
-        }
-  
-        // Capturar el valor de "numeroCertificado" si no es null o vacío
-        const numeroCertificadoElement = form.querySelector("[name='numeroCertificado']");
-        if (numeroCertificadoElement && numeroCertificadoElement.value) {
-          //ultimoNumeroCertificado = numeroCertificadoElement.value;
-        }
-  
-        // Verifica que los valores hayan sido capturados correctamente
-        console.log(`Emisor: ${ultimoEmisor}, Número de Solicitud: ${ultimoNumeroSolicitud}, Número de Certificado: ${ultimoNumeroCertificado}`);
-  */
 
       try {
         const resultado = await enviarFormulario2(form, endpoint);
@@ -306,19 +301,6 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
           formularioDiv.remove();
           document.getElementById("mainContent").classList.remove("d-none");
         }, 2000); // Elimina el formulario después de 2 
-/*
-        //crear formulario paralelo para actualizar estado de 
-        if (formType === 'solicitud'){
-          creaMovimiento(numeroSolicitud, emisor, 'movimiento')
-        }
-        if (formType === 'certificados'){
-          actualizaMovimiento(movimiento, numeroCertificado,'movimiento/resolver')
-        
-        }
-        if (formType === 'respuesta'){
-          actualizaMovimiento(movimiento, ultimoNumeroRespuesta3,'movimiento/cerrar')
-      }
-          */
         
       } catch (error) {
         mensajeDiv.textContent = "Hubo un error al enviar el formulario";
@@ -362,7 +344,7 @@ document.body.addEventListener("click", async (event) => {
         break;
 
       case "abrirFormEvento":
-        crearFormulario("evento");
+        crearFormulario("eventos");
         break;
 
       case "abrirFormProyecto":
@@ -389,9 +371,17 @@ async function obtenerFuncionarios() {
   return await obtenerDatos("http://localhost:8080/usuarios");
 }
 
+async function obtenerEncargados() {
+  return await obtenerDatos("http://localhost:8080/usuarios/encargados");
+}
 async function obtenerUnidades() {
   return await obtenerDatos("http://localhost:8080/unidades");
 }
+
+async function obtenerTipoEvento() {
+  return await obtenerDatos("http://localhost:8080/tipo");
+}
+
 async function obtenerDatos(url) {
   try {
     const response = await axios.get(url);
@@ -402,54 +392,6 @@ async function obtenerDatos(url) {
   }
 }
 
-/*
-async function creaMovimiento(solicitud) {
-  try {
-    // Realizar el procesamiento necesario con la solicitud recibida
-    console.log('Creando movimiento con solicitud:', solicitud);
-
-    // Llamada a un endpoint para crear el movimiento con la solicitud
-    const response = await axios.post('http://localhost:8080/movimientos', {
-      solicitud: solicitud
-    });
-
-    if (response.status === 200) {
-      console.log('Movimiento creado con éxito:', response.data);
-      // Realiza las acciones posteriores si el movimiento se crea correctamente
-      mostrarMensaje('Movimiento creado exitosamente', 'success');
-    } else {
-      console.error('Error al crear el movimiento:', response.status, response.statusText);
-      mostrarMensaje('Hubo un error al crear el movimiento', 'error');
-    }
-
-  } catch (error) {
-    console.error('Error al procesar el movimiento:', error);
-    mostrarMensaje('Error al procesar el movimiento', 'error');
-  }
-}
-
-
-
-
-async function actualizaMovimiento(id, documento, endpoint) {
-  // Crea un objeto FormData con los datos a enviar
-  const formData = new FormData();
-  formData.append('id', id);
-  formData.append('documento', documento);
-
-  try {
-    // Llamamos a la función enviarFormulario, pasando el endpoint y el método HTTP
-    const resultado = await enviarFormulario(formData, endpoint);
-    
-    // Mostrar mensaje de éxito
-    mostrarMensaje('Formulario paralelo enviado con éxito', 'success');
-    
-  } catch (error) {
-    // Mostrar mensaje de error si ocurre un fallo
-    mostrarMensaje('Hubo un error al enviar el formulario', 'error');
-  }
-}
-*/
 
 // Función para mostrar mensajes
 function mostrarMensaje(mensaje, tipo) {
@@ -463,8 +405,6 @@ function mostrarMensaje(mensaje, tipo) {
     mensajeDiv.remove();
   }, 2000);
 }
-
-
 
 
 // Cargar la última respuesta
@@ -488,106 +428,6 @@ const loadDataUltimaRespuesta3 = async () => {
      alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
  }
 };
-
-/*
-// Cargar la última respuesta
-const loadDataUltimoCertificado = async (unidad) => {
-  try {
-   const response = await axios.get(`http://localhost:8080/certificados/unidad/${unidad}?size=1&sort=numeroCertificado,desc`);
-   const data = response.data.content;
-
-   if (Array.isArray(data) && data.length > 0) {
-       
-       const item = data[0];
-      
-       // Almacenar el número obtenido
-       ultimoNumeroCertificado = item.numeroCertificado+1;
-       console.log(ultimoNumeroCertificado +" ultimo numero appTablaMovimiento")
-   } else {
-       console.error('La propiedad `content` no es un array o está vacío.');
-   }
-} catch (error) {
-   console.error('Error:', error);
-   alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
-}
-};
-
-
-async function enviarFormulario(form, endpoint) {
-  const formData = new FormData(form);
-
-  // Elemento de alerta
-  const alertMessage = document.getElementById('mensaje');
-
-  // Mostrar todos los elementos del formulario en la consola
-  console.log("Elementos del formulario:");
-  for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-  }
-
-  try {
-    const response = await axios.put(`http://localhost:8080/${endpoint}`, formData, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (response.status === 200) {
-        // Manejar la respuesta exitosa
-        alertMessage.className = 'alert alert-success';
-        alertMessage.textContent = 'Respuesta enviada exitosamente';
-        alertMessage.style.display = 'block';
-
-        // Ocultar el mensaje después de 2 segundos
-        setTimeout(() => {
-            alertMessage.style.display = 'none';
-            resetView(); // Ocultar formulario y volver al inicio
-            loadData(); // Recargar solo la tabla
-        }, 1800);
-
-        // Extraer solo 'solicitud' de la respuesta
-        const { id } = response.data; // Solo extraemos 'solicitud'
-
-        if (id) {
-            // Llamar a creaMovimiento pasando solo 'solicitud'
-            await creaMovimiento(id);
-        } else {
-            console.error('Error: No se encontró la solicitud en la respuesta');
-        }
-
-        // Devolver la respuesta del servidor si es necesario
-        return response.data;
-    } else {
-        console.error('Error:', response.status, response.statusText);
-        // Manejar códigos de estado no 200 aquí
-    }
-  } catch (error) {
-      // Manejar el error
-      let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
-      
-      if (error.response && error.response.status === 400 && error.response.data) {
-          // Si hay un mensaje de error en la respuesta del servidor, usarlo
-          errorMessage = `Error: ${error.response.data}`;
-      }
-
-      alertMessage.className = 'alert alert-danger';
-      alertMessage.textContent = errorMessage;
-      alertMessage.style.display = 'block';
-
-      // Ocultar el mensaje después de 3 segundos
-      setTimeout(() => {
-          alertMessage.style.display = 'none';
-      }, 3000);
-
-      throw error;  // Propagar el error para manejarlo en la llamada a `creaMovimiento`
-  }
-}
-
-*/
-
-
-
-
 
 
 async function enviarFormulario2(form, endpoint) {

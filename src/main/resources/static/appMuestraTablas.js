@@ -245,7 +245,7 @@ function getTableConfig(type) {
                 <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>
             `;
             config.buttonHtml = `
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Agendar</button>
+                <button type="button" class="btn btn-primary" id="abrirFormEvento" data-form="0">Agendar</button>
             `;
             config.filtroHtml = filtroEvento;
             break;

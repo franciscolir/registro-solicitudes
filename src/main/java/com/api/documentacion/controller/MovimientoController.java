@@ -2,6 +2,7 @@ package com.api.documentacion.controller;
 
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.movimiento.MovimientoService;
+import com.api.documentacion.domain.solicitud.dto.DatosMuestraSolicitud;
 import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -52,6 +53,7 @@ public class MovimientoController {
 
         return ResponseEntity.ok(listaDeMovimientosRespuestas);
     }
+
 
     //Asignar un movimiento
     @PutMapping("/asignar")

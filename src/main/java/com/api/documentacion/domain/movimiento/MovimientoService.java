@@ -1,11 +1,8 @@
 package com.api.documentacion.domain.movimiento;
 
-import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.movimiento.dto.*;
-import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.solicitud.SolicitudService;
-import com.api.documentacion.domain.solicitud.dto.DatosRegistraSolicitud;
 import com.api.documentacion.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +28,7 @@ public class MovimientoService {
 
     //POST___________________________________________
 
-    public DatosMuestraMovimiento registrar(Solicitud solicitud) {
+    public void registrar(Solicitud solicitud) {
 
         var fechaIngreso = LocalDateTime.now();
         //var id = solicitudService.validaYObtieneIdConNumeroSolicitud(datos.solicitud(), datos.emisor());
@@ -62,7 +59,7 @@ public class MovimientoService {
         movimientoRepository.save(movimiento);
 
 
-        return new DatosMuestraMovimiento(movimiento);
+        new DatosMuestraMovimiento(movimiento);
     }
 
     //___________________________________________________
@@ -87,6 +84,8 @@ public class MovimientoService {
 
         return movimientoRepository.findByActivoTrue(paginacion).map(DatosMuestraMovimientoRespuestas::new);
     }
+
+
     //______________________________________________________
 
     //PUT________________________________________________

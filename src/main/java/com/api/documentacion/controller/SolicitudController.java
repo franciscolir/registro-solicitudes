@@ -30,7 +30,7 @@ public class SolicitudController {
 
     //Obtener una solicitud
     @GetMapping("/{solicitudId}/{emisorId}")
-    public ResponseEntity<DatosMuestraSolicitud> obtenerSolicitud(@PathVariable("solicitudId") Long solicitudId, @PathVariable("emisorId") Long emisorId) {
+    public ResponseEntity<DatosMuestraSolicitudConMovimiento> obtenerSolicitud(@PathVariable("solicitudId") Long solicitudId, @PathVariable("emisorId") Long emisorId) {
         var solicitud  =  solicitudService.obtenerSolicitud(solicitudId,emisorId);
         return ResponseEntity.ok(solicitud);
     }
@@ -42,9 +42,6 @@ public class SolicitudController {
 
         return ResponseEntity.ok(listaSolicitudes);
     }
-
-
-
 
 
     //Actualizar solicitud

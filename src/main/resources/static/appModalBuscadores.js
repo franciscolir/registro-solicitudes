@@ -37,18 +37,27 @@ function enviarFormularioBuscador() {
             const data = response.data;
             const estado = data.estado;
 
+                // Formatear la fecha de ingreso
+        const fechaIngresoFormateada = formatFecha(data.fechaIngreso);
+
             let modalContent = `
+                
                 <p><strong>Número de Solicitud:</strong> ${data.numeroSolicitud}</p>
+                <p><strong>Fecha de Ingreso:</strong> ${fechaIngresoFormateada}</p>
                 <p><strong>Emisor:</strong> ${data.emisor}</p>
                 <p><strong>Título:</strong> ${data.titulo}</p>
                 <p><strong>Descripción:</strong> ${data.descripcion}</p>
                 <p><strong>Fecha de Solicitud:</strong> ${data.fechaSolicitud}</p>
-                <p><strong>Fecha de Ingreso:</strong> ${data.fechaIngresoDepartamento}</p>
                 <p><strong>Estado:</strong> ${estado}</p>
             `;
 
+            document.getElementById('modalContentOficio').innerHTML = modalContent;
+            $('#infoModal').modal('show');
+            $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
+        
+/*
             // Verificar el estado y agregar información adicional si es necesario
-            if (estado === "RESUELTO" || estado === "DECLINADO") {
+            if (estado === "RESUELTO") {
                 return axios.get(`http://localhost:8080/respuestas/respuesta/${numeroSolicitud}/${emisor}`)
                     .then(response2 => {
                         const data2 = response2.data;
@@ -60,12 +69,36 @@ function enviarFormularioBuscador() {
                         $('#infoModal').modal('show');
                         $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
                     });
-            } else {
+            }  else if (estado === "CERRADO") {
+                return axios.get(`http://localhost:8080/respuestas/respuesta/${numeroSolicitud}/${emisor}`)
+                    .then(response2 => {
+                        const data2 = response2.data;
+                        modalContent += `
+                            <p><strong>Número de Respuesta:</strong> ${data2.numeroRespuesta}</p>
+                            <p><strong>Fecha de Respuesta:</strong> ${data2.fechaRespuesta}</p>
+                        `;
+                        document.getElementById('modalContentOficio').innerHTML = modalContent;
+                        $('#infoModal').modal('show');
+                        $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
+                    });
+            } else if (estado === "RECHAZADO") {
+                return axios.get(`http://localhost:8080/respuestas/respuesta/${numeroSolicitud}/${emisor}`)
+                    .then(response2 => {
+                        const data2 = response2.data;
+                        modalContent += `
+                            <p><strong>Número de Respuesta:</strong> ${data2.numeroRespuesta}</p>
+                            <p><strong>Fecha de Respuesta:</strong> ${data2.fechaRespuesta}</p>
+                        `;
+                        document.getElementById('modalContentOficio').innerHTML = modalContent;
+                        $('#infoModal').modal('show');
+                        $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
+                    });
+            }else {
                 // Si no se cumple la condición, mostrar el modal con la información básica
                 document.getElementById('modalContentOficio').innerHTML = modalContent;
                 $('#infoModal').modal('show');
                 $('#searchModal').modal('hide'); // Cerrar el modal de búsqueda
-            }
+            }*/
         })
         .catch(() => {
             mostrarError('No se encuentra el registro.');
@@ -81,4 +114,14 @@ function mostrarError(mensaje) {
     setTimeout(() => {
         alertMessage.style.display = 'none';
     }, 2000);
+}
+
+
+// Función para formatear la fecha en formato dd/mm/yyyy
+function formatFecha(fecha) {
+    const date = new Date(fecha);
+    const day = String(date.getDate()).padStart(2, '0');  // Asegura que el día sea de 2 dígitos
+    const month = String(date.getMonth() + 1).padStart(2, '0');  // Mes (getMonth() devuelve el mes entre 0 y 11)
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
 }

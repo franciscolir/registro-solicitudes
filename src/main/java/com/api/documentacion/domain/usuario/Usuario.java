@@ -33,6 +33,8 @@ public class Usuario {
     private Perfil perfil;
 
     private Boolean activo;
+    private Boolean subrogante;
+    private Boolean encargado;
 
     private LocalDateTime fechaIngresoSistema;
 
