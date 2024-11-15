@@ -4,6 +4,8 @@ let ultimoNumeroRespuesta3;
 //console.log(ultimoNumeroCertificado);
 
 function getFormConfig(formType) {
+
+  
   const commonFormatRow = (field) =>  `
   <div class="mb-3" ${field.hidden ? 'style="display:none;"' : ""}>
       ${
@@ -20,22 +22,17 @@ function getFormConfig(formType) {
                    : field.type === "select"
                    ? `
             <label for="${field.name}" class="form-label">${field.label}</label>
-            <select id="${field.name}" name="${
-                       field.name
-                     }" class="form-control" ${
-                       field.required ? "required" : ""
-                     }>
-                <option value="" disabled selected>Seleccione un ${
-                  field.name
-                }</option>
-                ${field.options
-                  .map(
-                    (option) =>
-                      `<option value="${option.id}">${
-                        option.nombre || option.establecimiento
-                      }</option>`
-                  )
-                  .join("")}
+        
+            <select id="${field.name}" name="${field.name}" class="form-control" ${field.required ? "required" : ""} ${field.name === "nombre" ? "multiple" : ""}>
+             
+                <option value="" disabled selected>
+                    Seleccione  ${field.name == "categoria" ? "una" : "un"} ${field.name}
+                </option>
+                ${field.options.map(option =>
+                      `<option value="${option.id}">
+                          ${option.nombre || option.establecimiento || formatText(option.categoria)}
+                      </option>`
+                  ).join("")}
             </select>
             `
                    : field.name === "nombreUnidad"
@@ -112,12 +109,12 @@ function getFormConfig(formType) {
     },
     
     evento: {
-      url: "evento",
+      url: "eventos",
       title: "Ingresar Evento",
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
-        { label: "Tipo:", type: "select",   name: "tipo",   required: true,  options: [],  }, // Se llenará dinámicamente
+        { label: "Tipo:", type: "select",   name: "categoria",   required: true,  options: [],  }, // Se llenará dinámicamente
         { label: "Descripción:",type: "text", name: "descripcion", required: true, },
         { label: "Fecha y Hora:",type: "datetime-local",  name: "fecha", required: true, },
         { label: "Establecimiento:",type: "select", name: "establecimiento", required: true, options: [], }, // Se llenará dinámicamente
@@ -146,7 +143,7 @@ function getFormConfig(formType) {
 
 async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimiento = "", respuesta = "", certificado = "") {
     
-  console.log ("entra a crearForm ###############");
+  //console.log ("entra a crearForm ###############");
   cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
   
   document.getElementById("mainContent").classList.add("d-none");
@@ -173,6 +170,7 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
   const certificadoField = formConfig.fields.find(
     (field) => field.name === "numeroCertificado"
   );
+
 
   //if (unidadField) unidadField.value = unidad;
   if (unidadField) unidadField.value = Number(unidad);
@@ -212,43 +210,19 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
     }
   }
 
-  // Obtener funcionarios y llenar el select
-  /*
-  if (formType === "evento") {
-    //select tipo
-    const tipo = await obtenerTipoEvento();
-    const tipoField = formConfig.fields.find(
-      (field) => field.name === "tipo"
-    );
-    if (tipoField) {
-      tipoField.options = tipo;
-    }*/
+
     if (formType === "evento") {
-      try {
-        const tipoEventos = await obtenerTipoEvento();
+           const tipoEventos = await obtenerTipoEvento();
         const tipoField = formConfig.fields.find(
-          (field) => field.name === "tipo"
+          (field) => field.name === "categoria"
         );
     
         if (tipoField) {
           // Extrae los valores de tipoEvento y los asigna a las opciones
-          tipoField.options = tipoEventos.map(evento => evento.tipoEvento);
-        } else {
-          console.error('Campo tipo no encontrado');
+          tipoField.options = tipoEventos;
         }
-      } catch (error) {
-        console.error('Error al obtener tipo de evento:', error);
-      }
-    }
     
-
-    
-
-
   
-
-
-  /*
 //select establecimiento
     const establecimientos = await obtenerEmisores();
     const establecimientoField = formConfig.fields.find(
@@ -265,9 +239,9 @@ const invitadoField = formConfig.fields.find(
 if (invitadoField) {
   invitadoField.options = invitados;
 }
-  
+}
 
-  }*/
+
 
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
@@ -286,7 +260,7 @@ if (invitadoField) {
             </form>
         </div>
     `;
-    console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
+    //console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
 
 
     
@@ -373,7 +347,7 @@ document.body.addEventListener("click", async (event) => {
         break;
 
      case "abrirFormEvento":
-      console.log("entra a case de form event")
+      //console.log("entra a case de form event")
        crearFormulario("evento");
         break;
 
@@ -409,13 +383,13 @@ async function obtenerUnidades() {
 }
 
 async function obtenerTipoEvento() {
-  return await obtenerDatos("http://localhost:8080/tipo");
+  return await obtenerDatos("http://localhost:8080/categoria");
 }
 
 async function obtenerDatos(url) {
   try {
     const response = await axios.get(url);
-    console.log(response.data.content+" obtener datos ############")
+    //console.log(response.data.content+" obtener datos ############")
     return response.data.content; // Asume que los datos son un array de objetos con { id, nombre }
   } catch (error) {
     console.error(`Error al obtener datos de ${url}:`, error);
@@ -454,7 +428,7 @@ const loadDataUltimaRespuesta3 = async () => {
         
          // Almacenar el número obtenido
          ultimoNumeroRespuesta3 = item.numeroRespuesta+1;
-         console.log(ultimoNumeroRespuesta3 +" ultimo numero appTablaMovimiento")
+         //console.log(ultimoNumeroRespuesta3 +" ultimo numero appTablaMovimiento")
      } else {
          console.error('La propiedad `content` no es un array o está vacío.');
      }
@@ -467,6 +441,14 @@ const loadDataUltimaRespuesta3 = async () => {
 
 async function enviarFormulario2(form, endpoint) {
   const formData = new FormData(form);
+
+    // Verificar si el campo de invitados es múltiple
+    const invitadosField = form.querySelector('select[name="invitados"]');
+    if (invitadosField) {
+      const invitados = Array.from(invitadosField.selectedOptions).map(option => option.value);
+      formData.set('invitados', JSON.stringify(invitados)); // Convertimos a array y lo almacenamos como string
+    }
+  
 
   // Elemento de alerta
   const alertMessage = document.getElementById('mensaje');
@@ -518,6 +500,14 @@ async function enviarFormulario2(form, endpoint) {
           alertMessage.style.display = 'none';
       }, 3000);
   }
+}
+
+function formatText(text) {
+  if (!text) return "";
+  return text
+      .toLowerCase()
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
 }
 
 function resetView() {

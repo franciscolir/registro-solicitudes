@@ -239,7 +239,7 @@ function getTableConfig(type) {
             config.headers = ["Evento", "Descripción", "Establecimiento", "Invitado"];
             config.title = "Eventos";
             config.formatRow = (registro) => `
-                <td>${formatText(registro.tipo)}</td>
+                <td>${formatText(registro.categoria)}</td>
                 <td>${registro.descripcion}</td>
                 <td>${registro.establecimiento}</td>
                 <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>

@@ -7,13 +7,13 @@ import com.api.documentacion.domain.evento.Categoria;
 public record DatosMuestraCategoria (
 
         Long id,
-        String nombreCategoria
+        String categoria
 ){
 
     public DatosMuestraCategoria(Categoria categoria) {
         this(
                 categoria.getId(),
-                categoria.getTipo().name());
+                categoria.getTipo().toString());
              }
 
 

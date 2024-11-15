@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     //console.log(registro)
                     const row = document.createElement('table');
              
-                    const tipoFormatted = registro.tipo
+                    const tipoFormatted = registro.categoria
                     .toLowerCase()                  // Convierte todo el texto a minúsculas
                     .replace(/_/g, ' ')             // Reemplaza guiones bajos con espacios
                     .replace(/\b\w/g, letra => letra.toUpperCase()); // Convierte la primera letra de cada palabra a mayúscula
