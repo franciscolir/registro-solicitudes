@@ -74,7 +74,7 @@ function enviarFormulario() {
             alertMessage.style.display = 'none';
         }, 2000);
     });
-}*/
+}
 
 // Función para mostrar alertas
 // Función para mostrar alertas
@@ -142,3 +142,4 @@ async function enviarFormularios() {
         mostrarAlerta('Hubo un error al enviar las solicitudes. Intenta nuevamente.', 'danger');
     }
 }
+*/

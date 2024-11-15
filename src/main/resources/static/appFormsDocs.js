@@ -110,7 +110,7 @@ function getFormConfig(formType) {
         { label: "Fecha de Solicitud:",  type: "date",  name: "fechaSolicitud",required: true, },
       ],
     },
-    /*
+    
     evento: {
       url: "evento",
       title: "Ingresar Evento",
@@ -123,7 +123,7 @@ function getFormConfig(formType) {
         { label: "Establecimiento:",type: "select", name: "establecimiento", required: true, options: [], }, // Se llenará dinámicamente
         { label: "Invitados:",type: "select", name: "invitados", required: false, multiple: true, options: [], }, // Se llenará dinámicamente
       ],
-    },*/
+    },
     respuesta: {
       url: "respuestas",
       title: "Ingresar Respuesta",
@@ -146,7 +146,7 @@ function getFormConfig(formType) {
 
 async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimiento = "", respuesta = "", certificado = "") {
     
-  //console.log(unidad + "unidad dentro de creraForm y antes de loasd ###############");
+  console.log ("entra a crearForm ###############");
   cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
   
   document.getElementById("mainContent").classList.add("d-none");
@@ -222,7 +222,33 @@ async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimie
     );
     if (tipoField) {
       tipoField.options = tipo;
+    }*/
+    if (formType === "evento") {
+      try {
+        const tipoEventos = await obtenerTipoEvento();
+        const tipoField = formConfig.fields.find(
+          (field) => field.name === "tipo"
+        );
+    
+        if (tipoField) {
+          // Extrae los valores de tipoEvento y los asigna a las opciones
+          tipoField.options = tipoEventos.map(evento => evento.tipoEvento);
+        } else {
+          console.error('Campo tipo no encontrado');
+        }
+      } catch (error) {
+        console.error('Error al obtener tipo de evento:', error);
+      }
     }
+    
+
+    
+
+
+  
+
+
+  /*
 //select establecimiento
     const establecimientos = await obtenerEmisores();
     const establecimientoField = formConfig.fields.find(
@@ -241,8 +267,8 @@ if (invitadoField) {
 }
   
 
-  }
-*/
+  }*/
+
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
     .join("");
@@ -346,9 +372,10 @@ document.body.addEventListener("click", async (event) => {
         crearFormulario("respuesta", null, null, movimiento, ultimoNumeroRespuesta3,null);
         break;
 
-     // case "abrirFormEvento":
-       // crearFormulario("evento");
-        //break;
+     case "abrirFormEvento":
+      console.log("entra a case de form event")
+       crearFormulario("evento");
+        break;
 
       case "abrirFormProyecto":
         crearFormulario("proyecto");
@@ -388,12 +415,17 @@ async function obtenerTipoEvento() {
 async function obtenerDatos(url) {
   try {
     const response = await axios.get(url);
+    console.log(response.data.content+" obtener datos ############")
     return response.data.content; // Asume que los datos son un array de objetos con { id, nombre }
   } catch (error) {
     console.error(`Error al obtener datos de ${url}:`, error);
     return [];
   }
 }
+
+
+
+
 
 
 // Función para mostrar mensajes

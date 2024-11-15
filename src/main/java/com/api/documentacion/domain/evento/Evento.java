@@ -22,9 +22,9 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoEvento tipo;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
     private String descripcion;
 
@@ -43,9 +43,9 @@ public class Evento {
     )
     private Set<Usuario> invitados = new HashSet<>();
 
-    public Evento(Long id, TipoEvento tipo, String descripcion, LocalDateTime fecha, Establecimiento establecimiento) {
+    public Evento(Long id, Categoria categoria, String descripcion, LocalDateTime fecha, Establecimiento establecimiento) {
         this.id = id;
-        this.tipo = tipo;
+        this.categoria = categoria;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.establecimiento = establecimiento;
@@ -59,7 +59,7 @@ public class Evento {
     public String toString() {
         return "Evento{" +
                 "id=" + id +
-                ", tipo=" + tipo +
+                ", categoria=" + categoria +
                 ", descripcion='" + descripcion + '\'' +
                 ", fecha=" + fecha +
                 ", establecimiento=" + establecimiento +

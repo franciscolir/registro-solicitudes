@@ -49,3 +49,9 @@ ADD CONSTRAINT fk_evento_usuario_evento
 FOREIGN KEY (evento_id) REFERENCES eventos(id),
 ADD CONSTRAINT fk_evento_usuario_usuario
 FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
+
+-- Constraint para la tabla eventos
+
+ALTER TABLE eventos
+    ADD CONSTRAINT FK_evento_categoria
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id);

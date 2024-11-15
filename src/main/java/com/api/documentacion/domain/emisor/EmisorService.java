@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.emisor;
 
+import com.api.documentacion.domain.emisor.dto.DatosMuestraEmisor;
 import com.api.documentacion.repository.EmisorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

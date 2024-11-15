@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public record DatosMuestraEventos(Long id,
-                                  String tipo,
+                                  String categoria,
                                   String descripcion,
                                   String invitado,
                                   String fecha,
@@ -19,7 +19,7 @@ public record DatosMuestraEventos(Long id,
     public DatosMuestraEventos (Evento evento){
 
          this(evento.getId(),
-                 evento.getTipo().toString(),
+                 evento.getCategoria().getTipo().toString(),
                  evento.getDescripcion(),
                  evento.getInvitados().stream().map(Usuario::getNombre).toList().toString(),
                  formatDate(evento.getFecha()),

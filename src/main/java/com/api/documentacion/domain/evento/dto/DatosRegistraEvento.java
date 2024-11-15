@@ -10,7 +10,7 @@ import java.util.Set;
 
 public record DatosRegistraEvento(
         @NotBlank(message = "tipo de evento es obligatoria")
-        String tipo,
+        Long categoria,
         @NotBlank(message = "descripcion es obligatoria")
         String descripcion,
         @NotBlank(message = "fecha es obligatoria")

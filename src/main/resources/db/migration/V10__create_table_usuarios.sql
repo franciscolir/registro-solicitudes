@@ -9,5 +9,7 @@ CREATE TABLE usuarios (
     perfil_id BIGINT,
     activo BOOLEAN,
     fecha_ingreso_sistema TIMESTAMP,
-    unidad_id BIGINT
+    unidad_id BIGINT,
+    subrogante BOOLEAN DEFAULT FALSE,
+    encargado BOOLEAN DEFAULT FALSE
 );

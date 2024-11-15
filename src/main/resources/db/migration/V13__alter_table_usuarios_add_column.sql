@@ -1,7 +1,0 @@
-USE documentacion;
-
-ALTER TABLE usuarios
-ADD COLUMN subrogante BOOLEAN DEFAULT FALSE;
-
-ALTER TABLE usuarios
-ADD COLUMN encargado BOOLEAN DEFAULT FALSE;
