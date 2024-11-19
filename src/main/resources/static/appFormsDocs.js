@@ -23,10 +23,12 @@ function getFormConfig(formType) {
                    ? `
             <label for="${field.name}" class="form-label">${field.label}</label>
         
-            <select id="${field.name}" name="${field.name}" class="form-control" ${field.required ? "required" : ""} ${field.name === "nombre" ? "multiple" : ""}>
+            <select id="${field.name}" name="${field.name}" class="form-control" ${field.required ? "required" : ""} ${field.name === "invitados" ? "multiple" : ""}>
              
                 <option value="" disabled selected>
-                    Seleccione  ${field.name == "categoria" ? "una" : "un"} ${field.name}
+              
+                      ${field.name === "categoria" ? "Seleccione una" : field.name === "invitados" ? "Seleccione uno o mas invitados" : "Seleccione un"} 
+   
                 </option>
                 ${field.options.map(option =>
                       `<option value="${option.id}">
@@ -445,10 +447,17 @@ async function enviarFormulario2(form, endpoint) {
     // Verificar si el campo de invitados es múltiple
     const invitadosField = form.querySelector('select[name="invitados"]');
     if (invitadosField) {
-      const invitados = Array.from(invitadosField.selectedOptions).map(option => option.value);
-      formData.set('invitados', JSON.stringify(invitados)); // Convertimos a array y lo almacenamos como string
+
+      const invitados = Array.from(invitadosField.selectedOptions).map(option => parseInt(option.value, 10));
+      //formData.set('invitados', JSON.stringify(invitados)); // Convertimos a array y lo almacenamos como string
+
+      //formData.append('invitados', invitados); // Agregamos directamente el array
+ //formData.set('invitados', invitados.join(',')); // Convertimos a array y lo almacenamos como string
+ formData.set('invitados', `[${invitados.join(',')}]`);
+
+
     }
-  
+    
 
   // Elemento de alerta
   const alertMessage = document.getElementById('mensaje');

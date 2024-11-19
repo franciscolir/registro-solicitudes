@@ -9,7 +9,7 @@ import java.util.Set;
 
 
 public record DatosRegistraEvento(
-        @NotBlank(message = "tipo de evento es obligatoria")
+        @NotNull(message = "tipo de evento es obligatoria")
         Long categoria,
         @NotBlank(message = "descripcion es obligatoria")
         String descripcion,
@@ -18,8 +18,8 @@ public record DatosRegistraEvento(
         @NotNull(message = "establecimineto es obligatorio")
         Long establecimiento,
         @NotNull(message = "usuario es obligatorio")
-        //Set<Long> invitados
-        List<Long> invitados) {
+        Set<Long> invitados ){
+        //List<Long> invitados) {
 
 
 
