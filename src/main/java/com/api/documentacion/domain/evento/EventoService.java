@@ -49,6 +49,9 @@ public class EventoService {
         eventoRepository.save(evento);
 
         //tratar lista de usuarios y almacenarla en tabla evento_usuario
+
+
+
         Set<Usuario> listaUsuarios = new HashSet<>();
         for (Long usuarioId : datos.invitados()) {
             var usuario = usuarioRepository.findById(usuarioId)
@@ -71,6 +74,11 @@ public class EventoService {
         return eventoRepository.findAllWithInvitados(paginacion).map(DatosMuestraEventos::new);
     }
 
+    public Page<DatosMuestraEventos> listaDeProximosEventos(Pageable paginacion) {
+        var currentDate = LocalDateTime.now();
+        return eventoRepository.findAllWithInvitadosAndProximos(paginacion, currentDate).map(DatosMuestraEventos::new);
+    }
+
     //cambia string a formato fecha
     public LocalDateTime dateTimeFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -79,5 +87,6 @@ public class EventoService {
     }//__________
 
 
-    }
+
+}
 

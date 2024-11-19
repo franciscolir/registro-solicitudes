@@ -1,3 +1,4 @@
+/*
 // Delegación de eventos
 document.addEventListener('DOMContentLoaded', function () {
     // Delegar el evento click al contenedor de la tabla (o contenedor padre)
@@ -207,3 +208,4 @@ function cerrarFormularioEvento() {
         formularioDiv.remove();
     }
 }
+*/

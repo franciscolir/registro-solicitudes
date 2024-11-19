@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const loadData2 = () => {
         // Reemplaza esta URL con la URL de tu API
-        const apiUrl = 'http://localhost:8080/eventos?size=2';
+        const apiUrl = 'http://localhost:8080/eventos/proximos?size=2';
     
         // Solicitar datos usando Axios
         axios.get(apiUrl)

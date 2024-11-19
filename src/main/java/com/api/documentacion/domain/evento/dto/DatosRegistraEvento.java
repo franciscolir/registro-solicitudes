@@ -18,8 +18,9 @@ public record DatosRegistraEvento(
         @NotNull(message = "establecimineto es obligatorio")
         Long establecimiento,
         @NotNull(message = "usuario es obligatorio")
-        Set<Long> invitados ){
-        //List<Long> invitados) {
+        //Set<Long> invitados ){
+        List<Long> invitados) {
+        //List<String> invitados) {
 
 
 

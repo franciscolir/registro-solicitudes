@@ -1,7 +1,5 @@
 let ultimoNumeroRespuesta3;
-//let ultimoNumeroCertificado;
 
-//console.log(ultimoNumeroCertificado);
 
 function getFormConfig(formType) {
 
@@ -243,8 +241,6 @@ if (invitadoField) {
 }
 }
 
-
-
   const fieldsHtml = formConfig.fields
     .map((field) => formConfig.formatRow(field))
     .join("");
@@ -401,9 +397,6 @@ async function obtenerDatos(url) {
 
 
 
-
-
-
 // Función para mostrar mensajes
 function mostrarMensaje(mensaje, tipo) {
   const mensajeDiv = document.createElement('div');
@@ -442,74 +435,74 @@ const loadDataUltimaRespuesta3 = async () => {
 
 
 async function enviarFormulario2(form, endpoint) {
+  // Crear un objeto para almacenar los datos del formulario
   const formData = new FormData(form);
+  const formJson = {};
 
-    // Verificar si el campo de invitados es múltiple
-    const invitadosField = form.querySelector('select[name="invitados"]');
-    if (invitadosField) {
+  // Recopilar los datos del formulario en un objeto
+  formData.forEach((value, key) => {
+    formJson[key] = value;
+  });
 
-      const invitados = Array.from(invitadosField.selectedOptions).map(option => parseInt(option.value, 10));
-      //formData.set('invitados', JSON.stringify(invitados)); // Convertimos a array y lo almacenamos como string
+  // Verificar si el campo de invitados es múltiple
+  const invitadosField = form.querySelector('select[name="invitados"]');
+  if (invitadosField) {
+    // Convertir los valores seleccionados a un array de enteros
+    const invitados = Array.from(invitadosField.selectedOptions)
+      .map(option => parseInt(option.value, 10)) // Convertimos cada opción seleccionada a número
+      .filter(value => !isNaN(value)); // Filtrar valores no numéricos
 
-      //formData.append('invitados', invitados); // Agregamos directamente el array
- //formData.set('invitados', invitados.join(',')); // Convertimos a array y lo almacenamos como string
- formData.set('invitados', `[${invitados.join(',')}]`);
+    // Asignamos el array de invitados al objeto formJson
+    formJson.invitados = invitados;
+  }
 
-
-    }
-    
+  // Mostrar el objeto formJson en la consola para depuración
+  console.log("FormJson:", formJson);
 
   // Elemento de alerta
   const alertMessage = document.getElementById('mensaje');
 
-  // Mostrar todos los elementos del formulario en la consola
-  console.log("Elementos del formulario:");
-  for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-  }
-
   try {
-    const response = await axios.post(`http://localhost:8080/${endpoint}`, formData, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+    // Enviar los datos como JSON utilizando axios
+    const response = await axios.post(`http://localhost:8080/${endpoint}`, formJson, {
+      headers: {
+        'Content-Type': 'application/json' // Indicamos que estamos enviando JSON
+      }
     });
 
-      if (response.status === 200) {
-          // Manejar la respuesta exitosa
-          alertMessage.className = 'alert alert-success';
-          alertMessage.textContent = 'Respuesta enviada exitosamente';
-          alertMessage.style.display = 'block';
-
-          // Ocultar el mensaje después de 2 segundos
-          setTimeout(() => {
-              alertMessage.style.display = 'none';
-              resetView(); // Ocultar formulario y volver al inicio
-              loadData(); // Recargar solo la tabla
-          }, 1800);
-      } else {
-          console.error('Error:', response.status, response.statusText);
-          // Manejar códigos de estado no 200 aquí
-      }
-  } catch (error) {
-      // Manejar el error
-      let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
-      
-      if (error.response && error.response.status === 400 && error.response.data) {
-          // Si hay un mensaje de error en la respuesta del servidor, usarlo
-          errorMessage = `Error: ${error.response.data}`;
-      }
-
-      alertMessage.className = 'alert alert-danger';
-      alertMessage.textContent = errorMessage;
+    // Manejo de la respuesta exitosa
+    if (response.status === 200) {
+      alertMessage.className = 'alert alert-success';
+      alertMessage.textContent = 'Respuesta enviada exitosamente';
       alertMessage.style.display = 'block';
 
-      // Ocultar el mensaje después de 3 segundos
       setTimeout(() => {
-          alertMessage.style.display = 'none';
-      }, 3000);
+        alertMessage.style.display = 'none';
+        resetView();  // Ocultar formulario y volver al inicio
+        loadData();   // Recargar solo la tabla
+      }, 1800);
+    } else {
+      console.error('Error:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error("Error al enviar el formulario:", error);
+    let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
+
+    // Si el servidor responde con un error 400, mostrar el mensaje de error
+    if (error.response && error.response.status === 400 && error.response.data) {
+      errorMessage = `Error: ${error.response.data}`;
+    }
+
+    alertMessage.className = 'alert alert-danger';
+    alertMessage.textContent = errorMessage;
+    alertMessage.style.display = 'block';
+
+    setTimeout(() => {
+      alertMessage.style.display = 'none';
+    }, 3000);
   }
 }
+
 
 function formatText(text) {
   if (!text) return "";
@@ -525,3 +518,4 @@ function resetView() {
 // Si ya hay un formulario abierto, lo eliminamos
 cerrarFormularioExistente()
 }
+

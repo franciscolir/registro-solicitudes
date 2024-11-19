@@ -221,7 +221,7 @@ function getTableConfig(type) {
                 <td>${registro.fechaEnvio}</td>
                 <td>${registro.numeroSolicitud}</td>
             `;
-            config.buttonHtml = `
+            config.buttonHtml = /*`
 
     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Ingresar Respuesta </button>
     <ul class="dropdown-menu">
@@ -230,16 +230,17 @@ function getTableConfig(type) {
         <li class="dropdown-item"><a class="dropdown-link text-primary"  onclick="resetView();">Solicitud Pendiente</a></li>
         
     </ul>
-            `;
+            `*/"";// agregar boton cuando este operartiva l atabla solicitudes internas
             config.filtroHtml = filtroRespuesta;
             break;
 
         case "eventos":
             config.apiUrl = `${baseUrl}eventos${paginacionUrl}&sort=fecha,desc`;
-            config.headers = ["Evento", "Descripción", "Establecimiento", "Invitado"];
+            config.headers = ["Evento","Fecha", "Descripción", "Establecimiento", "Invitado"];
             config.title = "Eventos";
             config.formatRow = (registro) => `
                 <td>${formatText(registro.categoria)}</td>
+                <td>${registro.fecha}</td>
                 <td>${registro.descripcion}</td>
                 <td>${registro.establecimiento}</td>
                 <td>${registro.invitado.replace(/[\[\]']+/g, "")}</td>
@@ -263,7 +264,7 @@ function getTableConfig(type) {
                 <td>${registro.descripcion}</td>
                 <td>${registro.fechaCertificado}</td>
             `;
-            config.buttonHtml = `
+            config.buttonHtml =/* `
             <button id="ingresarCertificadoBtn" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadUnidades();"> Ingresar Certificado </button>
            <ul class="dropdown-menu">
                 <li class="dropdown-item">
@@ -283,7 +284,7 @@ function getTableConfig(type) {
                     </div>
                 </li>
             </ul>
-        `;
+        `*/"";// agregar boton cuando este operartiva l atabla solicitudes internas
            
             config.filtroHtml = filtroCertificado;
             break;
