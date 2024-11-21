@@ -25,7 +25,7 @@ function getFormConfig(formType) {
              
                 <option value="" disabled selected>
               
-                      ${field.name === "categoria" ? "Seleccione una" : field.name === "invitados" ? "Seleccione uno o mas invitados" : "Seleccione un"} 
+                      ${field.name === "categoria" ? "Seleccionar" : field.name === "invitados" ? "Seleccione uno o mas invitados" : "Seleccionar"} 
    
                 </option>
                 ${field.options.map(option =>
@@ -476,11 +476,72 @@ async function enviarFormulario2(form, endpoint) {
       alertMessage.textContent = 'Respuesta enviada exitosamente';
       alertMessage.style.display = 'block';
 
-      setTimeout(() => {
-        alertMessage.style.display = 'none';
-        resetView();  // Ocultar formulario y volver al inicio
-        loadData();   // Recargar solo la tabla
-      }, 1800);
+
+      //setTimeout(() => {
+        //alertMessage.style.display = 'none';
+        //resetView();  // Ocultar formulario y volver al inicio
+        document.getElementById("tableSection").classList.add("d-none");
+        //loadData();   // Recargar solo la tabla
+      //}, 1800);
+
+
+// Supongamos que response es el objeto JSON recibido
+if (typeof response === 'object' && response !== null) {
+  const responseDiv = document.getElementById('responseDiv');
+  
+  // Limpiar cualquier contenido previo del div
+  responseDiv.innerHTML = ''; 
+  
+  // Si 'data' existe en la respuesta, asignar los datos
+  const item = response.data || response;
+
+  // Crear el contenido que se agregará al div
+  let content = `<h1> ${
+                        endpoint === "certificados" ? `<strong>Certificado registrado: </strong>` : 
+                        endpoint === "respuestas" ? `<strong>Respuesta registrada: </strong>`:
+                        endpoint === "solicitudes" ? `<strong>Solicitud registrada: </strong>`:
+                        `<strong>Evento registrado : </strong>`
+                      }
+                      </h1>`;
+  
+  // Iniciar la tabla
+  content += '<table class="table">';
+  
+  // Recorrer las propiedades del objeto y agregarlas a la tabla
+  for (let key in item) {
+      if (item.hasOwnProperty(key)) {
+          let value = item[key];
+          
+          // Eliminar corchetes en caso de que el valor sea una lista o cadena con corchetes
+          if (typeof value === 'string') {
+              value = value.replace(/\[|\]/g, '');  // Eliminar los corchetes
+          }
+          
+          // Añadir una fila por cada clave-valor
+          // formatea campo invitado y elimina valor de id
+          content += `
+                <tr>
+                  <td>
+                      ${
+                        key === "invitado" ? `<strong>Invitados: </strong>${value}` :
+                        key === "id" ? "" :value
+                      }
+                  </td>
+                </tr>
+                  `;
+      }
+  }
+  
+  // Cerrar la tabla
+  content += '</table>';
+      
+  // Agregar el contenido al div
+  responseDiv.innerHTML = content;
+} else {
+  console.error("Response is not a valid object");
+}
+
+
     } else {
       console.error('Error:', response.status, response.statusText);
     }

@@ -27,7 +27,7 @@ public class EventoController {
     public ResponseEntity<DatosMuestraEventos> crearEvento(@RequestBody @Valid DatosRegistraEvento datos) {
         System.out.println(datos);
         var evento = eventoService.crearEvento(datos);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(evento);
     }
 
     //Obtener lista de eventos
