@@ -33,7 +33,7 @@ public class RespuestaController {
     @Transactional
     public ResponseEntity<?> ingresarRespuestaUsuario(@RequestBody @Valid DatosRegistraRespuesta datos) {
         var registroRespuesta = respuestaService.registrar(datos);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(registroRespuesta);
         }
 
     //Obtener una respuesta

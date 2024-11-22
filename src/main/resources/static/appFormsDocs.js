@@ -300,7 +300,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
 
         setTimeout(() => {
           formularioDiv.remove();
-          document.getElementById("mainContent").classList.remove("d-none");
+          //document.getElementById("mainContent").classList.remove("d-none");
         }, 2000); // Elimina el formulario después de 2 
         
       } catch (error) {
@@ -476,14 +476,16 @@ async function enviarFormulario2(form, endpoint) {
       alertMessage.textContent = 'Respuesta enviada exitosamente';
       alertMessage.style.display = 'block';
 
-
-      //setTimeout(() => {
-        //alertMessage.style.display = 'none';
+/*
+      setTimeout(() => {
+        alertMessage.style.display = 'none';
         //resetView();  // Ocultar formulario y volver al inicio
         document.getElementById("tableSection").classList.add("d-none");
+        //document.getElementById("mainContent").classList.add("d-none");
+        document.getElementById("responseDiv").style.display ="block";
         //loadData();   // Recargar solo la tabla
-      //}, 1800);
-
+      }, 1800);
+*/
 
 // Supongamos que response es el objeto JSON recibido
 if (typeof response === 'object' && response !== null) {
@@ -496,16 +498,25 @@ if (typeof response === 'object' && response !== null) {
   const item = response.data || response;
 
   // Crear el contenido que se agregará al div
-  let content = `<h1> ${
-                        endpoint === "certificados" ? `<strong>Certificado registrado: </strong>` : 
-                        endpoint === "respuestas" ? `<strong>Respuesta registrada: </strong>`:
-                        endpoint === "solicitudes" ? `<strong>Solicitud registrada: </strong>`:
-                        `<strong>Evento registrado : </strong>`
-                      }
-                      </h1>`;
+  let content = '<table class="table table-striped">';
   
   // Iniciar la tabla
-  content += '<table class="table">';
+  content += `<thead>
+                  <tr>
+                    <th>
+                    <h1 class = > 
+                        ${
+                            endpoint === "certificados" ? `<strong>Certificado registrado: </strong>` : 
+                            endpoint === "respuestas" ? `<strong>Respuesta registrada: </strong>`:
+                            endpoint === "solicitudes" ? `<strong>Solicitud registrada: </strong>`:
+                            `<strong>Evento registrado : </strong>`
+                        }
+                    </h1>
+                    </th>
+                  </tr>
+              </thead>
+              <tbody class="table-group-divider">
+  `;
   
   // Recorrer las propiedades del objeto y agregarlas a la tabla
   for (let key in item) {
@@ -520,10 +531,14 @@ if (typeof response === 'object' && response !== null) {
           // Añadir una fila por cada clave-valor
           // formatea campo invitado y elimina valor de id
           content += `
+          
                 <tr>
                   <td>
                       ${
                         key === "invitado" ? `<strong>Invitados: </strong>${value}` :
+                        key === "numeroSolicitud" ? `<strong>Solicitud N° </strong>${value}` :
+                        key === "numeroCertificado" ? `<strong>Certificado N° </strong>${value}` :
+                        key === "numeroRespuesta" ? `<strong>Respuesta N° </strong>${value}` :
                         key === "id" ? "" :value
                       }
                   </td>
@@ -531,12 +546,42 @@ if (typeof response === 'object' && response !== null) {
                   `;
       }
   }
-  
+  //agregar form de imagenes
+  content +=  ` <tr>
+                  <td>
+                    <div class="container__uploadForm">
+                      <h2>Guardar respaldo diguital</h2>
+                      <p>Subir imagen de documentos</p>
+                      <form id="uploadForm">
+                        <input type="file" id="filesInput" name="files" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"> <br>
+                        <button type="submit" class="btn btn-outline-success ms-auto">Subir Archivos</button>
+                      </form>
+                      <div id="message"></div>
+                    </div>
+                  </td>
+                </tr>
+                   `;
+
+  content += `<tr>
+                  <td>
+                  <button type="close" class="btn btn-secondary ms-auto" onclick= resetView(); loadData();>Cerrar</button>
+                  </td>
+                </tr>
+                `;
   // Cerrar la tabla
-  content += '</table>';
+  content += '</tbody> </table>';
       
   // Agregar el contenido al div
-  responseDiv.innerHTML = content;
+  setTimeout(() => {
+    alertMessage.style.display = 'none';
+    //resetView();  // Ocultar formulario y volver al inicio
+    document.getElementById("tableSection").classList.add("d-none");
+    //document.getElementById("mainContent").classList.add("d-none");
+    //document.getElementById("responseDiv").style.display ="block";
+    responseDiv.innerHTML = content
+    //loadData();   // Recargar solo la tabla
+  }, 1800);
+  ;
 } else {
   console.error("Response is not a valid object");
 }
@@ -576,6 +621,7 @@ function formatText(text) {
 function resetView() {
   document.getElementById("mainContent").classList.remove("d-none");
   document.getElementById("tableSection").classList.add("d-none");
+  document.getElementById("responseDiv").classList.add("d-none");
 // Si ya hay un formulario abierto, lo eliminamos
 cerrarFormularioExistente()
 }
