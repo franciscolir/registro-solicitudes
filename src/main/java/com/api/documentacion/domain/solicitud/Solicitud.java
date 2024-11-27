@@ -29,6 +29,8 @@ public class Solicitud {
 
     private String titulo;
     private String descripcion;
+    private String imagenId;
+
     private LocalDate fechaSolicitud;
     private Boolean activo;
 
@@ -36,7 +38,7 @@ public class Solicitud {
     private Movimiento movimiento;  // Relación inversa
 
 
-    public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud) {
+    public Solicitud(Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, String imagenId) {
         this.id = id;
         this.numeroSolicitud = numeroSolicitud;
         this.emisor = emisor;
@@ -44,6 +46,7 @@ public class Solicitud {
         this.descripcion = descripcion;
         this.fechaSolicitud = fechaSolicitud;
         this.activo = true;
+        this.imagenId = imagenId;
     }
 
     public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud){

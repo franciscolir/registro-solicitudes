@@ -7,5 +7,6 @@ CREATE TABLE certificados (
     descripcion TEXT,
     fecha_certificado DATE,
     activo BOOLEAN,
-    unidad_id BIGINT
+    unidad_id BIGINT,
+    imagen_id VARCHAR(255)
 );

@@ -172,8 +172,7 @@ INSERT INTO categorias (tipo, activo) VALUES
 ('INAUGURACION', TRUE),
 ('ACTIVIDAD', TRUE),
 ('VISITA_TERRENO', TRUE),
-('OTRO', TRUE),
-('REUNION', TRUE);
+('OTRO', TRUE);
 
 INSERT INTO respuestas (numero_respuesta, usuario_id, titulo, descripcion, comentario, fecha_respuesta, fecha_envio, activo) VALUES
 (1001, 1, 'Respuesta Urgente A1', 'Respuesta urgente para el cliente A1', 'Comentario A1 - Mensaje interno: Enviar rápido para evitar retrasos.', '2024-01-10', '2024-01-12 08:00:00', TRUE),
@@ -209,11 +208,6 @@ INSERT INTO respuestas (numero_respuesta, usuario_id, titulo, descripcion, comen
 
 
 
-
-
-
-
-
 INSERT INTO evento_usuario (evento_id, usuario_id) VALUES
 (1, 1),
 (2, 2),
@@ -228,14 +222,6 @@ INSERT INTO evento_usuario (evento_id, usuario_id) VALUES
 
 
 
-INSERT INTO categorias (tipo, activo) VALUES
-('REUNION', TRUE),
-('INAUGURACION', TRUE),
-('ACTIVIDAD', TRUE),
-('VISITA_TERRENO', TRUE),
-('OTRO', TRUE),
-('REUNION', TRUE);
-
 INSERT INTO movimientos (
     fecha_ingreso, fecha_asignacion, fecha_resuelto, fecha_cierre, fecha_rechazado, asignado, resuelto, cerrado, activo, rechazado, comentario_asignacion, comentario_resuelto, comentario_rechazado, estado, solicitud_id, unidad_id, certificado_id, respuesta_id
 ) VALUES
@@ -243,312 +229,123 @@ INSERT INTO movimientos (
 -- 10 ASIGNADOS (EN_PROCESO)
 ('2024-03-01 08:00:00', '2024-03-03 09:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignado correctamente a la unidad correspondiente. En espera de información adicional.',
- NULL, NULL, 'EN_PROCESO', 9, 4, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 1, 4, NULL, NULL),
 
 ('2024-03-05 12:00:00', '2024-03-07 13:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'El caso fue asignado a revisión técnica. Se espera la validación de los datos.',
- NULL, NULL, 'EN_PROCESO', 10, 5, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 2, 5, NULL, NULL),
 
 ('2024-03-10 08:00:00', '2024-03-12 09:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignación realizada correctamente. Pendiente confirmación de requisitos adicionales.',
- NULL, NULL, 'EN_PROCESO', 11, 1, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 3, 1, NULL, NULL),
 
 ('2024-03-15 10:00:00', '2024-03-17 11:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignación registrada. A la espera de las condiciones necesarias para proceder.',
- NULL, NULL, 'EN_PROCESO', 12, 2, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 4, 2, NULL, NULL),
 
 ('2024-03-20 14:00:00', '2024-03-22 15:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignado al equipo de soporte. Estamos en proceso de revisar todos los aspectos del caso.',
- NULL, NULL, 'EN_PROCESO', 13, 3, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 5, 3, NULL, NULL),
 
 ('2024-03-25 09:00:00', '2024-03-27 10:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'La asignación fue realizada correctamente, pero aún se requieren documentos adicionales.',
- NULL, NULL, 'EN_PROCESO', 14, 4, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 6, 4, NULL, NULL),
 
 ('2024-04-01 08:00:00', '2024-04-03 09:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Se asignó correctamente al área correspondiente, ahora estamos evaluando la situación.',
- NULL, NULL, 'EN_PROCESO', 15, 5, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 7, 5, NULL, NULL),
 
 ('2024-04-05 14:00:00', '2024-04-07 15:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignación confirmada. Estamos esperando los datos finales para poder avanzar.',
- NULL, NULL, 'EN_PROCESO', 16, 1, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 8, 1, NULL, NULL),
 
 ('2024-04-10 10:00:00', '2024-04-12 11:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Asignado correctamente para revisión. Pendiente recibir confirmación del cliente.',
- NULL, NULL, 'EN_PROCESO', 17, 2, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 9, 2, NULL, NULL),
 
 ('2024-04-15 08:00:00', '2024-04-17 09:00:00', NULL, NULL, NULL, 
  TRUE, FALSE, FALSE, TRUE, FALSE, 'Caso asignado a la unidad de revisión, estamos a la espera de datos adicionales.',
- NULL, NULL, 'EN_PROCESO', 18, 3, NULL, NULL),
+ NULL, NULL, 'EN_PROCESO', 10, 3, NULL, NULL),
 
 -- 10 RESUELTOS (RESUELTO)
 ('2024-01-10 08:00:00', '2024-01-12 08:00:00', '2024-01-15 08:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Caso asignado correctamente al equipo encargado. Procederemos con la revisión inicial.',
- 'La solicitud fue resuelta exitosamente, se completaron todos los requisitos y se aprobó.', NULL, 'RESUELTO', 1, 1, NULL, NULL), 
+ 'La solicitud fue resuelta exitosamente, se completaron todos los requisitos y se aprobó.', NULL, 'RESUELTO', 11, 1, NULL, NULL), 
 
 ('2024-01-12 09:00:00', '2024-01-14 10:00:00', '2024-01-17 12:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Se asignó correctamente al área de atención, esperando detalles adicionales.',
- 'El caso fue resuelto de manera eficiente, sin inconvenientes adicionales en el proceso.', NULL, 'RESUELTO', 2, 2, NULL, NULL),
+ 'El caso fue resuelto de manera eficiente, sin inconvenientes adicionales en el proceso.', NULL, 'RESUELTO', 12, 2, NULL, NULL),
 
 ('2024-01-15 10:00:00', '2024-01-17 11:00:00', '2024-01-20 13:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'La asignación se realizó correctamente, el caso fue registrado y está en revisión.',
- 'Se resolvió conforme a las políticas establecidas, se notificó al solicitante sobre el avance.', NULL, 'RESUELTO', 3, 3, NULL, NULL),
+ 'Se resolvió conforme a las políticas establecidas, se notificó al solicitante sobre el avance.', NULL, 'RESUELTO', 13, 3, NULL, NULL),
 
 ('2024-02-01 08:00:00', '2024-02-03 09:00:00', '2024-02-05 10:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Asignado a la unidad correspondiente para su atención inmediata. Esperando respuesta.',
- 'Caso resuelto satisfactoriamente, se confirmaron los datos necesarios para la finalización del trámite.', NULL, 'RESUELTO', 4, 4, NULL, NULL),
+ 'Caso resuelto satisfactoriamente, se confirmaron los datos necesarios para la finalización del trámite.', NULL, 'RESUELTO', 14, 4, NULL, NULL),
 
 ('2024-02-05 12:00:00', '2024-02-08 13:00:00', '2024-02-10 14:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'La asignación fue realizada correctamente, pendiente de resolver con detalles adicionales.',
- 'Se resolvió la solicitud de forma exitosa, todos los requisitos fueron verificados y aprobados.', NULL, 'RESUELTO', 5, 5, NULL, NULL),
+ 'Se resolvió la solicitud de forma exitosa, todos los requisitos fueron verificados y aprobados.', NULL, 'RESUELTO', 15, 5, NULL, NULL),
 
 ('2024-02-10 08:00:00', '2024-02-12 09:00:00', '2024-02-15 10:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Asignación realizada correctamente, se comenzará el proceso de revisión de documentos.',
- 'El caso fue resuelto exitosamente, se validaron los requisitos conforme a las normativas vigentes.', NULL, 'RESUELTO', 6, 1, NULL, NULL),
+ 'El caso fue resuelto exitosamente, se validaron los requisitos conforme a las normativas vigentes.', NULL, 'RESUELTO', 16, 1, NULL, NULL),
 
 ('2024-02-15 14:00:00', '2024-02-18 15:00:00', '2024-02-20 16:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'El caso fue asignado y está siendo evaluado por el equipo especializado.',
- 'Se completó la resolución satisfactoriamente, se validaron todos los aspectos requeridos para su cierre.', NULL, 'RESUELTO', 7, 2, NULL, NULL),
+ 'Se completó la resolución satisfactoriamente, se validaron todos los aspectos requeridos para su cierre.', NULL, 'RESUELTO', 17, 2, NULL, NULL),
 
 ('2024-02-20 09:00:00', '2024-02-22 10:00:00', '2024-02-25 11:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Se asignó al área correspondiente para revisión y resolución en breve.',
- 'Caso resuelto satisfactoriamente, sin observaciones. Se notificó al solicitante que todo estaba en orden.', NULL, 'RESUELTO', 8, 3, NULL, NULL),
+ 'Caso resuelto satisfactoriamente, sin observaciones. Se notificó al solicitante que todo estaba en orden.', NULL, 'RESUELTO', 18, 3, NULL, NULL),
 
 ('2024-02-25 08:00:00', '2024-02-28 09:00:00', '2024-03-02 10:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Asignación realizada de manera correcta, en espera de confirmación de documentación.',
- 'El caso fue resuelto con éxito, se validaron los detalles necesarios y se completó la solicitud a tiempo.', NULL, 'RESUELTO', 9, 4, NULL, NULL),
+ 'El caso fue resuelto con éxito, se validaron los detalles necesarios y se completó la solicitud a tiempo.', NULL, 'RESUELTO', 19, 4, NULL, NULL),
 
 ('2024-03-01 10:00:00', '2024-03-03 11:00:00', '2024-03-05 12:00:00', NULL, NULL, 
  TRUE, TRUE, FALSE, TRUE, FALSE, 'Asignación completada correctamente, en espera de resolución final.',
- 'Se resolvió el caso, se verificaron todos los detalles pertinentes y se cerró el proceso.', NULL, 'RESUELTO', 10, 5, NULL, NULL),
+ 'Se resolvió el caso, se verificaron todos los detalles pertinentes y se cerró el proceso.', NULL, 'RESUELTO', 20, 5, NULL, NULL),
 
 -- 10 RECHAZADOS
 ('2024-01-10 08:00:00', NULL, NULL, NULL, '2024-01-15 08:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'El caso fue rechazado por falta de documentación válida.',
- NULL, NULL, 'RECHAZADO', 11, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 21, NULL, NULL, NULL),
 
 ('2024-01-12 09:00:00', NULL, NULL, NULL, '2024-01-17 12:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'La solicitud fue rechazada debido a inconsistencias en los datos proporcionados.',
- NULL, NULL, 'RECHAZADO', 12, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 22, NULL, NULL, NULL),
 
 ('2024-01-15 10:00:00', NULL, NULL, NULL, '2024-01-20 13:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'Se rechazó la solicitud debido a falta de información clave.',
- NULL, NULL, 'RECHAZADO', 13, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 23, NULL, NULL, NULL),
 
 ('2024-02-01 08:00:00', NULL, NULL, NULL, '2024-02-05 10:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'La solicitud fue rechazada por no cumplir con los requisitos mínimos.',
- NULL, NULL, 'RECHAZADO', 14, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 24, NULL, NULL, NULL),
 
 ('2024-02-05 12:00:00', NULL, NULL, NULL, '2024-02-10 14:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'Rechazado debido a un error en los datos ingresados.',
- NULL, NULL, 'RECHAZADO', 15, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 25, NULL, NULL, NULL),
 
 ('2024-02-10 08:00:00', NULL, NULL, NULL, '2024-02-15 10:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'La solicitud fue rechazada por falta de los documentos requeridos.',
- NULL, NULL, 'RECHAZADO', 16, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 26, NULL, NULL, NULL),
 
 ('2024-02-15 14:00:00', NULL, NULL, NULL, '2024-02-20 16:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'El caso fue rechazado debido a documentación incompleta.',
- NULL, NULL, 'RECHAZADO', 17, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 27, NULL, NULL, NULL),
 
 ('2024-02-20 09:00:00', NULL, NULL, NULL, '2024-02-25 11:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'La solicitud fue rechazada por no cumplir con los criterios establecidos.',
- NULL, NULL, 'RECHAZADO', 18, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 28, NULL, NULL, NULL),
 
 ('2024-02-25 08:00:00', NULL, NULL, NULL, '2024-03-02 10:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'Rechazado por motivos internos no especificados.',
- NULL, NULL, 'RECHAZADO', 19, NULL, NULL, NULL),
+ NULL, NULL, 'RECHAZADO', 29, NULL, NULL, NULL),
 
 ('2024-03-01 10:00:00', NULL, NULL, NULL, '2024-03-05 12:00:00', 
  FALSE, FALSE, FALSE, FALSE, TRUE, 'La solicitud fue rechazada debido a un error en la verificación de los datos.',
- NULL, NULL, 'RECHAZADO', 20, NULL, NULL, NULL);
+ NULL, NULL, 'RECHAZADO', 30, NULL, NULL, NULL);
 
-
-crea registros para los siguientes objetos.
-
-considera los constrain para hacer coincidir los id como foreing key
-
-5 registros
-TABLE unidades (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    numero_unidad BIGINT,
-    nombre_unidad VARCHAR(255),
-    descripcion TEXT,
-    activo BOOLEAN
-);
-
-50 registros
-TABLE certificados ( 
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    numero_certificado BIGINT,
-    titulo VARCHAR(255),
-    descripcion TEXT,
-    fecha_certificado DATE,
-    activo BOOLEAN,
-    unidad_id BIGINT
-);
-
-10 registros
-TABLE establecimientos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre_solicitante VARCHAR(255),
-    nombre_establecimiento VARCHAR(255),
-    comentario TEXT
-); 
-10 registros
-TABLE emisores (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    establecimiento_id BIGINT,
-    comentario VARCHAR(255)
-);
-
-20 registros
-TABLE eventos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    categoria_id BIGINT,
-    descripcion TEXT,
-    fecha TIMESTAMP,
-    establecimiento_id BIGINT
-);
-
-30 registros
-TABLE movimientos ( 
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    fecha_ingreso TIMESTAMP,
-    fecha_asignacion TIMESTAMP,
-    fecha_resuelto TIMESTAMP,
-    fecha_cierre TIMESTAMP,
-    fecha_rechazado TIMESTAMP,
-    asignado BOOLEAN,
-    resuelto BOOLEAN,
-    cerrado BOOLEAN,
-    activo BOOLEAN,
-    rechazado BOOLEAN,
-    comentario_asignacion VARCHAR(255),
-    comentario_resuelto VARCHAR(255),
-    comentario_rechazado VARCHAR(255),
-    estado ENUM('INGRESADO', 'EN_PROCESO', 'RESUELTO', 'CERRADO', 'RECHAZADO'),
-    solicitud_id BIGINT,
-    unidad_id BIGINT,
-    certificado_id BIGINT,
-    respuesta_id BIGINT
-);
-
-30 registros
-TABLE respuestas (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    numero_respuesta BIGINT,
-    usuario_id BIGINT,
-    titulo VARCHAR(255),
-    descripcion TEXT,
-    comentario TEXT,
-    fecha_respuesta DATE,
-    fecha_envio TIMESTAMP,
-    activo BOOLEAN
-);
-
-30 registros
- TABLE solicitudes (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    numero_solicitud BIGINT,
-    providencia_id BIGINT,
-    emisor_id BIGINT,
-    titulo VARCHAR(255),
-    descripcion TEXT,
-    fecha_solicitud DATE,
-    activo BOOLEAN
-);
-
-3 registros
- TABLE perfiles (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    rol ENUM('ADMIN', 'ENCARGADO', 'USUARIO')
-);
-
-10 registros
-TABLE usuarios (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
-    correo_electronico VARCHAR(255),
-    contraseña VARCHAR(255),
-    comentario TEXT,
-    perfil_id BIGINT,
-    activo BOOLEAN,
-    fecha_ingreso_sistema TIMESTAMP,
-    unidad_id BIGINT,
-    subrogante BOOLEAN DEFAULT FALSE,
-    encargado BOOLEAN DEFAULT FALSE
-);
-
-
-TABLE evento_usuario (
-    evento_id BIGINT,
-    usuario_id BIGINT,
-    PRIMARY KEY (evento_id, usuario_id)
-);
-
-
-6 registros
-TABLE categorias (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    tipo ENUM('REUNION', 'INAUGURACION', 'ACTIVIDAD', 'VISITA_TERRENO', 'OTRO') NOT NULL,
-    activo BOOLEAN
-);
-
-
-
--- Constraint para la tabla certificados
-ALTER TABLE certificados
-ADD CONSTRAINT fk_certificados_unidad
-FOREIGN KEY (unidad_id) REFERENCES unidades(id);
-
--- Constraint para la tabla emisores
-ALTER TABLE emisores
-ADD CONSTRAINT fk_emisores_establecimiento
-FOREIGN KEY (establecimiento_id) REFERENCES establecimientos(id);
-
--- Constraint para la tabla eventos
-ALTER TABLE eventos
-ADD CONSTRAINT fk_eventos_establecimiento
-FOREIGN KEY (establecimiento_id) REFERENCES establecimientos(id);
-
--- Constraint para la tabla movimientos
-ALTER TABLE movimientos
-ADD CONSTRAINT fk_movimientos_solicitud
-FOREIGN KEY (solicitud_id) REFERENCES solicitudes(id),
-ADD CONSTRAINT fk_movimientos_unidad
-FOREIGN KEY (unidad_id) REFERENCES unidades(id),
-ADD CONSTRAINT fk_movimientos_certificado
-FOREIGN KEY (certificado_id) REFERENCES certificados(id),
-ADD CONSTRAINT fk_movimientos_respuesta
-FOREIGN KEY (respuesta_id) REFERENCES respuestas(id);
-
--- Constraint para la tabla respuestas
-ALTER TABLE respuestas
-ADD CONSTRAINT fk_respuestas_usuario
-FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
-
--- Constraint para la tabla solicitudes
-ALTER TABLE solicitudes
-ADD CONSTRAINT fk_solicitudes_emisor
-FOREIGN KEY (emisor_id) REFERENCES emisores(id);
-
--- Constraint para la tabla usuarios
-ALTER TABLE usuarios
-ADD CONSTRAINT fk_usuarios_perfil
-FOREIGN KEY (perfil_id) REFERENCES perfiles(id),
-ADD CONSTRAINT fk_usuarios_unidad
-FOREIGN KEY (unidad_id) REFERENCES unidades(id);
-
--- Constraint para la tabla intermedia evento_usuario
-ALTER TABLE evento_usuario
-ADD CONSTRAINT fk_evento_usuario_evento
-FOREIGN KEY (evento_id) REFERENCES eventos(id),
-ADD CONSTRAINT fk_evento_usuario_usuario
-FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
-
--- Constraint para la tabla eventos
-
-ALTER TABLE eventos
-    ADD CONSTRAINT FK_evento_categoria
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id);

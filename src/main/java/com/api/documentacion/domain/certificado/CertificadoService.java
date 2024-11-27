@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CertificadoService {
@@ -49,13 +50,14 @@ public class CertificadoService {
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("numeroCertificado")));
         List<Long> certificados = certificadoRepository.findLastCertificadoByUnidad(unidad, pageable);
         var lastCertificado = certificados.isEmpty() ? null : certificados.get(0)+1;
-
+        var imagenCertificado = UUID.randomUUID().toString();
 
         var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
                 lastCertificado,
                 datos.titulo(),
                 datos.descripcion(),
+                imagenCertificado,
                 fechaCertificado,
                 true,
                 unidad,

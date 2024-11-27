@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 public class RespuestaService {
@@ -44,6 +45,7 @@ public class RespuestaService {
         //var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
         var fechaRespuesta = LocalDate.now();
         var fechaEnvioRespuesta = LocalDateTime.now();
+        var imagenRespuesta = UUID.randomUUID().toString();
         var respuesta = new Respuesta(null,
                 datos.numeroRespuesta(),
                 usuario,
@@ -52,7 +54,8 @@ public class RespuestaService {
                 datos.comentario(),
                 fechaRespuesta,
                 fechaEnvioRespuesta,
-                true
+                true,
+                imagenRespuesta
         );
         respuestaRepository.save(respuesta);
 

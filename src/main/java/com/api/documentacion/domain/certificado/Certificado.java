@@ -26,6 +26,7 @@ public class Certificado {
 
     private String titulo;
     private String descripcion;
+    private String imagenId;
 
     private LocalDate fechaCertificado;
 
@@ -37,6 +38,7 @@ public class Certificado {
 
     @OneToOne(mappedBy = "certificado")
     private Movimiento movimiento;  // Relación inversa
+
 
 
     public void actualizaCertificado (Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado){

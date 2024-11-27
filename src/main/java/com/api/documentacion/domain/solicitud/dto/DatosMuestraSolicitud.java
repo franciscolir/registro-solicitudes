@@ -1,6 +1,5 @@
 package com.api.documentacion.domain.solicitud.dto;
 
-import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.solicitud.Solicitud;
 
 import java.time.LocalDate;
@@ -14,7 +13,8 @@ public record DatosMuestraSolicitud(
         String emisor,
         String titulo,
         String descripcion,
-        String fechaSolicitud
+        String fechaSolicitud,
+        String imagen
 ) {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -26,7 +26,8 @@ public record DatosMuestraSolicitud(
                 solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
-                formatDate2(solicitud.getFechaSolicitud())
+                formatDate2(solicitud.getFechaSolicitud()),
+                solicitud.getImagenId()
         );
     }
 

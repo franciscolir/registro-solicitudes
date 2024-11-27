@@ -9,5 +9,6 @@ CREATE TABLE respuestas (
     comentario TEXT,
     fecha_respuesta DATE,
     fecha_envio TIMESTAMP,
-    activo BOOLEAN
+    activo BOOLEAN,
+    imagen_id VARCHAR(255)
 );

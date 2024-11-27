@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 public class SolicitudService {
@@ -39,15 +40,19 @@ public class SolicitudService {
 
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
 
+        var imagenSolicitud = UUID.randomUUID().toString();
+
         var solicitud = new Solicitud(null,
                 datos.numeroSolicitud(),
                 datos.providenciaId(),
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
+                imagenSolicitud,
                 fechaSolicitud,
                 true,
                 null
+
         );
         solicitudRepository.save(solicitud);
 

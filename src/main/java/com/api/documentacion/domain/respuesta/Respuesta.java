@@ -32,6 +32,7 @@ public class Respuesta {
     private String titulo;
     private String descripcion;
     private String comentario;
+    private String imagenId;
 
     private LocalDate fechaRespuesta;
     private LocalDateTime fechaEnvio;
@@ -41,7 +42,7 @@ public class Respuesta {
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Movimiento> movimientos;  // Relación OneToMany
 
-    public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo) {
+    public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo, String imagenId) {
         this.id = id;
         this.numeroRespuesta = numeroRespuesta;
         this.usuario = usuario;
@@ -51,6 +52,7 @@ public class Respuesta {
         this.fechaRespuesta = fechaRespuesta;
         this.fechaEnvio = fechaEnvio;
         this.activo = activo;
+        this.imagenId = imagenId;
     }
 
     public void actualizaRespuesta (Long id, Long numeroRespuesta, String titulo, String descripcion, LocalDate fechaRespuesta){
