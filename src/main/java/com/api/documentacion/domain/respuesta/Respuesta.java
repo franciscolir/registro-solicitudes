@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.respuesta;
 
+import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
@@ -41,6 +42,10 @@ public class Respuesta {
 
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Movimiento> movimientos;  // Relación OneToMany
+
+    @OneToMany(mappedBy = "respuesta", fetch = FetchType.LAZY)
+    private List<Archivo> archivos;  // Relación con los archivos
+
 
     public Respuesta(Long id, Long numeroRespuesta, Usuario usuario, String titulo, String descripcion, String comentario, LocalDate fechaRespuesta, LocalDateTime fechaEnvio, Boolean activo, String imagenId) {
         this.id = id;

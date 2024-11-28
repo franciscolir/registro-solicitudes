@@ -60,8 +60,7 @@ public class CertificadoService {
                 imagenCertificado,
                 fechaCertificado,
                 true,
-                unidad,
-                null
+                unidad
         );
 
         certificadoRepository.save(certificado);

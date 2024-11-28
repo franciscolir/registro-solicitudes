@@ -28,7 +28,7 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
     }
   
     try {
-      const response = await fetch('http://192.168.1.99:3000/upload', {
+      const response = await fetch("http://localhost:8080/archivos/up", {
         method: 'POST',
         body: formData
       });

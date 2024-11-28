@@ -50,9 +50,7 @@ public class SolicitudService {
                 datos.descripcion(),
                 imagenSolicitud,
                 fechaSolicitud,
-                true,
-                null
-
+                true
         );
         solicitudRepository.save(solicitud);
 

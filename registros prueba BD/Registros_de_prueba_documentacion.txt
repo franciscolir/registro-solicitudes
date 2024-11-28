@@ -167,12 +167,12 @@ INSERT INTO solicitudes (numero_solicitud, providencia_id, emisor_id, titulo, de
 (10030, 30, 10, 'Solicitud de revisión de procesos de seguridad', 'Solicito una revisión detallada de los procesos de seguridad en el área de producción para garantizar que se cumplan los nuevos estándares de seguridad laboral.', '2024-12-25', TRUE);
 
 
-INSERT INTO categorias (tipo, activo) VALUES
-('REUNION', TRUE),
-('INAUGURACION', TRUE),
-('ACTIVIDAD', TRUE),
-('VISITA_TERRENO', TRUE),
-('OTRO', TRUE);
+INSERT INTO categorias (activo) VALUES
+(TRUE),
+(TRUE),
+(TRUE),
+(TRUE),
+(TRUE);
 
 INSERT INTO respuestas (numero_respuesta, usuario_id, titulo, descripcion, comentario, fecha_respuesta, fecha_envio, activo) VALUES
 (1001, 1, 'Respuesta Urgente A1', 'Respuesta urgente para el cliente A1', 'Comentario A1 - Mensaje interno: Enviar rápido para evitar retrasos.', '2024-01-10', '2024-01-12 08:00:00', TRUE),

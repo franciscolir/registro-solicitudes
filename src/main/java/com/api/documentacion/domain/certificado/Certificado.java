@@ -1,12 +1,13 @@
 package com.api.documentacion.domain.certificado;
 
+import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.unidad.Unidad;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 @Table(name = "certificados")
@@ -39,7 +40,20 @@ public class Certificado {
     @OneToOne(mappedBy = "certificado")
     private Movimiento movimiento;  // Relación inversa
 
+    @OneToMany(mappedBy = "certificado", fetch = FetchType.LAZY)
+    private List<Archivo> archivos;  // Relación con los archivos
 
+
+    public Certificado(Long id, Long numeroCertificado, String titulo, String descripcion, String imagenId, LocalDate fechaCertificado, Boolean activo, Unidad unidad) {
+        this.id = id;
+        this.numeroCertificado = numeroCertificado;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.imagenId = imagenId;
+        this.fechaCertificado = fechaCertificado;
+        this.activo = activo;
+        this.unidad = unidad;
+    }
 
     public void actualizaCertificado (Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado){
 
