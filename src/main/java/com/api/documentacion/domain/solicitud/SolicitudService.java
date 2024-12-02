@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.solicitud;
 
+import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
 import com.api.documentacion.domain.movimiento.dto.DatosRegistraMovimiento;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,25 +24,25 @@ import java.util.UUID;
 
 @Service
 public class SolicitudService {
-    @Autowired
+
+    @Autowired @Lazy
     SolicitudRepository solicitudRepository;
     @Autowired
     EmisorRepository emisorRepository;
-    @Autowired
-    @Lazy
+    @Autowired @Lazy
     MovimientoService movimientoService;
     @Autowired
     MovimientoRepository movimientoRepository;
+    @Autowired
+    ArchivoService archivoService;
 
     //POST___________________________________________
         //registra solicitud
-    public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) {
+    public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) throws IOException {
 
+        var archivo = archivoService.registrar();
         var emisor = emisorRepository.getReferenceById(datos.emisor());
-
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
-
-        var imagenSolicitud = UUID.randomUUID().toString();
 
         var solicitud = new Solicitud(null,
                 datos.numeroSolicitud(),
@@ -48,9 +50,9 @@ public class SolicitudService {
                 emisor,
                 datos.titulo(),
                 datos.descripcion(),
-                imagenSolicitud,
                 fechaSolicitud,
-                true
+                true,
+                archivo
         );
         solicitudRepository.save(solicitud);
 

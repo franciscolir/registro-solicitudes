@@ -10,5 +10,5 @@ CREATE TABLE respuestas (
     fecha_respuesta DATE,
     fecha_envio TIMESTAMP,
     activo BOOLEAN,
-    imagen_id VARCHAR(255)
+    archivo_id UUID
 );

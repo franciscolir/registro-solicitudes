@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.respuesta;
 
+import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +32,7 @@ public class RespuestaService {
     @Autowired
     RespuestaRepository respuestaRepository;
     @Autowired
-    SolicitudService solicitudService;
+    ArchivoService archivoService;
     @Autowired
     UsuarioService usuarioService;
     @Autowired
@@ -38,14 +40,16 @@ public class RespuestaService {
 
     //POST___________________________________________
 
-    public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) {
+    public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) throws IOException {
+
+        var archivo = archivoService.registrar();
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
+
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
         //var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
         var fechaRespuesta = LocalDate.now();
         var fechaEnvioRespuesta = LocalDateTime.now();
-        var imagenRespuesta = UUID.randomUUID().toString();
         var respuesta = new Respuesta(null,
                 datos.numeroRespuesta(),
                 usuario,
@@ -55,7 +59,7 @@ public class RespuestaService {
                 fechaRespuesta,
                 fechaEnvioRespuesta,
                 true,
-                imagenRespuesta
+                archivo
         );
         respuestaRepository.save(respuesta);
 

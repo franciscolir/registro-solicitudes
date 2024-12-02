@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "solicitudes")
 @Entity(name = "Solicitud")
@@ -33,7 +34,6 @@ public class Solicitud {
 
     private String titulo;
     private String descripcion;
-    private String imagenId;
 
     private LocalDate fechaSolicitud;
     private Boolean activo;
@@ -41,19 +41,20 @@ public class Solicitud {
     @OneToOne(mappedBy = "solicitud")
     private Movimiento movimiento;  // Relación inversa
 
-    @OneToMany(mappedBy = "solicitud", fetch = FetchType.LAZY)
-    private List<Archivo> archivos;  // Relación con los archivos
+    @OneToOne
+    @JoinColumn(name = "archivo_id") // Columna que establece la relación con Archivo
+    private Archivo archivo;
 
-    public Solicitud(Long id, Long numeroSolicitud, Long providenciaId, Emisor emisor, String titulo, String descripcion, String imagenId, LocalDate fechaSolicitud, Boolean activo) {
+    public Solicitud(Long id, Long numeroSolicitud, Long providenciaId, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, Boolean activo, Archivo archivo) {
         this.id = id;
         this.numeroSolicitud = numeroSolicitud;
         this.providenciaId = providenciaId;
         this.emisor = emisor;
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.imagenId = imagenId;
         this.fechaSolicitud = fechaSolicitud;
         this.activo = activo;
+        this.archivo = archivo;
     }
 
     public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud){

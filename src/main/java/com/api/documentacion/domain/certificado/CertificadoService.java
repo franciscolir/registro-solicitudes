@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.certificado;
 
+import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.certificado.dto.DatosActualizaCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosMuestraCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosRegistraCertificado;
@@ -14,12 +15,14 @@ import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.CertificadoRepository;
 import com.api.documentacion.repository.UnidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,37 +33,37 @@ import java.util.UUID;
 public class CertificadoService {
     @Autowired
     UnidadRepository unidadRepository;
-    @Autowired
+    @Autowired @Lazy
     CertificadoRepository certificadoRepository;
     @Autowired
     MovimientoService movimientoService;
     @Autowired
-    UnidadService unidadService;
+    ArchivoService archivoService;
     @Autowired
     MovimientoRepository movimientoRepository;
 
     //POST___________________________________________
 
-    public DatosMuestraCertificado registrar(DatosRegistraCertificado datos) {
-
-
+    public DatosMuestraCertificado registrar(DatosRegistraCertificado datos) throws IOException {
+        //crea el registro del archivo
+        var archivo = archivoService.registrar();
         var unidad = unidadRepository.getReferenceById(datos.unidad());
 
         //Trae lista de numeros de certificado segun unidad. elije el ultimo y lo aumenta en uno
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("numeroCertificado")));
         List<Long> certificados = certificadoRepository.findLastCertificadoByUnidad(unidad, pageable);
         var lastCertificado = certificados.isEmpty() ? null : certificados.get(0)+1;
-        var imagenCertificado = UUID.randomUUID().toString();
+
 
         var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
                 lastCertificado,
                 datos.titulo(),
                 datos.descripcion(),
-                imagenCertificado,
                 fechaCertificado,
                 true,
-                unidad
+                unidad,
+                archivo
         );
 
         certificadoRepository.save(certificado);

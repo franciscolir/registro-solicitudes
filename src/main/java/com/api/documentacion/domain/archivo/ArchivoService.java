@@ -2,6 +2,7 @@ package com.api.documentacion.domain.archivo;
 
 
 
+import com.api.documentacion.domain.archivo.dto.DatosActualizaArchivo;
 import com.api.documentacion.domain.archivo.dto.DatosRegistraArchivo;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.ArchivoRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ArchivoService {
@@ -18,19 +20,13 @@ public class ArchivoService {
 
     //POST___________________________________________
 
-    public Archivo registrar(DatosRegistraArchivo datos) throws IOException {
+    public Archivo registrar() throws IOException {
 
-            Archivo archivoDB = new Archivo(
-                    datos.id(),
-                    datos.archivoA().getOriginalFilename(),
-                    datos.archivoB().getOriginalFilename(),
-                    datos.archivoC().getOriginalFilename(),
-                    datos.archivoA().getContentType(),
-                    datos.archivoB().getContentType(),
-                    datos.archivoC().getContentType(),
-                    datos.archivoA().getBytes(),
-                    datos.archivoB().getBytes(),
-                    datos.archivoC().getBytes()
+        //var datos = new DatosRegistraArchivo(id);
+
+        Archivo archivoDB = new Archivo(
+
+                    //datos.id()
             );
 
         return archivoRepository.save(archivoDB);
@@ -38,7 +34,7 @@ public class ArchivoService {
 
     //GET___________________________________________
 
-    public Archivo obtener(Long id) {
+    public Archivo obtener(UUID id) {
 
         // Buscar el archivo en la base de datos
         Optional<Archivo> archivoOpt = archivoRepository.findById(id);
@@ -71,4 +67,24 @@ public class ArchivoService {
     }
 
     //___________________________________________________
+
+    public void actualizar (DatosActualizaArchivo datos) throws IOException {
+
+        var archivo = archivoRepository.getReferenceById(datos.id());
+
+         archivo.actualizaArchivo(
+                datos.id(),
+                datos.archivoA().getOriginalFilename(),
+                datos.archivoB().getOriginalFilename(),
+                datos.archivoC().getOriginalFilename(),
+                datos.archivoA().getContentType(),
+                datos.archivoB().getContentType(),
+                datos.archivoC().getContentType(),
+                datos.archivoA().getBytes(),
+                datos.archivoB().getBytes(),
+                datos.archivoC().getBytes()
+        );
+         var archivoActualizado = archivoRepository.getReferenceById(datos.id());
+        archivoRepository.save(archivoActualizado);
+    }
 }

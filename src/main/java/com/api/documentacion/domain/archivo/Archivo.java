@@ -1,23 +1,20 @@
 package com.api.documentacion.domain.archivo;
 
-import com.api.documentacion.domain.certificado.Certificado;
-import com.api.documentacion.domain.respuesta.Respuesta;
-import com.api.documentacion.domain.solicitud.Solicitud;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import java.util.UUID;
 
 @Table(name = "archivos")
 @Entity(name = "Archivo")
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Archivo {
 
     @Id
-    private Long id;
+    private UUID id;
 
     private String nombreA;
     private String nombreB;
@@ -34,29 +31,32 @@ public class Archivo {
     @Lob
     private byte[] archivoC;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "solicitud_id")  // Esta columna se agregará a la tabla 'archivo'
-    private Solicitud solicitud;  // Relación con el Documento
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "respuesta_id")  // Esta columna se agregará a la tabla 'archivo'
-    private Respuesta respuesta;  // Relación con el Documento
+    public Archivo() {
+        //this.id = id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "certificado_id")  // Esta columna se agregará a la tabla 'archivo'
-    private Certificado certificado;  // Relación con el Documento
+    }
 
-    public Archivo(Long id, String nombreA, String nombreB, String nombreC, String tipoA, String tipoB, String tipoC, byte[] archivoA, byte[] archivoB, byte[] archivoC) {
-        this.id = id;
-        this.nombreA = nombreA;
-        this.nombreB = nombreB;
-        this.nombreC = nombreC;
-        this.tipoA = tipoA;
-        this.tipoB = tipoB;
-        this.tipoC = tipoC;
-        this.archivoA = archivoA;
-        this.archivoB = archivoB;
-        this.archivoC = archivoC;
+    public void actualizaArchivo (UUID id, String nombreA, String nombreB, String nombreC, String tipoA, String tipoB, String tipoC, byte[] archivoA, byte[] archivoB, byte[] archivoC) {
+            this.id = id;
+        if(nombreA != null)
+            this.nombreA = nombreA;
+        if(nombreB != null)
+            this.nombreB = nombreB;
+        if(nombreC != null)
+            this.nombreC = nombreC;
+        if(tipoA != null)
+            this.tipoA = tipoA;
+        if(tipoB != null)
+            this.tipoB = tipoB;
+        if(tipoC != null)
+            this.tipoC = tipoC;
+        if(archivoA != null)
+            this.archivoA = archivoA;
+        if(archivoB != null)
+            this.archivoB = archivoB;
+        if(archivoC != null)
+            this.archivoC = archivoC;
     }
 
     // Clase interna para la respuesta de error
