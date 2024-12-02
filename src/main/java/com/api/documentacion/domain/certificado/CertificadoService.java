@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.certificado;
 
+import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.certificado.dto.DatosActualizaCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosMuestraCertificado;
@@ -37,16 +38,13 @@ public class CertificadoService {
     CertificadoRepository certificadoRepository;
     @Autowired
     MovimientoService movimientoService;
-    @Autowired
-    ArchivoService archivoService;
-    @Autowired
-    MovimientoRepository movimientoRepository;
+
 
     //POST___________________________________________
 
     public DatosMuestraCertificado registrar(DatosRegistraCertificado datos) throws IOException {
         //crea el registro del archivo
-        var archivo = archivoService.registrar();
+        var archivo = new Archivo();
         var unidad = unidadRepository.getReferenceById(datos.unidad());
 
         //Trae lista de numeros de certificado segun unidad. elije el ultimo y lo aumenta en uno

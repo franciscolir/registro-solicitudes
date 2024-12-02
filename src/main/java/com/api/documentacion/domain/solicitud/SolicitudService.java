@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.solicitud;
 
+import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
@@ -33,14 +34,12 @@ public class SolicitudService {
     MovimientoService movimientoService;
     @Autowired
     MovimientoRepository movimientoRepository;
-    @Autowired
-    ArchivoService archivoService;
 
     //POST___________________________________________
         //registra solicitud
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) throws IOException {
 
-        var archivo = archivoService.registrar();
+        var archivo = new Archivo();
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
 

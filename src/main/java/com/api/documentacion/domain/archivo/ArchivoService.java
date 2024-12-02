@@ -3,7 +3,6 @@ package com.api.documentacion.domain.archivo;
 
 
 import com.api.documentacion.domain.archivo.dto.DatosActualizaArchivo;
-import com.api.documentacion.domain.archivo.dto.DatosRegistraArchivo;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.ArchivoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +17,6 @@ public class ArchivoService {
 @Autowired
     ArchivoRepository archivoRepository;
 
-    //POST___________________________________________
-
-    public Archivo registrar() throws IOException {
-
-        //var datos = new DatosRegistraArchivo(id);
-
-        Archivo archivoDB = new Archivo(
-
-                    //datos.id()
-            );
-
-        return archivoRepository.save(archivoDB);
-    }
 
     //GET___________________________________________
 

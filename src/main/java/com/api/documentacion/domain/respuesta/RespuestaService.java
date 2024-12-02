@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.respuesta;
 
+import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
@@ -32,8 +33,6 @@ public class RespuestaService {
     @Autowired
     RespuestaRepository respuestaRepository;
     @Autowired
-    ArchivoService archivoService;
-    @Autowired
     UsuarioService usuarioService;
     @Autowired
     MovimientoService movimientoService;
@@ -42,9 +41,8 @@ public class RespuestaService {
 
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) throws IOException {
 
-        var archivo = archivoService.registrar();
+        var archivo = new Archivo();
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
-
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
         //var fechaRespuesta = dateFormatter(datos.fechaRespuesta());
