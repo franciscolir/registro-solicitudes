@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Collections;
 
 @Controller
@@ -32,7 +33,8 @@ public class RespuestaController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> ingresarRespuestaUsuario(@RequestBody @Valid DatosRegistraRespuesta datos) {
-        var registroRespuesta = respuestaService.registrar(datos);
+        DatosMuestraRespuesta registroRespuesta = null;
+        registroRespuesta = respuestaService.registrar(datos);
         return ResponseEntity.ok(registroRespuesta);
         }
 

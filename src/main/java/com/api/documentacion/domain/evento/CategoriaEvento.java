@@ -4,15 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-@Entity(name = "Categoria")
-@Table(name = "categorias")
+@Entity(name = "CategoriaEvento")
+@Table(name = "categorias_evento")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
-public class Categoria {
+public class CategoriaEvento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

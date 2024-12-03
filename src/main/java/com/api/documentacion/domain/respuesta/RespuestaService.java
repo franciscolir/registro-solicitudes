@@ -39,7 +39,7 @@ public class RespuestaService {
 
     //POST___________________________________________
 
-    public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos) throws IOException {
+    public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos){
 
         var archivo = new Archivo();
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());

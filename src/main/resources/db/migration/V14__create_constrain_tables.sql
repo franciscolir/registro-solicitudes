@@ -4,19 +4,19 @@ USE documentacion;
 ALTER TABLE certificados
 ADD CONSTRAINT fk_certificados_unidad
 FOREIGN KEY (unidad_id) REFERENCES unidades(id),
-ADD CONSTRAINT fk_archivo
+ADD CONSTRAINT fk_archivo_certificado
 FOREIGN KEY (archivo_id) REFERENCES archivos(id);
 
 
 -- Constraint para la tabla emisores
 ALTER TABLE emisores
-ADD CONSTRAINT fk_emisores_establecimiento
-FOREIGN KEY (establecimiento_id) REFERENCES establecimientos(id);
+ADD CONSTRAINT FK_emisor_categoria
+    FOREIGN KEY (categoria_id) REFERENCES categorias_emisor(id);
 
 -- Constraint para la tabla eventos
 ALTER TABLE eventos
-ADD CONSTRAINT fk_eventos_establecimiento
-FOREIGN KEY (establecimiento_id) REFERENCES establecimientos(id);
+ADD CONSTRAINT fk_eventos_emisor
+FOREIGN KEY (emisor_id) REFERENCES emisores(id);
 
 -- Constraint para la tabla movimientos
 ALTER TABLE movimientos
@@ -33,14 +33,14 @@ FOREIGN KEY (respuesta_id) REFERENCES respuestas(id);
 ALTER TABLE respuestas
 ADD CONSTRAINT fk_respuestas_usuario
 FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-ADD CONSTRAINT fk_archivo
+ADD CONSTRAINT fk_archivo_respuesta
 FOREIGN KEY (archivo_id) REFERENCES archivos(id);
 
 -- Constraint para la tabla solicitudes
 ALTER TABLE solicitudes
 ADD CONSTRAINT fk_solicitudes_emisor
 FOREIGN KEY (emisor_id) REFERENCES emisores(id),
-ADD CONSTRAINT fk_archivo
+ADD CONSTRAINT fk_archivo_solicitud
 FOREIGN KEY (archivo_id) REFERENCES archivos(id);
 
 -- Constraint para la tabla usuarios
@@ -61,6 +61,5 @@ FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
 
 ALTER TABLE eventos
     ADD CONSTRAINT FK_evento_categoria
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id);
-
+    FOREIGN KEY (categoria_id) REFERENCES categorias_evento(id);
 

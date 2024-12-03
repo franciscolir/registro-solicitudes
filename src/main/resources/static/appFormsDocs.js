@@ -314,7 +314,7 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
 }
 
 document.body.addEventListener("click", async (event) => {
-    loadDataUltimaRespuesta3 ();
+    //loadDataUltimaRespuesta3 ();
   const target = await event.target.closest(
     "[data-unidad], [data-nombreUnidad], [data-movimiento], [data-ultimoNumeroRespuesta], [data-form]"
   );
@@ -340,7 +340,7 @@ document.body.addEventListener("click", async (event) => {
         break;
 
       case "abrirFormRespuesta":
-        
+        loadDataUltimaRespuesta3 ();
         crearFormulario("respuesta", null, null, movimiento, ultimoNumeroRespuesta3,null);
         break;
 
@@ -547,7 +547,7 @@ if (typeof response === 'object' && response !== null) {
       }
   }
   //agregar form de imagenes
-  content +=  ` <tr>
+ /* content +=  ` <tr>
                   <td>
                     <div class="container__uploadForm">
                       <h2>Guardar respaldo diguital</h2>
@@ -560,13 +560,21 @@ if (typeof response === 'object' && response !== null) {
                     </div>
                   </td>
                 </tr>
-                   `;
+                   `;*/
 
-  content += `<tr>
+  content += `
+                <tr>
                   <td>
-                  <button type="close" class="btn btn-secondary ms-auto" onclick= resetView(); loadData();>Cerrar</button>
+                    <h2>Guardar respaldo diguital</h2>
+                    <button type="" class="btn btn-primary ms-auto" onclick= enviarFormularioArchivo();>Subir Archivos</button>
                   </td>
                 </tr>
+                <tr>
+                  <td>
+                    <button type="close" class="btn btn-secondary ms-auto" onclick= resetView(); loadData();>Cerrar</button>
+                  </td>
+                </tr>
+                
                 `;
   // Cerrar la tabla
   content += '</tbody> </table>';
@@ -626,3 +634,89 @@ function resetView() {
 cerrarFormularioExistente()
 }
 
+async function enviarFormularioArchivo(uuidArchivo) {
+  // Crear el contenido que se agregará al div
+  const content = `
+      <h2>Formulario para enviar archivos</h2>
+      <form id="fileForm">
+          <label for="id">ID:</label>
+          <input type="text" id="id" name="id" required value="${uuidArchivo}"><br><br>
+
+          <label for="archivoA">Archivo A:</label>
+          <input type="file" id="archivoA" name="archivoA" required><br><br>
+
+          <label for="archivoB">Archivo B:</label>
+          <input type="file" id="archivoB" name="archivoB" ><br><br>
+
+          <label for="archivoC">Archivo C:</label>
+          <input type="file" id="archivoC" name="archivoC" ><br><br>
+
+          <button type="submit">Enviar</button>
+      </form>
+  `;
+
+  // Agregar el formulario al div de respuesta
+  const responseDiv = document.getElementById("responseDiv");
+  responseDiv.innerHTML = content;
+
+  // Crear un objeto para almacenar los datos del formulario
+  const form = document.getElementById('fileForm');
+
+  // Escuchar el evento submit del formulario
+  form.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
+
+      // Crear un objeto FormData con los datos del formulario
+      const formData = new FormData(form);
+
+      // Convertir FormData a un objeto JSON para el backend
+      const formJson = {};
+      formData.forEach((value, key) => {
+          formJson[key] = value;
+      });
+
+      // Elemento de alerta
+      const alertMessage = document.getElementById('mensaje');
+
+      try {
+          // Enviar los datos como JSON utilizando axios
+          const response = await axios.put('http://localhost:8080/archivos/update', formJson, {
+            headers: {
+              'Content-Type': 'multipart/form-data' // Indicamos que estamos enviando archivos
+          }
+          });
+
+          // Manejo de la respuesta exitosa
+          if (response.status === 200) {
+              alertMessage.className = 'alert alert-success';
+              alertMessage.textContent = 'Respuesta enviada exitosamente';
+              alertMessage.style.display = 'block';
+
+              // Agregar el contenido al div después de un pequeño retraso
+              setTimeout(() => {
+                  alertMessage.style.display = 'none';
+                  document.getElementById("tableSection").classList.add("d-none");
+                  responseDiv.innerHTML = content;  // Recargar el formulario
+              }, 1800);
+          } else {
+              console.error('Error:', response.status, response.statusText);
+          }
+      } catch (error) {
+          console.error("Error al enviar el formulario:", error);
+          let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
+
+          // Si el servidor responde con un error 400, mostrar el mensaje de error
+          if (error.response && error.response.status === 400 && error.response.data) {
+              errorMessage = `Error: ${error.response.data}`;
+          }
+
+          alertMessage.className = 'alert alert-danger';
+          alertMessage.textContent = errorMessage;
+          alertMessage.style.display = 'block';
+
+          setTimeout(() => {
+              alertMessage.style.display = 'none';
+          }, 3000);
+      }
+  });
+}

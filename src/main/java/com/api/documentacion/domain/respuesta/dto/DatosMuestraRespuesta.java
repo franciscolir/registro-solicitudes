@@ -26,7 +26,7 @@ public record DatosMuestraRespuesta(
                 respuesta.getTitulo(),
                 respuesta.getDescripcion(),
                 formatDate(respuesta.getFechaRespuesta()),
-                respuesta.getImagenId()
+                respuesta.getArchivo().getId()
                 //formatDateTime(respuesta.getFechaEnvio())
         );
     }

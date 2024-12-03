@@ -67,32 +67,35 @@ INSERT INTO certificados (numero_certificado, titulo, descripcion, fecha_certifi
 
 
 
-INSERT INTO establecimientos (nombre_solicitante, nombre_establecimiento, comentario) VALUES
-('Solicitante A', 'Establecimiento A', 'Comentario sobre Establecimiento A'),
-('Solicitante B', 'Establecimiento B', 'Comentario sobre Establecimiento B'),
-('Solicitante C', 'Establecimiento C', 'Comentario sobre Establecimiento C'),
-('Solicitante D', 'Establecimiento D', 'Comentario sobre Establecimiento D'),
-('Solicitante E', 'Establecimiento E', 'Comentario sobre Establecimiento E'),
-('Solicitante F', 'Establecimiento F', 'Comentario sobre Establecimiento F'),
-('Solicitante G', 'Establecimiento G', 'Comentario sobre Establecimiento G'),
-('Solicitante H', 'Establecimiento H', 'Comentario sobre Establecimiento H'),
-('Solicitante I', 'Establecimiento I', 'Comentario sobre Establecimiento I'),
-('Solicitante J', 'Establecimiento J', 'Comentario sobre Establecimiento J');
+INSERT INTO emisores (nombre_emisor, categoria_id, comentario) VALUES
+('Escuela A', 1, 'Escuela primaria en la zona urbana'),
+('Escuela B', 1, 'Escuela secundaria rural'),
+('Escuela C', 1, 'Escuela técnica especializada'),
+('Escuela D', 1, 'Escuela primaria bilingüe'),
+('Escuela E', 1, 'Escuela en zona periférica'),
+('Escuela F', 1, 'Escuela para niños con necesidades especiales'),
+('Escuela G', 1, 'Escuela internacional de idiomas'),
+('Escuela H', 1, 'Escuela de artes y ciencias'),
 
-INSERT INTO emisores (establecimiento_id, comentario) VALUES
-(1, 'Comentario emisor 1'),
-(2, 'Comentario emisor 2'),
-(3, 'Comentario emisor 3'),
-(4, 'Comentario emisor 4'),
-(5, 'Comentario emisor 5'),
-(6, 'Comentario emisor 6'),
-(7, 'Comentario emisor 7'),
-(8, 'Comentario emisor 8'),
-(9, 'Comentario emisor 9'),
-(10, 'Comentario emisor 10');
+('Departamento Municipal A', 3, 'Departamento encargado de la seguridad y orden público'),
+('Departamento Municipal B', 3, 'Departamento de desarrollo urbano'),
+('Departamento Municipal C', 3, 'Departamento de obras públicas y mantenimiento'),
+('Departamento Municipal D', 3, 'Departamento de recursos humanos municipales'),
+
+('Salacuna A', 2, 'Salacuna con enfoque en el desarrollo infantil temprano'),
+('Salacuna B', 2, 'Salacuna en zona rural'),
+('Salacuna C', 2, 'Salacuna con actividades creativas y pedagógicas'),
+
+('Institución Externa A', 5, 'Institución externa que proporciona formación profesional'),
+('Institución Externa B', 5, 'Asociación externa para el bienestar social'),
+('Institución Externa C', 5, 'Fundación internacional de ayuda humanitaria'),
+('Institución Externa D', 5, 'Centro educativo privado con enfoque empresarial'),
+
+('Persona Natural A', 4, 'Persona natural con actividad empresarial autónoma');
 
 
-INSERT INTO eventos (categoria_id, descripcion, fecha, establecimiento_id) VALUES
+
+INSERT INTO eventos (categoria_id, descripcion, fecha, emisor_id) VALUES
 (1, 'Reunión de planificación estratégica para el primer trimestre de 2024. Se discutirá la asignación de recursos y la asignación de proyectos.', '2024-01-10 10:00:00', 1),
 (2, 'Inauguración oficial de la nueva tienda en el centro comercial de la ciudad. Se ofrecerán descuentos especiales durante el evento.', '2024-02-12 14:00:00', 2),
 (3, 'Actividad de integración para el equipo de ventas. Juegos y dinámicas para mejorar la colaboración entre los miembros del equipo.', '2024-03-15 09:00:00', 3),
@@ -115,12 +118,8 @@ INSERT INTO eventos (categoria_id, descripcion, fecha, establecimiento_id) VALUE
 (5, 'Fiesta navideña de la empresa. Celebración de fin de año con un intercambio de regalos y reconocimientos a los empleados más destacados del año.', '2024-12-25 16:00:00', 10),
 (2, 'Inauguración del nuevo centro de atención al cliente. Se ofrecerán visitas guiadas y presentaciones sobre los servicios que ofrecerá el centro.', '2024-12-25 12:00:00', 2);
 
-INSERT INTO perfiles (rol) VALUES
-('ADMIN'),
-('ENCARGADO'),
-('USUARIO');
 
-
+'095653ed-1a4f-422a-a95e-ee36335265fd'
 
 INSERT INTO usuarios (nombre, correo_electronico, contraseña, comentario, perfil_id, activo, fecha_ingreso_sistema, unidad_id, subrogante, encargado) VALUES
 ('Carlos Martínez', 'carlos.martinez@dominio.com', 'contraseñaA', 'Usuario encargado de gestionar las solicitudes A', 1, TRUE, '2024-01-10 08:00:00', 1, FALSE, TRUE),
@@ -166,13 +165,7 @@ INSERT INTO solicitudes (numero_solicitud, providencia_id, emisor_id, titulo, de
 (10029, 29, 9, 'Solicitud de actualización de política interna', 'Solicito la actualización de las políticas internas para reflejar los cambios en la normativa laboral vigente desde principios de 2024.', '2024-09-08', TRUE),
 (10030, 30, 10, 'Solicitud de revisión de procesos de seguridad', 'Solicito una revisión detallada de los procesos de seguridad en el área de producción para garantizar que se cumplan los nuevos estándares de seguridad laboral.', '2024-12-25', TRUE);
 
-
-INSERT INTO categorias (activo) VALUES
-(TRUE),
-(TRUE),
-(TRUE),
-(TRUE),
-(TRUE);
+;
 
 INSERT INTO respuestas (numero_respuesta, usuario_id, titulo, descripcion, comentario, fecha_respuesta, fecha_envio, activo) VALUES
 (1001, 1, 'Respuesta Urgente A1', 'Respuesta urgente para el cliente A1', 'Comentario A1 - Mensaje interno: Enviar rápido para evitar retrasos.', '2024-01-10', '2024-01-12 08:00:00', TRUE),

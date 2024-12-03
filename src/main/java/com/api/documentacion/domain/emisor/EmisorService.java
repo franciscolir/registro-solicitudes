@@ -19,7 +19,7 @@ public class EmisorService {
     //obtiene lista de emisores
     public Page<DatosMuestraEmisor> listaDeEmisores(Pageable paginacion) {
 
-        return emisorRepository.findAllByOrderByEstablecimientoAsc(paginacion).map(DatosMuestraEmisor::new);
+        return emisorRepository.findAllByOrderByNombreEmisorAsc(paginacion).map(DatosMuestraEmisor::new);
     }
     //___________________________________________________
 }

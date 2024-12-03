@@ -1,6 +1,6 @@
 package com.api.documentacion.domain.evento;
 
-import com.api.documentacion.domain.emisor.Establecimiento;
+import com.api.documentacion.domain.emisor.Emisor;
 import com.api.documentacion.domain.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +24,7 @@ public class Evento {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
+    private CategoriaEvento categoriaEvento;
 
     private String descripcion;
 
@@ -32,8 +32,8 @@ public class Evento {
     private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "establecimiento_id")
-    private Establecimiento establecimiento;
+    @JoinColumn(name = "emisor_id")
+    private Emisor emisor;
 
     @ManyToMany
     @JoinTable(
@@ -43,12 +43,12 @@ public class Evento {
     )
     private Set<Usuario> invitados = new HashSet<>();
 
-    public Evento(Long id, Categoria categoria, String descripcion, LocalDateTime fecha, Establecimiento establecimiento) {
+    public Evento(Long id, CategoriaEvento categoriaEvento, String descripcion, LocalDateTime fecha, Emisor emisor) {
         this.id = id;
-        this.categoria = categoria;
+        this.categoriaEvento = categoriaEvento;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.establecimiento = establecimiento;
+        this.emisor = emisor;
     }
 
 
@@ -59,10 +59,10 @@ public class Evento {
     public String toString() {
         return "Evento{" +
                 "id=" + id +
-                ", categoria=" + categoria +
+                ", categoria=" + categoriaEvento +
                 ", descripcion='" + descripcion + '\'' +
                 ", fecha=" + fecha +
-                ", establecimiento=" + establecimiento +
+                ", establecimiento=" + emisor +
                 ", invitados=" + invitados +
                 '}';
     }

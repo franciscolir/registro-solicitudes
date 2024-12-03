@@ -18,9 +18,11 @@ public class Emisor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "establecimiento_id")
-    private Establecimiento establecimiento;
+    private String nombreEmisor;
+
+    @OneToOne
+    @JoinColumn(name = "categoria_id")
+    private CategoriaEmisor categoria;
 
     private String comentario;
 }

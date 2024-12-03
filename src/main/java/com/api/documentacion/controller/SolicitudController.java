@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @ResponseBody
 @RequestMapping("/solicitudes")
@@ -23,7 +25,12 @@ public class SolicitudController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> ingresarSolicitudUsuario(@RequestBody @Valid DatosRegistraSolicitud datos) {
-        var registroSolicitud = solicitudService.registrar(datos);
+        DatosMuestraSolicitud registroSolicitud = null;
+        try {
+            registroSolicitud = solicitudService.registrar(datos);
+        } catch (IOException e) {
+            throw new RuntimeException(e + "error al registrar solicitud");
+        }
 
         return ResponseEntity.ok(registroSolicitud);
     }

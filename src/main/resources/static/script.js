@@ -1,4 +1,4 @@
-document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+/*document.getElementById('uploadForm').addEventListener('submit', async function(event) {
     event.preventDefault();
   
     const files = document.getElementById('filesInput').files;
@@ -43,4 +43,37 @@ document.getElementById('uploadForm').addEventListener('submit', async function(
       document.getElementById('message').textContent = 'Error al conectar con el servidor.';
     }
   });
-  
+  */
+  document.getElementById('fileForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Evitar que el formulario se envíe de manera tradicional
+
+    // Crear un objeto FormData
+    const formData = new FormData();
+
+    // Obtener los valores de los inputs
+    const id = document.getElementById('id').value;
+    const archivoA = document.getElementById('archivoA').files[0];  // Obtener el primer archivo
+    const archivoB = document.getElementById('archivoB').files[0];  // Obtener el segundo archivo
+    const archivoC = document.getElementById('archivoC').files[0];  // Obtener el tercer archivo
+
+    // Agregar los archivos y el id al objeto FormData
+    formData.append('id', id);
+    formData.append('archivoA', archivoA);
+    formData.append('archivoB', archivoB);
+    formData.append('archivoC', archivoC);
+
+    // Enviar la solicitud con Axios
+    axios.post('/ruta/del/servidor', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+    .then(response => {
+        console.log('Respuesta del servidor:', response.data);
+        alert('Archivos enviados correctamente');
+    })
+    .catch(error => {
+        console.error('Error al enviar los archivos:', error);
+        alert('Ocurrió un error al enviar los archivos');
+    });
+});

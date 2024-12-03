@@ -26,7 +26,7 @@ public record DatosMuestraCertificado(
                 certificado.getTitulo(),
                 certificado.getDescripcion(),
                 formatDate(certificado.getFechaCertificado()),
-                certificado.getImagenId()
+                certificado.getArchivo().getId()
         );
     }
 

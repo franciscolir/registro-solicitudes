@@ -3,7 +3,7 @@ package com.api.documentacion.domain.evento;
 import com.api.documentacion.domain.evento.dto.DatosMuestraEventos;
 import com.api.documentacion.domain.evento.dto.DatosRegistraEvento;
 import com.api.documentacion.repository.CategoriaRepository;
-import com.api.documentacion.repository.EstablecimientoRepository;
+import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.domain.usuario.Usuario;
 import com.api.documentacion.repository.EventoRepository;
 import com.api.documentacion.repository.UsuarioRepository;
@@ -20,7 +20,7 @@ public class EventoService {
     @Autowired
     EventoRepository eventoRepository;
     @Autowired
-    EstablecimientoRepository establecimientoRepository;
+    EmisorRepository emisorRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
@@ -35,7 +35,7 @@ public class EventoService {
 
         var categoria = categoriaRepository.getReferenceById(datos.categoria());
         var fecha = dateTimeFormatter(datos.fecha());
-        var establecimiento =   establecimientoRepository.getReferenceById(datos.establecimiento());
+        var establecimiento =   emisorRepository.getReferenceById(datos.establecimiento());
 
         // Guardar el evento
         var evento = new Evento(

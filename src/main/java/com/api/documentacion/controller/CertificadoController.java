@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @ResponseBody
 @RequestMapping("/certificados")
@@ -27,7 +29,12 @@ public class CertificadoController {
     @PostMapping
     @Transactional
     public ResponseEntity<?> ingresarCertificadoUsuario(@RequestBody @Valid DatosRegistraCertificado datos) {
-        var registroCertificado = certificadoService.registrar(datos);
+        DatosMuestraCertificado registroCertificado = null;
+        try {
+            registroCertificado = certificadoService.registrar(datos);
+        } catch (IOException e) {
+            throw new RuntimeException(e + " error al registar certificado");
+        }
         return ResponseEntity.ok(registroCertificado);
         }
 

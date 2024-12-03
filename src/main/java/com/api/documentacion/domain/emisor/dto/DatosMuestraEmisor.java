@@ -12,7 +12,7 @@ public record DatosMuestraEmisor(
     public DatosMuestraEmisor(Emisor emisor) {
 
         this(emisor.getId(),
-                emisor.getEstablecimiento().getNombreEstablecimiento(),
+                emisor.getNombreEmisor(),
                 emisor.getComentario());
     }
 

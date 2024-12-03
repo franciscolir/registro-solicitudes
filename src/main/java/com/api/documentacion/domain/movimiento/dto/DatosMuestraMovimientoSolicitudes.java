@@ -27,7 +27,7 @@ public record DatosMuestraMovimientoSolicitudes(
                 movimiento.getId(),
                 movimiento.getSolicitud().getNumeroSolicitud(),
                 movimiento.getRespuesta() != null ? movimiento.getRespuesta().getNumeroRespuesta() : null,
-                movimiento.getSolicitud().getEmisor().getEstablecimiento().getNombreEstablecimiento(),
+                movimiento.getSolicitud().getEmisor().getNombreEmisor(),
                 movimiento.getSolicitud().getTitulo(),
                 movimiento.getSolicitud().getDescripcion(),
                 formatDate(movimiento.getSolicitud().getFechaSolicitud()),

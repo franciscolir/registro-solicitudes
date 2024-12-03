@@ -24,7 +24,7 @@ public record DatosMuestraSolicitudConMovimiento(
         this(
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
-                solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
+                solicitud.getEmisor().getNombreEmisor(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
                 formatDate(solicitud.getFechaSolicitud()),

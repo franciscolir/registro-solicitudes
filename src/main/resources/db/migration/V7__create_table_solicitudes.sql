@@ -9,5 +9,5 @@ CREATE TABLE solicitudes (
     descripcion TEXT,
     fecha_solicitud DATE,
     activo BOOLEAN,
-    archivo_id UUID
+    archivo_id VARCHAR(40)
 );

@@ -48,7 +48,7 @@ public record DatosMuestraMovimiento (
                 movimiento.getComentarioAsignacion() != null ? movimiento.getComentarioAsignacion() : null,
                 movimiento.getComentarioResuelto() != null ? movimiento.getComentarioResuelto() : null,
                 movimiento.getEstado() != null ? movimiento.getEstado().toString() : null,
-                movimiento.getSolicitud() != null ? movimiento.getSolicitud().getEmisor().getEstablecimiento().getNombreEstablecimiento() : null,
+                movimiento.getSolicitud() != null ? movimiento.getSolicitud().getEmisor().getNombreEmisor() : null,
                 movimiento.getSolicitud() != null ? movimiento.getSolicitud().getTitulo() : null,
                 formatDate(Objects.requireNonNull(movimiento.getSolicitud()).getFechaSolicitud()),
                 movimiento.getAsignado(),

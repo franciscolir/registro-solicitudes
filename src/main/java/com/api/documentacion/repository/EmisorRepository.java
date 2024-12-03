@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmisorRepository extends JpaRepository<Emisor,Long> {
 
-    Page<Emisor> findAllByOrderByEstablecimientoAsc(Pageable paginacion);
+    Page<Emisor> findAllByOrderByNombreEmisorAsc(Pageable paginacion);
 }

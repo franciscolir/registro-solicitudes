@@ -1,13 +1,13 @@
 package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.archivo.Archivo;
-import com.api.documentacion.domain.archivo.ArchivoService;
+
 import com.api.documentacion.domain.movimiento.MovimientoService;
-import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
-import com.api.documentacion.domain.movimiento.dto.DatosRegistraMovimiento;
+
 import com.api.documentacion.domain.solicitud.dto.*;
-import com.api.documentacion.domain.emisor.Estado;
+
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
+import com.api.documentacion.repository.ArchivoRepository;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.SolicitudRepository;
@@ -34,12 +34,15 @@ public class SolicitudService {
     MovimientoService movimientoService;
     @Autowired
     MovimientoRepository movimientoRepository;
+    @Autowired
+    ArchivoRepository archivoRepository;
 
     //POST___________________________________________
         //registra solicitud
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) throws IOException {
 
         var archivo = new Archivo();
+        archivoRepository.save(archivo);
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
 
@@ -79,7 +82,7 @@ public class SolicitudService {
 
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
-                solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
+                solicitud.getEmisor().getNombreEmisor(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
                 fechaSolicitud,

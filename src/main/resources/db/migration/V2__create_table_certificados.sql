@@ -8,5 +8,5 @@ CREATE TABLE certificados (
     fecha_certificado DATE,
     activo BOOLEAN,
     unidad_id BIGINT,
-    archivo_id UUID
+    archivo_id VARCHAR(40)
 );

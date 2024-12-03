@@ -1,7 +1,7 @@
 package com.api.documentacion.domain.evento.dto;
 
 
-import com.api.documentacion.domain.evento.Categoria;
+import com.api.documentacion.domain.evento.CategoriaEvento;
 
 
 public record DatosMuestraCategoria (
@@ -10,10 +10,10 @@ public record DatosMuestraCategoria (
         String categoria
 ){
 
-    public DatosMuestraCategoria(Categoria categoria) {
+    public DatosMuestraCategoria(CategoriaEvento categoriaEvento) {
         this(
-                categoria.getId(),
-                categoria.getTipo().toString());
+                categoriaEvento.getId(),
+                categoriaEvento.getTipo().toString());
              }
 
 

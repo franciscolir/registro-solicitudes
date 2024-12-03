@@ -5,5 +5,5 @@ CREATE TABLE eventos (
     categoria_id BIGINT,
     descripcion TEXT,
     fecha TIMESTAMP,
-    establecimiento_id BIGINT
+    emisor_id BIGINT
 );

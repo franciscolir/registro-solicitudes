@@ -23,11 +23,11 @@ public record DatosMuestraSolicitud(
         this(
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
-                solicitud.getEmisor().getEstablecimiento().getNombreEstablecimiento(),
+                solicitud.getEmisor().getNombreEmisor(),
                 solicitud.getTitulo(),
                 solicitud.getDescripcion(),
                 formatDate2(solicitud.getFechaSolicitud()),
-                solicitud.getImagenId()
+                solicitud.getArchivo().getId()
         );
     }
 

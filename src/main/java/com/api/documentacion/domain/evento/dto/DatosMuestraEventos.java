@@ -20,9 +20,9 @@ public record DatosMuestraEventos(Long id,
     public DatosMuestraEventos (Evento evento){
 
          this(evento.getId(),
-                 evento.getCategoria().getTipo().toString(),
+                 evento.getCategoriaEvento().getTipo().toString(),
                  formatDate(evento.getFecha()),
-                 evento.getEstablecimiento().getNombreEstablecimiento(),
+                 evento.getEmisor().getNombreEmisor(),
                  evento.getDescripcion(),
                  evento.getInvitados().stream().map(Usuario::getNombre).toList().toString()
                  );

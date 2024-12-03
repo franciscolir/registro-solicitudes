@@ -10,5 +10,5 @@ CREATE TABLE respuestas (
     fecha_respuesta DATE,
     fecha_envio TIMESTAMP,
     activo BOOLEAN,
-    archivo_id UUID
+    archivo_id VARCHAR(40)
 );

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ArchivoService {
@@ -20,18 +19,18 @@ public class ArchivoService {
 
     //GET___________________________________________
 
-    public Archivo obtener(UUID id) {
+    public Archivo obtener(String id) {
 
         // Buscar el archivo en la base de datos
-        Optional<Archivo> archivoOpt = archivoRepository.findById(id);
+
 
         // Si el archivo no existe
-        if (archivoOpt.isEmpty()) {
+        if (archivoRepository.existsById(id)) {
             throw new ValidacionDeIntegridad("el archivo no existe");
         }
-
+        var archivo = archivoRepository.getReferenceById(id);
         // Obtener el archivo de la base de datos
-        Archivo archivo = archivoOpt.get();
+        //Archivo archivo = archivoOpt.get();
 
         // Filtrar los atributos nulos
         Archivo archivoFiltrado = new Archivo();
@@ -54,23 +53,27 @@ public class ArchivoService {
 
     //___________________________________________________
 
-    public void actualizar (DatosActualizaArchivo datos) throws IOException {
+    public void actualizar (DatosActualizaArchivo datos) {
 
         var archivo = archivoRepository.getReferenceById(datos.id());
 
-         archivo.actualizaArchivo(
-                datos.id(),
-                datos.archivoA().getOriginalFilename(),
-                datos.archivoB().getOriginalFilename(),
-                datos.archivoC().getOriginalFilename(),
-                datos.archivoA().getContentType(),
-                datos.archivoB().getContentType(),
-                datos.archivoC().getContentType(),
-                datos.archivoA().getBytes(),
-                datos.archivoB().getBytes(),
-                datos.archivoC().getBytes()
-        );
-         var archivoActualizado = archivoRepository.getReferenceById(datos.id());
+        try {
+            archivo.actualizaArchivo(
+                   datos.id(),
+                   datos.archivoA().getOriginalFilename(),
+                   datos.archivoB().getOriginalFilename(),
+                   datos.archivoC().getOriginalFilename(),
+                   datos.archivoA().getContentType(),
+                   datos.archivoB().getContentType(),
+                   datos.archivoC().getContentType(),
+                   datos.archivoA().getBytes(),
+                   datos.archivoB().getBytes(),
+                   datos.archivoC().getBytes()
+           );
+        } catch (IOException e) {
+            throw new RuntimeException(e + "error al actualizar archivo" );
+        }
+        var archivoActualizado = archivoRepository.getReferenceById(datos.id());
         archivoRepository.save(archivoActualizado);
     }
 }
