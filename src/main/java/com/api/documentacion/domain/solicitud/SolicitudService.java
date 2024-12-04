@@ -53,8 +53,7 @@ public class SolicitudService {
                 datos.titulo(),
                 datos.descripcion(),
                 fechaSolicitud,
-                true,
-                archivo
+                true
         );
         solicitudRepository.save(solicitud);
 

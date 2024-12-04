@@ -41,11 +41,10 @@ public class Solicitud {
     @OneToOne(mappedBy = "solicitud")
     private Movimiento movimiento;  // Relación inversa
 
-    @OneToOne
-    @JoinColumn(name = "archivo_id") // Columna que establece la relación con Archivo
-    private Archivo archivo;
+    @OneToMany(mappedBy = "solicitud")
+    private List<Archivo> archivo;
 
-    public Solicitud(Long id, Long numeroSolicitud, Long providenciaId, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, Boolean activo, Archivo archivo) {
+    public Solicitud(Long id, Long numeroSolicitud, Long providenciaId, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, Boolean activo) {
         this.id = id;
         this.numeroSolicitud = numeroSolicitud;
         this.providenciaId = providenciaId;
@@ -54,7 +53,6 @@ public class Solicitud {
         this.descripcion = descripcion;
         this.fechaSolicitud = fechaSolicitud;
         this.activo = activo;
-        this.archivo = archivo;
     }
 
     public void actualizaSolicitud (Long id, Long numeroSolicitud, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud){

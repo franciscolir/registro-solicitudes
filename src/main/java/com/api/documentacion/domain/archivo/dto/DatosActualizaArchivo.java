@@ -7,11 +7,6 @@ import java.util.UUID;
 
 public record DatosActualizaArchivo(
 
-        @NotNull
-        String id,
-        @NotNull(message = "debe enviar almenos uma imagen")
-        MultipartFile archivoA,
-        MultipartFile archivoB,
-        MultipartFile archivoC
+
 ) {
 }

@@ -60,8 +60,7 @@ public class CertificadoService {
                 datos.descripcion(),
                 fechaCertificado,
                 true,
-                unidad,
-                archivo
+                unidad
         );
 
         certificadoRepository.save(certificado);

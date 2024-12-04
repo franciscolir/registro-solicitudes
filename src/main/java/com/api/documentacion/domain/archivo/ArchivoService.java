@@ -3,12 +3,24 @@ package com.api.documentacion.domain.archivo;
 
 
 import com.api.documentacion.domain.archivo.dto.DatosActualizaArchivo;
+import com.api.documentacion.domain.archivo.dto.DatosRegistraArchivo;
+import com.api.documentacion.domain.certificado.Certificado;
+import com.api.documentacion.domain.respuesta.Respuesta;
+import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.ArchivoRepository;
+import com.api.documentacion.repository.CertificadoRepository;
+import com.api.documentacion.repository.RespuestaRepository;
+import com.api.documentacion.repository.SolicitudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ArchivoService {
@@ -16,64 +28,78 @@ public class ArchivoService {
 @Autowired
     ArchivoRepository archivoRepository;
 
+        @Autowired
+    SolicitudRepository solicitudRepository;
 
-    //GET___________________________________________
+        @Autowired
+    CertificadoRepository certificadoRepository;
 
-    public Archivo obtener(String id) {
+        @Autowired
+    RespuestaRepository respuestaRepository;
 
-        // Buscar el archivo en la base de datos
+        private static final String DIRECTORIO_ALMACENAMIENTO = "imagenes/";
 
 
-        // Si el archivo no existe
-        if (archivoRepository.existsById(id)) {
-            throw new ValidacionDeIntegridad("el archivo no existe");
+        public Archivo almacenarImagen(MultipartFile archivoFile, DatosRegistraArchivo datos) throws IOException {
+            // Generar un identificador único para el archivoFile
+            String nombreArchivo = UUID.randomUUID().toString() + "-" + archivoFile.getOriginalFilename();
+
+            // Crear el directorio si no existe
+            File directorio = new File(DIRECTORIO_ALMACENAMIENTO);
+            if (!directorio.exists()) {
+                directorio.mkdir();
+            }
+
+            // Guardar el archivoFile en el directorio local
+            File archivoLocal = new File(directorio, nombreArchivo);
+            archivoFile.transferTo(archivoLocal);
+
+            // Crear la entidad Archivo
+            Archivo archivo = new Archivo();
+            archivo.setNombre(nombreArchivo);
+            archivo.setRuta(archivoLocal.getAbsolutePath());
+
+            // Asociar la archivo con la clase correspondiente según el DTO
+            switch (datos.claseTipo()) {
+                case "Solicitud":
+                    Solicitud solicitud = solicitudRepository.findById(datos.claseId())
+                            .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+                    archivo.setSolicitud(solicitud);
+                    break;
+                case "Certificado":
+                    Certificado certificado = certificadoRepository.findById(datos.claseId())
+                            .orElseThrow(() -> new RuntimeException("Certificado no encontrada"));
+                    archivo.setCertificado(certificado);
+                    break;
+                case "Respuesta":
+                    Respuesta respuesta = respuestaRepository.findById(datos.claseId())
+                            .orElseThrow(() -> new RuntimeException("Respuesta no encontrada"));
+                    archivo.setRespuesta(respuesta);
+                    break;
+                default:
+                    throw new RuntimeException("Tipo de clase no válido");
+            }
+
+            // Guardar la archivo en la base de datos
+            return archivoRepository.save(archivo);
         }
-        var archivo = archivoRepository.getReferenceById(id);
-        // Obtener el archivo de la base de datos
-        //Archivo archivo = archivoOpt.get();
-
-        // Filtrar los atributos nulos
-        Archivo archivoFiltrado = new Archivo();
-
-        if (archivo.getNombreA() != null) archivoFiltrado.setNombreA(archivo.getNombreA());
-        if (archivo.getNombreB() != null) archivoFiltrado.setNombreB(archivo.getNombreB());
-        if (archivo.getNombreC() != null) archivoFiltrado.setNombreC(archivo.getNombreC());
-
-        if (archivo.getTipoA() != null) archivoFiltrado.setTipoA(archivo.getTipoA());
-        if (archivo.getTipoB() != null) archivoFiltrado.setTipoB(archivo.getTipoB());
-        if (archivo.getTipoC() != null) archivoFiltrado.setTipoC(archivo.getTipoC());
-
-        if (archivo.getArchivoA() != null) archivoFiltrado.setArchivoA(archivo.getArchivoA());
-        if (archivo.getArchivoB() != null) archivoFiltrado.setArchivoB(archivo.getArchivoB());
-        if (archivo.getArchivoC() != null) archivoFiltrado.setArchivoC(archivo.getArchivoC());
 
 
-        return (archivoFiltrado);
-    }
-
-    //___________________________________________________
-
-    public void actualizar (DatosActualizaArchivo datos) {
-
-        var archivo = archivoRepository.getReferenceById(datos.id());
-
-        try {
-            archivo.actualizaArchivo(
-                   datos.id(),
-                   datos.archivoA().getOriginalFilename(),
-                   datos.archivoB().getOriginalFilename(),
-                   datos.archivoC().getOriginalFilename(),
-                   datos.archivoA().getContentType(),
-                   datos.archivoB().getContentType(),
-                   datos.archivoC().getContentType(),
-                   datos.archivoA().getBytes(),
-                   datos.archivoB().getBytes(),
-                   datos.archivoC().getBytes()
-           );
-        } catch (IOException e) {
-            throw new RuntimeException(e + "error al actualizar archivo" );
+    public List<Archivo> obtenerImagenesPorClaseX(Long solicitudId) {
+            Solicitud solicitud = solicitudRepository.findById(solicitudId)
+                    .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+            return solicitud.getArchivo();
         }
-        var archivoActualizado = archivoRepository.getReferenceById(datos.id());
-        archivoRepository.save(archivoActualizado);
+
+        public List<Archivo> obtenerImagenesPorCertificado(Long certificadoId) {
+            Certificado certificado = certificadoRepository.findById(certificadoId)
+                    .orElseThrow(() -> new RuntimeException("Certificado no encontrada"));
+            return certificado.getArchivo();
+        }
+
+        public List<Archivo> obtenerImagenesPorRespuesta(Long respuestaId) {
+            Respuesta respuesta = respuestaRepository.findById(respuestaId)
+                    .orElseThrow(() -> new RuntimeException("Respuesta no encontrada"));
+            return respuesta.getArchivo();
+        }
     }
-}

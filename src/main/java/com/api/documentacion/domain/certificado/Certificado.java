@@ -39,12 +39,11 @@ public class Certificado {
     @OneToOne(mappedBy = "certificado")
     private Movimiento movimiento;  // Relación inversa
 
-    @OneToOne
-    @JoinColumn(name = "archivo_id") // Columna que establece la relación con Archivo
-    private Archivo archivo;
+    @OneToMany(mappedBy = "certificado")
+    private List<Archivo> archivo;
 
 
-    public Certificado(Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado, Boolean activo, Unidad unidad, Archivo archivo) {
+    public Certificado(Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado, Boolean activo, Unidad unidad) {
         this.id = id;
         this.numeroCertificado = numeroCertificado;
         this.titulo = titulo;
@@ -52,7 +51,6 @@ public class Certificado {
         this.fechaCertificado = fechaCertificado;
         this.activo = activo;
         this.unidad = unidad;
-        this.archivo = archivo;
     }
 
     public void actualizaCertificado (Long id, Long numeroCertificado, String titulo, String descripcion, LocalDate fechaCertificado){

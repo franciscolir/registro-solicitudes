@@ -56,8 +56,7 @@ public class RespuestaService {
                 datos.comentario(),
                 fechaRespuesta,
                 fechaEnvioRespuesta,
-                true,
-                archivo
+                true
         );
         respuestaRepository.save(respuesta);
 
