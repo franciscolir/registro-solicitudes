@@ -3,6 +3,8 @@ package com.api.documentacion.domain.solicitud;
 import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.emisor.Emisor;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Solicitud {
 
     @Id

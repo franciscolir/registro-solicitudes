@@ -4,6 +4,8 @@ import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.unidad.Unidad;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Movimiento {
 
     @Id

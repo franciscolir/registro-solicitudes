@@ -8,6 +8,5 @@ CREATE TABLE solicitudes (
     titulo VARCHAR(255),
     descripcion TEXT,
     fecha_solicitud DATE,
-    activo BOOLEAN,
-    archivo_id VARCHAR(40)
+    activo BOOLEAN
 );

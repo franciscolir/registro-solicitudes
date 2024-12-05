@@ -3,6 +3,8 @@ package com.api.documentacion.domain.certificado;
 import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.unidad.Unidad;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Certificado {
 
     @Id
@@ -37,7 +41,7 @@ public class Certificado {
     private Unidad unidad;
 
     @OneToOne(mappedBy = "certificado")
-    private Movimiento movimiento;  // Relación inversa
+    private Movimiento movimiento;
 
     @OneToMany(mappedBy = "certificado")
     private List<Archivo> archivo;

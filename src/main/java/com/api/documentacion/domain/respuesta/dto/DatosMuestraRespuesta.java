@@ -13,8 +13,8 @@ public record DatosMuestraRespuesta(
         String usuario,
         String titulo,
         String descripcion,
-        String fechaRespuesta,
-        String imagen
+        String fechaRespuesta
+        //, String imagen
         //String fechaEnvio
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -25,8 +25,8 @@ public record DatosMuestraRespuesta(
                 respuesta.getUsuario().getNombre(),
                 respuesta.getTitulo(),
                 respuesta.getDescripcion(),
-                formatDate(respuesta.getFechaRespuesta()),
-                respuesta.getArchivo().getId()
+                formatDate(respuesta.getFechaRespuesta())
+                //, respuesta.getArchivo().getId()
                 //formatDateTime(respuesta.getFechaEnvio())
         );
     }

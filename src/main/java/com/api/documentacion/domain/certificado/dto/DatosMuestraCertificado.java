@@ -14,8 +14,8 @@ public record DatosMuestraCertificado(
         String unidad,
         String titulo,
         String descripcion,
-        String fechaCertificado,
-        String imagen
+        String fechaCertificado//,
+        //String imagen
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -25,8 +25,8 @@ public record DatosMuestraCertificado(
                 certificado.getUnidad().getNombreUnidad(),
                 certificado.getTitulo(),
                 certificado.getDescripcion(),
-                formatDate(certificado.getFechaCertificado()),
-                certificado.getArchivo().getId()
+                formatDate(certificado.getFechaCertificado())//,
+                //certificado.getArchivo().stream().map(a)
         );
     }
 

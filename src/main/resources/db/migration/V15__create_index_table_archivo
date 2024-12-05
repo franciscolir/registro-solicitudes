@@ -1,0 +1,8 @@
+ -- Crear índice para la columna 'solicitud_id' de la tabla Imagen
+CREATE INDEX idx_solicitud_id ON Archivos(solicitud_id);
+
+-- Crear índice para la columna 'certificado_id' de la tabla Archivos
+CREATE INDEX idx_certificado_id ON Archivos(certificado_id);
+
+-- Crear índice para la columna 'respuesta_id' de la tabla Archivos
+CREATE INDEX idx_respuesta_id ON Archivos(respuesta_id);

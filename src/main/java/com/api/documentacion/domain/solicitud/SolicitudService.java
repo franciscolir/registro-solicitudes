@@ -41,8 +41,8 @@ public class SolicitudService {
         //registra solicitud
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) throws IOException {
 
-        var archivo = new Archivo();
-        archivoRepository.save(archivo);
+        //var archivo = new Archivo();
+        //archivoRepository.save(archivo);
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
 

@@ -1,5 +1,6 @@
 let ultimoNumeroRespuesta3;
-
+let documentoTipo;
+let documentoId;
 
 function getFormConfig(formType) {
 
@@ -444,6 +445,11 @@ async function enviarFormulario2(form, endpoint) {
     formJson[key] = value;
   });
 
+ 
+    documentoTipo = endpoint;  // Almacenar el value de "id"
+    console.log("tipo capturado:", documentoTipo);  // Opcional, solo para depuración
+  
+
   // Verificar si el campo de invitados es múltiple
   const invitadosField = form.querySelector('select[name="invitados"]');
   if (invitadosField) {
@@ -528,6 +534,12 @@ if (typeof response === 'object' && response !== null) {
               value = value.replace(/\[|\]/g, '');  // Eliminar los corchetes
           }
           
+          // Almacenar el valor de "id" en la variable documentoId
+      // Almacenar el valor de "id" en la variable documentoId
+      if (key === "id") {
+        documentoId = value;  // Almacenar el value de "id"
+        console.log("ID capturado:", documentoId);  // Opcional, solo para depuración
+      }
           // Añadir una fila por cada clave-valor
           // formatea campo invitado y elimina valor de id
           content += `
@@ -634,22 +646,20 @@ function resetView() {
 cerrarFormularioExistente()
 }
 
-async function enviarFormularioArchivo(uuidArchivo) {
+async function enviarFormularioArchivo(id, tipo) {
   // Crear el contenido que se agregará al div
   const content = `
       <h2>Formulario para enviar archivos</h2>
       <form id="fileForm">
-          <label for="id">ID:</label>
-          <input type="text" id="id" name="id" required value="${uuidArchivo}"><br><br>
-
+          <!-- Solo un archivo visible a la vez -->
           <label for="archivoA">Archivo A:</label>
-          <input type="file" id="archivoA" name="archivoA" required><br><br>
+          <input type="file" id="archivoA" name="archivoA"><br><br>
 
-          <label for="archivoB">Archivo B:</label>
-          <input type="file" id="archivoB" name="archivoB" ><br><br>
+          <label for="archivoB" style="display:none;">Archivo B:</label>
+          <input type="file" id="archivoB" name="archivoB"><br><br>
 
-          <label for="archivoC">Archivo C:</label>
-          <input type="file" id="archivoC" name="archivoC" ><br><br>
+          <label for="archivoC" style="display:none;">Archivo C:</label>
+          <input type="file" id="archivoC" name="archivoC"><br><br>
 
           <button type="submit">Enviar</button>
       </form>
@@ -662,6 +672,10 @@ async function enviarFormularioArchivo(uuidArchivo) {
   // Crear un objeto para almacenar los datos del formulario
   const form = document.getElementById('fileForm');
 
+  // Mostrar solo el primer archivo (puedes cambiar esto dinámicamente según la lógica que desees)
+  document.getElementById("archivoA").style.display = 'block';
+  // Si deseas cambiar el archivo visible, podrías agregar lógica adicional aquí
+
   // Escuchar el evento submit del formulario
   form.addEventListener('submit', async function(event) {
       event.preventDefault(); // Evitar que el formulario se envíe de forma tradicional
@@ -669,21 +683,43 @@ async function enviarFormularioArchivo(uuidArchivo) {
       // Crear un objeto FormData con los datos del formulario
       const formData = new FormData(form);
 
-      // Convertir FormData a un objeto JSON para el backend
-      const formJson = {};
-      formData.forEach((value, key) => {
-          formJson[key] = value;
-      });
+      // Agregar los parámetros id y tipo directamente a FormData
+      id = documentoId
+      console.log(id + ": id " + tipo)
+      formData.append("id", documentoId);
+      tipo = documentoTipo
+      switch (tipo) {
 
+        case "certificados":
+            formData.append("tipo", "certificado");
+            console.log("tipo " + tipo);
+          break;
+
+          case "solicitudes":
+            formData.append("tipo", "solicitud");
+            console.log("tipo " + tipo);
+          break;
+
+          case "respuestas":
+            formData.append("tipo", "respuesta");
+            console.log("tipo " + tipo);
+          break;
+      
+        default:
+          break;
+      }
+      
+
+      console.log(formData + " fromData")
       // Elemento de alerta
       const alertMessage = document.getElementById('mensaje');
 
       try {
-          // Enviar los datos como JSON utilizando axios
-          const response = await axios.put('http://localhost:8080/archivos/update', formJson, {
-            headers: {
-              'Content-Type': 'multipart/form-data' // Indicamos que estamos enviando archivos
-          }
+          // Enviar los datos como FormData utilizando axios
+          const response = await axios.post('http://localhost:8080/archivos/upload', formData, {
+              headers: {
+                  'Content-Type': 'multipart/form-data' // Indicamos que estamos enviando archivos
+              }
           });
 
           // Manejo de la respuesta exitosa

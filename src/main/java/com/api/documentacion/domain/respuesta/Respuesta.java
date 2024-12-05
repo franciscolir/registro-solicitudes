@@ -4,6 +4,8 @@ import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
