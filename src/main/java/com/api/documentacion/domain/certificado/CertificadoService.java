@@ -50,7 +50,13 @@ public class CertificadoService {
         //Trae lista de numeros de certificado segun unidad. elije el ultimo y lo aumenta en uno
         Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Order.desc("numeroCertificado")));
         List<Long> certificados = certificadoRepository.findLastCertificadoByUnidad(unidad, pageable);
-        var lastCertificado = certificados.isEmpty() ? null : certificados.get(0)+1;
+
+        // Si la lista está vacía, asigna 1. Si no lo está, verifica que el primer elemento no sea null.
+        long lastCertificado = 1L;  // Valor por defecto
+        if (!certificados.isEmpty() && certificados.get(0) != null) {
+            lastCertificado = certificados.get(0) + 1;
+        }
+        //var lastCertificado = certificados.isEmpty() ? 1L : certificados.get(0)+1;
 
 
         var fechaCertificado = LocalDate.now();

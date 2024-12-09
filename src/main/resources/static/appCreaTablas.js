@@ -255,7 +255,7 @@ function getTableConfig(type) {
 
         case "certificados":
             config.apiUrl = `${baseUrl}certificados${paginacionUrl}&sort=fechaCertificado,desc`;
-            config.headers = ["Numero", "Unidad", "Titulo", "Descripcion", "Fecha"];
+            config.headers = ["Numero", "Unidad", "Titulo", "Descripcion", "Fecha", "Archivos"];
             config.title = "Certificados";
             config.formatRow = (registro) => `
                 <td>${registro.numeroCertificado}</td>
@@ -263,6 +263,11 @@ function getTableConfig(type) {
                 <td>${registro.titulo}</td>
                 <td>${registro.descripcion}</td>
                 <td>${registro.fechaCertificado}</td>
+                <td>
+                    <button id="archivoCertificado" class="btn btn-link" type="button" onclick="obtenerImagenes('certificado', ${registro.id});">ver imagenes</button>
+                </td>
+
+
             `;
             config.buttonHtml =/* `
             <button id="ingresarCertificadoBtn" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="loadUnidades();"> Ingresar Certificado </button>
@@ -640,3 +645,106 @@ const loadUnidades = async () => {
 
 // Inicializa la tabla al cargar la página
 resetView();
+
+
+
+
+document.getElementById('fileForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar el envío tradicional del formulario
+
+    // Obtener el archivo seleccionado
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    // Verificar si se ha seleccionado un archivo
+    if (file) {
+        handleFile(file);
+    } else {
+        alert('Por favor selecciona un archivo.');
+    }
+});
+
+function handleFile(file) {
+    const previewContainer = document.getElementById('imagePreview');
+    const downloadContainer = document.getElementById('fileDownload');
+
+    // Limpiar los contenedores de vista previa y descarga
+    previewContainer.innerHTML = '';
+    downloadContainer.innerHTML = '';
+
+    // Si es una imagen, mostrar vista previa
+    if (file.type.startsWith('image')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('img-fluid', 'm-2'); // Bootstrap clases para imagenes
+            previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Crear enlace para descarga
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(file);
+    downloadLink.download = file.name;
+    downloadLink.textContent = 'Descargar archivo';
+    downloadContainer.appendChild(downloadLink);
+}
+
+
+
+
+// Función para obtener imágenes desde el API
+function obtenerImagenes(tipoDoc, id) {
+    const apiUrl = `http://localhost:8080/archivos/download/${tipoDoc}/${id}`;  // URL del API con parámetros dinámicos
+  
+    // Realizamos la solicitud GET utilizando Axios
+    axios.get(apiUrl)
+        .then(function (response) {
+            // Suponemos que la respuesta es un array de URLs de imágenes
+            const archivos = response.data; // Puede ser un array de URLs
+  
+           
+                    // Limpiar el contenedor de archivos antes de agregar los nuevos
+                    const contenedor = document.getElementById("archivos-container");
+                    contenedor.innerHTML = '';
+
+                    if (archivos && archivos.length > 0) {
+                        archivos.forEach(function(archivo) {
+                            // Crear un contenedor para cada archivo
+                            const archivoDiv = document.createElement('div');
+                            archivoDiv.classList.add('mb-3');
+                            
+                            // Si el archivo es una imagen, mostrar una vista previa
+                            if (archivo.tipo.startsWith('image')) {
+                                const img = document.createElement('img');
+                                //img.src = archivo.url;
+                                img.src = archivo.ruta;
+                                img.classList.add('img-fluid', 'm-2');
+                                img.alt = archivo.nombre;
+                                archivoDiv.appendChild(img);
+                            } else {
+                                // Si no es una imagen, solo mostrar un enlace de descarga
+                                const descargaLink = document.createElement('a');
+                                descargaLink.href = archivo.url;
+                                descargaLink.download = archivo.nombre;
+                                descargaLink.textContent = `Descargar ${archivo.nombre}`;
+                                archivoDiv.appendChild(descargaLink);
+                            }
+
+                            // Agregar el archivo al contenedor principal
+                            contenedor.appendChild(archivoDiv);
+                        });
+                    } else {
+                        contenedor.innerHTML = "<p>No se encontraron archivos.</p>";
+                    }
+                })
+        .catch(function (error) {
+            // Manejo de error
+            console.error('Error al obtener las imágenes:', error);
+            alert('Hubo un error al obtener las imágenes.');
+        });
+  }
+
+  

@@ -340,3 +340,43 @@ const showAlert = (message, type, id) => {
 };
 
 loadDataUltimaRespuesta1();
+
+
+
+// Función para obtener imágenes desde el API
+function obtenerImagenes(tipo, id) {
+    const apiUrl = `http://localhost:8080/archivos/download/${tipo}/${id}`;  // URL del API con parámetros dinámicos
+  
+    // Realizamos la solicitud GET utilizando Axios
+    axios.get(apiUrl)
+        .then(function (response) {
+            // Suponemos que la respuesta es un array de URLs de imágenes
+            const imagenes = response.data; // Puede ser un array de URLs
+  
+            // Limpiar el contenedor de imágenes antes de agregar las nuevas
+            const contenedor = document.getElementById("imagenes-container");
+            contenedor.innerHTML = '';
+  
+            // Verificar si el array de imágenes tiene datos
+            if (imagenes && imagenes.length > 0) {
+                imagenes.forEach(function(imagenUrl) {
+                    // Crear un elemento de imagen y agregarlo al contenedor
+                    const imgElemento = document.createElement("img");
+                    imgElemento.src = imagenUrl;
+                    imgElemento.classList.add("img-fluid", "m-2"); // Bootstrap clases para imagenes
+  
+                    // Agregar la imagen al contenedor
+                    contenedor.appendChild(imgElemento);
+                });
+            } else {
+                contenedor.innerHTML = "<p>No se encontraron imágenes.</p>";
+            }
+        })
+        .catch(function (error) {
+            // Manejo de error
+            console.error('Error al obtener las imágenes:', error);
+            alert('Hubo un error al obtener las imágenes.');
+        });
+  }
+
+  

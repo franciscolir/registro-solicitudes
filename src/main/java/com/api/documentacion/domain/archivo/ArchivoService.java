@@ -38,27 +38,27 @@ public class ArchivoService {
 
         public Archivo almacenarImagen(MultipartFile archivoFile, DatosRegistraArchivo datos) throws IOException {
             // Generar un identificador único para el archivoFile
-            System.out.print("paso 11 #############");
+
             String nombreArchivo = UUID.randomUUID().toString() + "-" + archivoFile.getOriginalFilename();
-            System.out.print("paso 12 #############");
+
             // Crear el directorio si no existe
             File directorio = new File(DIRECTORIO_ALMACENAMIENTO);
-            System.out.print("paso 13 #############");
+
             if (!directorio.exists()) {
-                System.out.print("paso 14 #############");
+
                 directorio.mkdir();
             }
 
             // Guardar el archivoFile en el directorio local
             File archivoLocal = new File(directorio, nombreArchivo);
-            System.out.print("paso 15 #############");// traqueo llega hasta aqui
+
             archivoFile.transferTo(archivoLocal);
-            System.out.print("paso 16 #############");
+
             // Crear la entidad Archivo
             Archivo archivo = switch (datos.claseTipo()) {
 
                 case "solicitud" -> {
-                    System.out.print("paso 17 #############");
+
                     Solicitud solicitud = solicitudRepository.findById(datos.claseId())
                             .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
                     //archivo.setSolicitud(solicitud);
@@ -69,7 +69,7 @@ public class ArchivoService {
                     );
                 }
                 case "certificado" -> {
-                    System.out.print("paso 18 #############");
+
                     Certificado certificado = certificadoRepository.findById(datos.claseId())
                             .orElseThrow(() -> new RuntimeException("Certificado no encontrada"));
                     //archivo.setCertificado(certificado);
@@ -80,7 +80,7 @@ public class ArchivoService {
                     );
                 }
                 case "respuesta" -> {
-                    System.out.print("paso 19 #############");
+
                     Respuesta respuesta = respuestaRepository.findById(datos.claseId())
                             .orElseThrow(() -> new RuntimeException("Respuesta no encontrada"));
                     //archivo.setRespuesta(respuesta);
@@ -93,7 +93,7 @@ public class ArchivoService {
 
                 default -> throw new RuntimeException("Tipo de clase no válido");
             };
-            System.out.print("paso 20 #############");
+
             //Archivo archivo = new Archivo();
             //archivo.setNombre(nombreArchivo);
             //archivo.setRuta(archivoLocal.getAbsolutePath());

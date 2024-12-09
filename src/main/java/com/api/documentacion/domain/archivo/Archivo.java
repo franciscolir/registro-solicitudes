@@ -3,6 +3,7 @@ package com.api.documentacion.domain.archivo;
 import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Archivo {
 
     @Id

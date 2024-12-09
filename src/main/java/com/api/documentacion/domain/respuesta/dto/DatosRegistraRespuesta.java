@@ -8,8 +8,8 @@ public record DatosRegistraRespuesta(
 
         @NotNull(message = "numero de movimiento es obligatorio")
         Long movimiento,
-        @NotNull(message = "numero de respuesta es obligatoria")
-        Long numeroRespuesta,
+        //@NotNull(message = "numero de respuesta es obligatoria")
+        //Long numeroRespuesta,
         @NotNull(message = "id de usuario es obligatoria")
         Long usuario,
         @NotBlank(message = "Titulo es obligatorio")

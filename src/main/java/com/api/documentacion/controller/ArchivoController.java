@@ -37,53 +37,52 @@ public class ArchivoController {
             @RequestParam("id") Long id, // Recibir cada campo individualmente
             @RequestParam("tipo") String tipo) {
         try {
-            System.out.print("paso 1 #############");
+
             // Crear el objeto DatosRegistraArchivo manualmente
             DatosRegistraArchivo datos = new DatosRegistraArchivo(id, tipo);
-            System.out.print("paso 2 #############");
+
             // Procesar archivoA (siempre presente)
             Archivo archivo = archivoService.almacenarImagen(archivoA, datos);
-            System.out.print("paso 3 #############");
+
 
             // Procesar archivoB si no es nulo
             if (archivoB != null && !archivoB.isEmpty()) {
-                System.out.print("paso 4 #############");
+
                 // Lógica para procesar archivoB, por ejemplo:
                 archivoService.almacenarImagen(archivoB, datos);
             }
 
             // Procesar archivoC si no es nulo
             if (archivoC != null && !archivoC.isEmpty()) {
-                System.out.print("paso 5 #############");
+
                 // Lógica para procesar archivoC, por ejemplo:
                 archivoService.almacenarImagen(archivoC, datos);
             }
-            System.out.print("paso 6 #############");
+
             return new ResponseEntity<>(archivo, HttpStatus.OK);
 
         } catch (IOException e) {
-            System.out.print("paso 7 #############");
+
             // Manejo de excepciones en caso de error en el procesamiento de los archivos
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
 
-    @GetMapping("/obtener/claseX/{solicitudId}")
+    @GetMapping("/download/solicitud/{solicitudId}")
     public ResponseEntity<List<Archivo>> obtenerImagenesClaseX(@PathVariable Long solicitudId) {
         List<Archivo> imagenes = archivoService.obtenerArchivoPorSolicitud(solicitudId);
         return new ResponseEntity<>(imagenes, HttpStatus.OK);
     }
 
-    @GetMapping("/obtener/claseY/{certificadoId}")
+    @GetMapping("/download/certificado/{certificadoId}")
     public ResponseEntity<List<Archivo>> obtenerImagenesClaseY(@PathVariable Long certificadoId) {
         List<Archivo> imagenes = archivoService.obtenerArchivoPorCertificado(certificadoId);
         return new ResponseEntity<>(imagenes, HttpStatus.OK);
     }
 
 
-
-    @GetMapping("/obtener/claseZ/{respuestaId}")
+    @GetMapping("/download/respuesta/{respuestaId}")
     public ResponseEntity<List<Archivo>> obtenerImagenesClaseZ(@PathVariable Long respuestaId) {
         List<Archivo> imagenes = archivoService.obtenerArchivoPorRespuesta(respuestaId);
         return new ResponseEntity<>(imagenes, HttpStatus.OK);

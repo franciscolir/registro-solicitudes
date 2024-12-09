@@ -55,6 +55,13 @@ public class RespuestaController {
         return ResponseEntity.ok(listaRespuestas);
     }
 
+    //Obtener lista de respuestaes
+    @GetMapping("/last")
+    public ResponseEntity<DatosMuestraRespuesta> ultimaRespuestas() {
+        var listaRespuestas = respuestaService.obtenerUltimaRespuesta();
+
+        return ResponseEntity.ok(listaRespuestas);
+    }
     //Actualizar respuesta
     @PutMapping
     @Transactional

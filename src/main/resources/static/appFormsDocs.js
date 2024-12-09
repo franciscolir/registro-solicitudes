@@ -128,7 +128,7 @@ function getFormConfig(formType) {
       formatRow: commonFormatRow,
       buttonHtml: `<button type="submit" class="btn btn-primary me-3">Enviar</button>`,
       fields: [
-        { label: "", type: "number", name: "numeroRespuesta", required: true },
+        //{ label: "", type: "number", name: "numeroRespuesta", required: true },
         { label: "Funcionario:",type: "select", name: "usuario", required: true,  options: [],},
         { label: "Título:", type: "text", name: "titulo", required: true },
         { label: "Descripción:", type: "textarea", name: "descripcion", required: true, },
@@ -263,7 +263,7 @@ if (invitadoField) {
 
 
     
-  agregarManejadores(formularioDiv, formType, formConfig.url, movimiento, );
+  agregarManejadores(formularioDiv, formType, formConfig.url, movimiento );
   document.getElementById("formularioContainer").appendChild(formularioDiv);
   formularioDiv.style.display = "block";
   //cerrar tabla cuando abre form
@@ -341,7 +341,7 @@ document.body.addEventListener("click", async (event) => {
         break;
 
       case "abrirFormRespuesta":
-        loadDataUltimaRespuesta3 ();
+        loadDataUltimaRespuesta3();
         crearFormulario("respuesta", null, null, movimiento, ultimoNumeroRespuesta3,null);
         break;
 
@@ -414,25 +414,27 @@ function mostrarMensaje(mensaje, tipo) {
 
 // Cargar la última respuesta
 const loadDataUltimaRespuesta3 = async () => {
-    try {
-     const response = await axios.get('http://localhost:8080/respuestas?size=1&sort=id,desc');
-     const data = response.data.content;
-
-     if (Array.isArray(data) && data.length > 0) {
-         
-         const item = data[0];
-        
-         // Almacenar el número obtenido
-         ultimoNumeroRespuesta3 = item.numeroRespuesta+1;
-         //console.log(ultimoNumeroRespuesta3 +" ultimo numero appTablaMovimiento")
-     } else {
-         console.error('La propiedad `content` no es un array o está vacío.');
-     }
- } catch (error) {
-     console.error('Error:', error);
-     alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
- }
+  try {
+      // Realizamos la solicitud a la API
+      const response = await axios.get('http://localhost:8080/respuestas/last');
+      
+      // Obtener los datos de la respuesta directamente, si es un solo objeto
+      const item = response.data;  // Suponiendo que response.data es el objeto con la información de la última respuesta
+      
+      if (item && item.numeroRespuesta !== undefined) {
+          // Obtener el número de respuesta y sumarle 1
+          const ultimoNumeroRespuesta3 = item.numeroRespuesta + 1;
+          
+          console.log(`${ultimoNumeroRespuesta3} - Último número de respuesta antes de sumarle 1`);
+      } else {
+          console.error('La respuesta no contiene un número de respuesta válido.');
+      }
+  } catch (error) {
+      console.error('Error:', error);
+      alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+  }
 };
+
 
 
 async function enviarFormulario2(form, endpoint) {
@@ -647,9 +649,12 @@ cerrarFormularioExistente()
 }
 
 async function enviarFormularioArchivo(id, tipo) {
+
   // Crear el contenido que se agregará al div
   const content = `
       <h2>Formulario para enviar archivos</h2>
+      <div id="mensaje" style="display:none;"></div>
+
       <form id="fileForm">
           <!-- Solo un archivo visible a la vez -->
           <label for="archivoA">Archivo A:</label>
@@ -712,7 +717,7 @@ async function enviarFormularioArchivo(id, tipo) {
 
       console.log(formData + " fromData")
       // Elemento de alerta
-      const alertMessage = document.getElementById('mensaje');
+      const alertMessage2 = document.getElementById('mensaje');
 
       try {
           // Enviar los datos como FormData utilizando axios
@@ -724,16 +729,19 @@ async function enviarFormularioArchivo(id, tipo) {
 
           // Manejo de la respuesta exitosa
           if (response.status === 200) {
-              alertMessage.className = 'alert alert-success';
-              alertMessage.textContent = 'Respuesta enviada exitosamente';
-              alertMessage.style.display = 'block';
+              alertMessage2.className = 'alert alert-success';
+              alertMessage2.textContent = 'Archivos subidos exitosamente';
+              alertMessage2.style.display = 'block';
 
               // Agregar el contenido al div después de un pequeño retraso
               setTimeout(() => {
-                  alertMessage.style.display = 'none';
+                  alertMessage2.style.display = 'none';
                   document.getElementById("tableSection").classList.add("d-none");
+                  document.getElementById("formularioArchivo").classList.add("d-none");
                   responseDiv.innerHTML = content;  // Recargar el formulario
-              }, 1800);
+                  resetView();  // Ocultar formulario y volver al inicio
+                  loadData();   // Recargar solo la tabla
+                  }, 1800);
           } else {
               console.error('Error:', response.status, response.statusText);
           }
@@ -746,13 +754,17 @@ async function enviarFormularioArchivo(id, tipo) {
               errorMessage = `Error: ${error.response.data}`;
           }
 
-          alertMessage.className = 'alert alert-danger';
-          alertMessage.textContent = errorMessage;
-          alertMessage.style.display = 'block';
+          alertMessage2.className = 'alert alert-danger';
+          alertMessage2.textContent = errorMessage;
+          alertMessage2.style.display = 'block';
 
           setTimeout(() => {
-              alertMessage.style.display = 'none';
+              alertMessage2.style.display = 'none';
           }, 3000);
       }
   });
 }
+
+
+
+//loadDataUltimaRespuesta3();

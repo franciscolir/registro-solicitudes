@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.net.ssl.SSLSession;
+import java.util.List;
 
 @Repository
 public interface RespuestaRepository extends JpaRepository<Respuesta,Long> {
 
     Page<Respuesta> findByActivoTrue(Pageable paginacion);
 
-
+    List<Respuesta> findByActivoTrue();
 
     Boolean existsByIdAndActivoTrue(Long id);
 

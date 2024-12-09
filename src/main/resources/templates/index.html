@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="/static/styleTime.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -157,6 +156,9 @@
      <!-- div para mostrar formulario Archivo -->
      <div id="formularioArchivo"></div>
 
+       <!-- div para mostrar imagenes Archivo -->
+       <div id="imagenes-container"></div>
+       <div id="archivos-container" class="mt-4"></div>
 
 
     <!-- SECCION DE TABLA DINAMICA que se mostrará al hacer clic -->
@@ -323,7 +325,7 @@
     <script src="/static/appCreaTablas.js"></script>
     <script src="/static/appTablaMovimientoSolicitudes.js"></script>
    
-    <script src="/static/appFormsDocs.js"></script>
+    <script src="/static/appFormsDocs.js" defer></script>
     <script src="/static/appTime.js"></script>
     <script src="/static/appModalBuscadores.js"></script>
     <script src="/static/appFormEvento.js"></script>
