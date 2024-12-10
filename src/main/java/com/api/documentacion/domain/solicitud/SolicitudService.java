@@ -2,6 +2,7 @@ package com.api.documentacion.domain.solicitud;
 
 import com.api.documentacion.domain.archivo.Archivo;
 
+import com.api.documentacion.domain.emisor.Emisor;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 
 import com.api.documentacion.domain.solicitud.dto.*;
@@ -43,9 +44,10 @@ public class SolicitudService {
 
         //var archivo = new Archivo();
         //archivoRepository.save(archivo);
+
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
-
+        validaSiNumeroDeSolicitudExiste(datos.numeroSolicitud(),emisor);
         var solicitud = new Solicitud(null,
                 datos.numeroSolicitud(),
                 datos.providenciaId(),
@@ -143,6 +145,12 @@ public class SolicitudService {
     public void validaSiExisteIdAndActivoTrue(Long id) {
         if(!solicitudRepository.existsByIdAndActivoTrue(id)){
             throw new ValidacionDeIntegridad("id de solicitud no existe");
+        }
+    }//__________
+    //valida numero de registro
+    public void validaSiNumeroDeSolicitudExiste(Long numeroSolicitud, Emisor emisor) {
+        if(solicitudRepository.existsByNumeroSolicitudAndEmisorAndActivoTrue(numeroSolicitud, emisor)){
+            throw new ValidacionDeIntegridad("numero de solicitud ya fue registrado");
         }
     }//__________
 
