@@ -1,3 +1,6 @@
+const API_URL = 'http://localhost:8080'; 
+
+
 // Función para mostrar el main y ocultar la tabla
 function resetView() {
     document.getElementById("mainContent").classList.remove("d-none");
@@ -192,7 +195,7 @@ function getTableConfig(type) {
     switch (type) {
         case "solicitudes":
             config.apiUrl = `${baseUrl}movimientos/solicitudes${paginacionUrl}&sort=fechaIngreso,desc`;
-            config.headers = ["N°", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Ingreso", "Estado"];
+            config.headers = ["N°", "Emisor", "Titulo", "Descripcion", "Fecha Solicitud", "Ingreso", "Estado","Archivo"];
             config.title = "Solicitudes";
             config.formatRow = (registro) => `
                 <td>${registro.solicitud}</td>
@@ -202,6 +205,10 @@ function getTableConfig(type) {
                 <td>${registro.fechaSolicitud}</td>
                 <td>${registro.fechaIngreso}</td>
                 <td>${formatText(registro.estado)}</td>
+                 <td>
+                 <div id="alertContainer${registro.id}"></div>
+                    <button id="archivoSolicitudes" class="btn btn-link" type="button" onclick="fetchFiles('solicitud', ${registro.id});">ver imagenes</button>
+                </td>
             `;
             config.buttonHtml = `
                 <button type="button" class="btn btn-primary" id="abrirFormSolicitud" data-form="0">Ingresar Solicitud</button>
@@ -211,7 +218,7 @@ function getTableConfig(type) {
 
         case "respuestas":
             config.apiUrl = `${baseUrl}movimientos/respuestas`;
-            config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Salida de departamento", "N° de Solicitud respondida"];
+            config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Salida de departamento", "N° de Solicitud respondida","Archivo"];
             config.title = "Respuestas";
             config.formatRow = (registro) => `
                 <td>${registro.numeroRespuesta}</td>
@@ -220,6 +227,9 @@ function getTableConfig(type) {
                 <td>${registro.fechaRespuesta}</td>
                 <td>${registro.fechaEnvio}</td>
                 <td>${registro.numeroSolicitud}</td>
+                 <td><div id="alertContainer${registro.id}"></div>
+                    <button id="archivoRespuestas" class="btn btn-link" type="button" onclick="fetchFiles('respuesta', ${registro.id});">ver imagenes</button>
+                </td>
             `;
             config.buttonHtml = /*`
 
@@ -255,7 +265,7 @@ function getTableConfig(type) {
 
         case "certificados":
             config.apiUrl = `${baseUrl}certificados${paginacionUrl}&sort=fechaCertificado,desc`;
-            config.headers = ["Numero", "Unidad", "Titulo", "Descripcion", "Fecha", "Archivos"];
+            config.headers = ["Numero", "Unidad", "Titulo", "Descripcion", "Fecha", "Archivo"];
             config.title = "Certificados";
             config.formatRow = (registro) => `
                 <td>${registro.numeroCertificado}</td>
@@ -263,8 +273,8 @@ function getTableConfig(type) {
                 <td>${registro.titulo}</td>
                 <td>${registro.descripcion}</td>
                 <td>${registro.fechaCertificado}</td>
-                <td>
-                    <button id="archivoCertificado" class="btn btn-link" type="button" onclick="obtenerImagenes('certificado', ${registro.id});">ver imagenes</button>
+                <td><div id="alertContainer${registro.id}"></div>
+                    <button id="archivoCertificado" class="btn btn-link" type="button" onclick="fetchFiles('certificado', ${registro.id});">ver imagenes</button>
                 </td>
 
 
@@ -693,58 +703,159 @@ function handleFile(file) {
 }
 
 
-
+/*
 
 // Función para obtener imágenes desde el API
-function obtenerImagenes(tipoDoc, id) {
-    const apiUrl = `http://localhost:8080/archivos/download/${tipoDoc}/${id}`;  // URL del API con parámetros dinámicos
-  
-    // Realizamos la solicitud GET utilizando Axios
-    axios.get(apiUrl)
-        .then(function (response) {
-            // Suponemos que la respuesta es un array de URLs de imágenes
-            const archivos = response.data; // Puede ser un array de URLs
-  
-           
-                    // Limpiar el contenedor de archivos antes de agregar los nuevos
-                    const contenedor = document.getElementById("archivos-container");
-                    contenedor.innerHTML = '';
+async function obtenerImagenes(tipoDoc, id) {
+        try {
+            const response = await axios.get(`${API_URL}/archivos/download/${tipoDoc}/${id}`);
+            return response.data; // Supongamos que la API devuelve un array de archivos
+        } catch (error) {
+            console.error('Error al obtener los archivos:', error);
+            throw error;
+        }
+    };
+*/
 
-                    if (archivos && archivos.length > 0) {
-                        archivos.forEach(function(archivo) {
-                            // Crear un contenedor para cada archivo
-                            const archivoDiv = document.createElement('div');
-                            archivoDiv.classList.add('mb-3');
-                            
-                            // Si el archivo es una imagen, mostrar una vista previa
-                            if (archivo.tipo.startsWith('image')) {
-                                const img = document.createElement('img');
-                                //img.src = archivo.url;
-                                img.src = archivo.ruta;
-                                img.classList.add('img-fluid', 'm-2');
-                                img.alt = archivo.nombre;
-                                archivoDiv.appendChild(img);
-                            } else {
-                                // Si no es una imagen, solo mostrar un enlace de descarga
-                                const descargaLink = document.createElement('a');
-                                descargaLink.href = archivo.url;
-                                descargaLink.download = archivo.nombre;
-                                descargaLink.textContent = `Descargar ${archivo.nombre}`;
-                                archivoDiv.appendChild(descargaLink);
-                            }
 
-                            // Agregar el archivo al contenedor principal
-                            contenedor.appendChild(archivoDiv);
-                        });
-                    } else {
-                        contenedor.innerHTML = "<p>No se encontraron archivos.</p>";
-                    }
-                })
-        .catch(function (error) {
-            // Manejo de error
-            console.error('Error al obtener las imágenes:', error);
-            alert('Hubo un error al obtener las imágenes.');
+// Función para obtener los archivos desde la API con parámetros dinámicos
+async function fetchFiles(tipoDoc, id) {
+    try {
+      
+        // Aquí construimos la URL usando los parámetros dinámicos
+        const response = await axios.get(`${API_URL}/archivos/download/${tipoDoc}/${id}`);
+
+        console.log(response.data)
+        displayFiles(response.data);  // Pasamos los datos obtenidos a la función para mostrarlos
+    } catch (error) {
+        console.error('Error al obtener los archivos:', error);
+        //displayError('Error al cargar los archivos');
+        showAlert2('No se encontraron archivos.', 'danger', id);
+    }
+}
+
+// Función para mostrar los archivos en la página
+function displayFiles(files) {
+
+
+    //document.getElementById("mainContent").classList.remove("d-none");
+    document.getElementById("tableSection").classList.add("d-none");
+    const fileListElement = document.getElementById('file-list');
+    fileListElement.innerHTML = '';  // Limpiar contenido previo
+                  // Crear el botón de cierre
+                  const closeButton = document.createElement('button');
+                  closeButton.textContent = 'Cerrar'; // Texto del botón de cierre
+                  closeButton.classList.add('close-button'); // Añadir una clase para estilo
+                  closeButton.addEventListener('click', () => {
+                      ; // Eliminar el contenedor de la vista previa cuando se haga clic en el botón
+                      document.getElementById("mainContent").classList.remove("d-none");
+                      document.getElementById("file-list").classList.add("d-none");
+                  });
+                   
+                    // Añadir el botón de cierre al contenedor
+                    fileListElement.appendChild(closeButton);
+
+        // Comprobamos que `files` sea un arreglo antes de intentar acceder a su propiedad `length`
+        if (!Array.isArray(files)) {
+            //console.error('Se esperaba un arreglo de archivos, pero se recibió:', files);
+            
+        showAlert2('No se encontraron archivos.', 'danger', files.content.id);
+            //fileListElement.innerHTML = '<p>Error: la respuesta no es un arreglo de archivos.</p>';
+            console.log(files+" files archivos recibidos")
+            return;
+        }
+
+    if (files.length === 0) {
+        //fileListElement.innerHTML = '<p>No se encontraron archivos.</p>';
+        showAlert2('No se encontraron archivos.', 'danger', 1);
+    } else {
+        files.forEach(file => {
+            const fileItemElement = createFileItem(file);
+            fileListElement.appendChild(fileItemElement);
         });
-  }
+    }
+}
 
-  
+// Función para mostrar un mensaje de error
+function displayError(message) {
+    const fileListElement = document.getElementById('file-list');
+    fileListElement.innerHTML = `<p>${message}</p>`;
+}
+
+// Función para crear un ítem de archivo (vista previa y opción de descarga)
+function createFileItem(file) {
+    const fileItem = document.createElement('div');
+    fileItem.classList.add('file-item');
+
+    // Crear la vista previa del archivo
+    const filePreview = createFilePreview(file);
+    fileItem.appendChild(filePreview);
+
+    return fileItem;
+}
+
+// Función para crear la vista previa de cada archivo
+function createFilePreview(file) {
+    const previewContainer = document.createElement('div');
+    previewContainer.classList.add('file-preview');
+
+
+
+    const fileExtension = file.nombre.split('.').pop().toLowerCase();
+    console.log('Extensión del archivo:', fileExtension);
+
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+        const imgElement = document.createElement('img');
+        //imgElement.src = file.downloadUrl;
+        imgElement.src = file.ruta;
+        imgElement.alt = file.name;
+        imgElement.width = 200;
+        previewContainer.appendChild(imgElement);
+    } else if (fileExtension === 'pdf') {
+        const embedElement = document.createElement('embed');
+        embedElement.src = file.downloadUrl;
+        embedElement.type = 'application/pdf';
+        embedElement.width = 200;
+        embedElement.height = 200;
+        previewContainer.appendChild(embedElement);
+    } else {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = file.downloadUrl;
+        downloadLink.download = file.name;
+        downloadLink.textContent = `Descargar ${file.name}`;
+        previewContainer.appendChild(downloadLink);
+    }
+
+    return previewContainer;
+}
+
+
+
+function showAlert2(message, type, id) {
+    const alertContainer = document.getElementById(`alertContainer${id}`);
+    const alertDiv = document.createElement('div');
+
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.role = 'alert';
+    alertDiv.innerHTML = `${message} <div type="button" class="close" aria-label="Close">
+        <span aria-hidden="true"></span>
+    </div>`;
+
+    alertContainer.appendChild(alertDiv);
+
+    // Cerrar la alerta después de 3 segundos
+    setTimeout(() => {
+        alertDiv.remove(); // Eliminar el elemento
+    }, 2000);
+
+    // Cerrar la alerta al hacer clic en el botón
+    alertDiv.querySelector('.close').onclick = () => {
+        alertDiv.remove();
+    };
+};
+
+
+//showAlert2('Rechazo de solicitud éxitoso!', 'success', id);
+
+
+//showAlert2('Hubo un error al rechazar. Inténtalo de nuevo.', 'danger', id);
