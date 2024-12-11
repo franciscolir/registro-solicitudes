@@ -3,6 +3,7 @@ package com.api.documentacion.domain.solicitud;
 import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.emisor.Emisor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -43,9 +44,11 @@ public class Solicitud {
     private Boolean activo;
 
     @OneToOne(mappedBy = "solicitud")
+    @JsonBackReference
     private Movimiento movimiento;  // Relación inversa
 
     @OneToMany(mappedBy = "solicitud")
+    @JsonBackReference
     private List<Archivo> archivo;
 
     public Solicitud(Long id, Long numeroSolicitud, Long providenciaId, Emisor emisor, String titulo, String descripcion, LocalDate fechaSolicitud, Boolean activo) {

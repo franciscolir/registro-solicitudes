@@ -2,6 +2,7 @@ package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.unidad.Unidad;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "perfil_id")
+    @JsonManagedReference
     private Perfil perfil;
 
     private Boolean activo;
@@ -43,6 +45,7 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_id")
+    @JsonManagedReference
     private Unidad unidad;
 
 

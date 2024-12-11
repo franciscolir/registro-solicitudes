@@ -42,7 +42,8 @@ public class RespuestaService {
 
     public DatosMuestraRespuesta registrar(DatosRegistraRespuesta datos){
 
-        var numeroRespuesta = obtenerUltimaRespuesta().numeroRespuesta();
+        var numeroRespuesta = obtenerUltimaRespuesta().numeroRespuesta()+1;// inrementa para siguiente numero de respuesta
+        System.out.println(numeroRespuesta+ " numero de respuesta");
         usuarioService.validaSiExisteIdAndActivoTrue(datos.usuario());
         var usuario = usuarioRepository.getReferenceById(datos.usuario());
         //validaSiExisteNumeroRespuestaAndActivoTrue(datos.numeroRespuesta());
@@ -96,6 +97,7 @@ public class RespuestaService {
         // Ordenar de mayor a menor
         var respuesta = respuestasActivas.stream().min((r1, r2) -> Long.compare(r2.getNumeroRespuesta(), r1.getNumeroRespuesta()))  // Obtiene el primer elemento (el más reciente, con el numeroRespuesta más alto)
                 .orElse(null); // Devuelve null si no hay respuestas activas
+
 
         if (respuesta == null) {
             //crea respuesta null para asignar numero inicial de respuesta

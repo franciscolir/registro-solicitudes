@@ -3,6 +3,7 @@ package com.api.documentacion.domain.certificado;
 import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.unidad.Unidad;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -41,9 +42,11 @@ public class Certificado {
     private Unidad unidad;
 
     @OneToOne(mappedBy = "certificado")
+    @JsonBackReference
     private Movimiento movimiento;
 
     @OneToMany(mappedBy = "certificado")
+    @JsonBackReference
     private List<Archivo> archivo;
 
 

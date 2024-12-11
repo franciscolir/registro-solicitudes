@@ -3,6 +3,7 @@ package com.api.documentacion.domain.unidad;
 import com.api.documentacion.domain.certificado.Certificado;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Set;
@@ -27,9 +28,11 @@ public class Unidad {
     private Boolean activo;
 
     @OneToMany(mappedBy = "unidad",fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Usuario> usuarios;
 
     @OneToMany(mappedBy = "unidad", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Movimiento> movimientos; // Relación OneToMany
 
     @OneToMany(mappedBy = "unidad")  // Relación bidireccional

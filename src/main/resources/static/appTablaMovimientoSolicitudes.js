@@ -290,7 +290,7 @@ const submitForm = async (event, formId, id) => {
             console.error('Error al enviar el formulario 2:', error);
             showAlert('Hubo un error al rechazar. Inténtalo de nuevo.', 'danger', id);
         }
-    }
+    } 
 };
 
 

@@ -4,6 +4,7 @@ import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -44,9 +45,11 @@ public class Respuesta {
     private Boolean activo;
 
     @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Movimiento> movimientos;  // Relación OneToMany
 
     @OneToMany(mappedBy = "respuesta")
+    @JsonBackReference
     private List<Archivo> archivo;
 
 

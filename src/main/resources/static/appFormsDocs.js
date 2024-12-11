@@ -270,6 +270,7 @@ if (invitadoField) {
   document.getElementById("tableSection").classList.add("d-none");
 }
 
+/*
 function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
   const form = formularioDiv.querySelector(`.${formType}Form`);
@@ -291,28 +292,43 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
       event.preventDefault();
 
       try {
-        const resultado = await enviarFormulario2(form, endpoint);
+        const resultado = await enviarFormulario2(form, endpoint, formularioDiv);
+       
+        if (response.status === 200) {
         mensajeDiv.textContent = `${
           formType.charAt(0).toUpperCase() + formType.slice(1)
-        } enviado con éxito`;
+        } enviado con éxito a`;
         mensajeDiv.style.display = "block";
+        mensajeDiv.className = 'alert alert-success';
 
        
-
+/*
         setTimeout(() => {
           formularioDiv.remove();
+          console.log("aqui deberia eliminar formulario")
           //document.getElementById("mainContent").classList.remove("d-none");
-        }, 2000); // Elimina el formulario después de 2 
-        
+        }, 1700); // Elimina el formulario después de 2 
+        */
+       // }
+        /*} 
+      else {
+
+        mensajeDiv.className = 'alert alert-danger';
+        mensajeDiv.textContent = errorMessage;
+        mensajeDiv.style.display = 'block';
+      }*//*
       } catch (error) {
-        mensajeDiv.textContent = "Hubo un error al enviar el formulario";
+        let errorMessage = 'INICIAL';
+        errorMessage = error.response.data || error.response.statusText || 'SEGUNDO';
+        mensajeDiv.textContent = `Error desconocido: ${error.message}`|| "Hubo un error al enviar el formulario";
         mensajeDiv.style.display = "block";
+        mensajeDiv.className = 'alert alert-danger';
       }
     });
   } else {
     console.error(`No se encontró el formulario con la clase: ${formType}Form`);
   }
-}
+}*/
 
 document.body.addEventListener("click", async (event) => {
     //loadDataUltimaRespuesta3 ();
@@ -437,7 +453,10 @@ const loadDataUltimaRespuesta3 = async () => {
 
 
 
-async function enviarFormulario2(form, endpoint) {
+
+
+/*
+async function enviarFormulario2(form, endpoint, formularioDiv ) {
   // Crear un objeto para almacenar los datos del formulario
   const formData = new FormData(form);
   const formJson = {};
@@ -480,25 +499,18 @@ async function enviarFormulario2(form, endpoint) {
 
     // Manejo de la respuesta exitosa
     if (response.status === 200) {
+      
       alertMessage.className = 'alert alert-success';
-      alertMessage.textContent = 'Respuesta enviada exitosamente';
+      alertMessage.textContent = 'Documento enviado exitosamente';
       alertMessage.style.display = 'block';
 
-/*
-      setTimeout(() => {
-        alertMessage.style.display = 'none';
-        //resetView();  // Ocultar formulario y volver al inicio
-        document.getElementById("tableSection").classList.add("d-none");
-        //document.getElementById("mainContent").classList.add("d-none");
-        document.getElementById("responseDiv").style.display ="block";
-        //loadData();   // Recargar solo la tabla
-      }, 1800);
-*/
+
+
 
 // Supongamos que response es el objeto JSON recibido
 if (typeof response === 'object' && response !== null) {
   const responseDiv = document.getElementById('responseDiv');
-  
+  const form = document.getElementById('formulario-contenido');
   // Limpiar cualquier contenido previo del div
   responseDiv.innerHTML = ''; 
   
@@ -574,7 +586,7 @@ if (typeof response === 'object' && response !== null) {
                     </div>
                   </td>
                 </tr>
-                   `;*/
+                   `;*//*
 
   content += `
                 <tr>
@@ -600,18 +612,28 @@ if (typeof response === 'object' && response !== null) {
     document.getElementById("tableSection").classList.add("d-none");
     //document.getElementById("mainContent").classList.add("d-none");
     //document.getElementById("responseDiv").style.display ="block";
-    responseDiv.innerHTML = content
+    formularioDiv.remove();
+    responseDiv.innerHTML = content;
     //loadData();   // Recargar solo la tabla
   }, 1800);
   ;
 } else {
   console.error("Response is not a valid object");
 }
-
-
+/*
+setTimeout(() => {
+  alertMessage.style.display = 'none';
+  //resetView();  // Ocultar formulario y volver al inicio
+  //document.getElementById("tableSection").classList.add("d-none");
+  document.getElementById("formularioContainer").classList.add("d-none");
+  document.getElementById("responseDiv").classList.add("d-none");
+  //loadData();   // Recargar solo la tabla
+}, 1800);
+*//*
     } else {
       console.error('Error:', response.status, response.statusText);
     }
+    return response
   } catch (error) {
     console.error("Error al enviar el formulario:", error);
     let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
@@ -628,9 +650,10 @@ if (typeof response === 'object' && response !== null) {
     setTimeout(() => {
       alertMessage.style.display = 'none';
     }, 3000);
+    return error
   }
 }
-
+*/
 
 function formatText(text) {
   if (!text) return "";
@@ -652,21 +675,23 @@ async function enviarFormularioArchivo(id, tipo) {
 
   // Crear el contenido que se agregará al div
   const content = `
-      <h2>Formulario para enviar archivos</h2>
+      <h2>Subir archivos</h2>
       <div id="mensaje" style="display:none;"></div>
 
       <form id="fileForm">
-          <!-- Solo un archivo visible a la vez -->
-          <label for="archivoA">Archivo A:</label>
-          <input type="file" id="archivoA" name="archivoA"><br><br>
-
-          <label for="archivoB" style="display:none;">Archivo B:</label>
-          <input type="file" id="archivoB" name="archivoB"><br><br>
-
-          <label for="archivoC" style="display:none;">Archivo C:</label>
-          <input type="file" id="archivoC" name="archivoC"><br><br>
-
-          <button type="submit">Enviar</button>
+        <div class="mb-3">
+            <label for="archivoA" class="form-label"></label>
+            <input type="file" id="archivoA" name="archivoA">
+        </div>
+        <div class="mb-3">
+            <label for="archivoB" class="form-label""></label>
+            <input type="file" id="archivoB" name="archivoB">
+        </div>
+        <div class="mb-3">
+            <label for="archivoC" class="form-label""></label>
+            <input type="file" id="archivoC" name="archivoC">
+        </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
       </form>
   `;
 
@@ -690,9 +715,10 @@ async function enviarFormularioArchivo(id, tipo) {
 
       // Agregar los parámetros id y tipo directamente a FormData
       id = documentoId
+      tipo = documentoTipo
       console.log(id + ": id " + tipo)
       formData.append("id", documentoId);
-      tipo = documentoTipo
+      
       switch (tipo) {
 
         case "certificados":
@@ -738,9 +764,9 @@ async function enviarFormularioArchivo(id, tipo) {
                   alertMessage2.style.display = 'none';
                   document.getElementById("tableSection").classList.add("d-none");
                   document.getElementById("formularioArchivo").classList.add("d-none");
-                  responseDiv.innerHTML = content;  // Recargar el formulario
-                  resetView();  // Ocultar formulario y volver al inicio
-                  loadData();   // Recargar solo la tabla
+                  //responseDiv.innerHTML = content;  // Recargar el formulario
+                  document.getElementById("responseDiv").classList.add("d-none")
+                  resetView2();  // Ocultar formulario y volver al inicio
                   }, 1800);
           } else {
               console.error('Error:', response.status, response.statusText);
@@ -768,3 +794,319 @@ async function enviarFormularioArchivo(id, tipo) {
 
 
 //loadDataUltimaRespuesta3();
+
+
+
+
+// Función principal que maneja el formulario y los errores
+function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
+  const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
+  const form = formularioDiv.querySelector(`.${formType}Form`);
+  const mensajeDiv = formularioDiv.querySelector("#mensaje");
+
+  // Cerrar el formulario
+  if (btnCerrar) {
+    btnCerrar.addEventListener("click", () => {
+      formularioDiv.remove();
+      document.getElementById("mainContent").classList.remove("d-none");
+    });
+  }
+
+  // Enviar formulario
+  if (form) {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      try {
+        // Ejecutar la función para enviar el formulario y manejar la respuesta
+        const resultado = await enviarFormulario2(form, endpoint, formularioDiv);
+
+        // Si el resultado es exitoso, mostrar el mensaje de éxito
+        if (resultado.status === 200) {
+
+          
+            mostrarMensaje(mensajeDiv, `${formType.charAt(0).toUpperCase() + formType.slice(1)} enviado con éxito`, 'success');
+            // Llamar a la función para renderizar contenido adicional
+            setTimeout(() => {
+            mostrarContenidoAdicional(resultado, formularioDiv, endpoint);
+          }, 1700); // Elimina el formulario después de 2 
+            
+       } else {
+          // Manejo de respuesta no exitosa
+          
+          mostrarMensaje(mensajeDiv, `Error: ${resultado.response.data || 'Hubo un problema al procesar el formulario'}`, 'danger');
+       
+       }
+
+      } catch (error) {
+        // Manejo de errores en caso de excepciones
+        mostrarMensaje(mensajeDiv, `Error desconocido: ${error.message || 'Hubo un problema al procesar el formulario'}`, 'danger');
+      }
+    });
+  } else {
+    console.error(`No se encontró el formulario con la clase: ${formType}Form`);
+  }
+}
+
+// Función para enviar el formulario
+async function enviarFormulario2(form, endpoint, formularioDiv) {
+  const formData = new FormData(form);
+  const formJson = {};
+
+  // Recopilar datos del formulario
+  formData.forEach((value, key) => {
+    formJson[key] = value;
+  });
+
+
+
+  //############################################################
+
+
+ 
+  documentoTipo = endpoint;  // Almacenar el value de "tipo"
+  console.log("tipo capturado:", documentoTipo);  // Opcional, solo para depuración
+
+
+// Verificar si el campo de invitados es múltiple
+const invitadosField = form.querySelector('select[name="invitados"]');
+if (invitadosField) {
+  // Convertir los valores seleccionados a un array de enteros
+  const invitados = Array.from(invitadosField.selectedOptions)
+    .map(option => parseInt(option.value, 10)) // Convertimos cada opción seleccionada a número
+    .filter(value => !isNaN(value)); // Filtrar valores no numéricos
+
+  // Asignamos el array de invitados al objeto formJson
+  formJson.invitados = invitados;
+}
+
+// Mostrar el objeto formJson en la consola para depuración
+console.log("FormJson:", formJson);
+
+// Elemento de alerta
+const alertMessage = document.getElementById('mensaje');
+
+
+
+  //############################################################
+  try {
+    // Enviar los datos del formulario a la API
+    const response = await axios.post(`http://localhost:8080/${endpoint}`, formJson, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    // Si la respuesta es exitosa, devolverla
+    if (response.status === 200) {
+      return response;
+    } else {
+      // Si la respuesta no es exitosa, lanzar un error
+      throw new Error(`Respuesta inesperada del servidor: ${response.status}`);
+    }
+  } catch (error) {
+    // Manejo de errores (de red o de la API)
+    throw new Error(error.response?.data || error.message || 'Error desconocido');
+  }
+}
+
+// Función para mostrar mensajes de éxito o error
+function mostrarMensaje(mensajeDiv, mensaje, tipo) {
+  mensajeDiv.textContent = mensaje;
+  mensajeDiv.style.display = "block";
+  mensajeDiv.className = `alert alert-${tipo}`;
+
+  // Establecer un tiempo de espera de 3 segundos (3000 milisegundos)
+  setTimeout(() => {
+    mensajeDiv.style.display = "none"; // Ocultar el mensaje después de 3 segundos
+
+  }, 1800);  
+}
+
+
+// Función para manejar la visualización del contenido adicional
+function mostrarContenidoAdicional(resultado, formularioDiv, endpoint) {
+  formularioDiv.remove();
+  const responseDiv = document.getElementById('responseDiv');
+ // const form = document.getElementById('formulario-contenido');
+
+  // Limpiar cualquier contenido previo del div
+  responseDiv.innerHTML = '';
+
+  // Crear contenido en base a la respuesta
+  let content = '<table class="table table-striped">';
+  content += `<thead><tr><th> ${endpoint === 'eventos' ? "Detalles evento registrado" : 'Detalles documento registrado'} '</th></tr></thead><tbody class="table-group-divider">`;
+
+  // Mostrar detalles del objeto de respuesta
+  const item = resultado.data || resultado;
+  for (let key in item) {
+    if (item.hasOwnProperty(key)) {
+      let value = item[key];
+      if (typeof value === 'string') {
+        value = value.replace(/\[|\]/g, ''); // Eliminar corchetes si es necesario
+      }
+//###############################################
+
+       // Almacenar el valor de "id" en la variable documentoId
+       if (key === "id") {
+        documentoId = value;  // Almacenar el value de "id"
+        console.log("ID capturado:", documentoId);  // Opcional, solo para depuración
+      }
+
+//###############################################
+
+     // content += `<tr><td><strong>${key}: </strong>${value}</td></tr>`;
+    
+    //###############################################
+     content += `
+          
+                <tr>
+                  <td>
+                      ${
+                        key === "categoria" ? `${formatText(value)}` :
+                        key === "invitado" ? `<strong>Invitados: </strong>${value}` :
+                        key === "numeroSolicitud" ? `<strong>Solicitud N° </strong>${value}` :
+                        key === "numeroCertificado" ? `<strong>Certificado N° </strong>${value}` :
+                        key === "numeroRespuesta" ? `<strong>Respuesta N° </strong>${value}` :
+                        key === "id" ? "" :value
+                      }
+                  </td>
+                </tr>
+                  `;
+   //###############################################
+    }
+  }
+
+  content += '</tbody></table>';
+
+  content += `
+    
+    ${ endpoint === 'eventos' ? "" : '<button type="" class="btn btn-primary ms-auto" onclick= enviarFormularioArchivo();>Subir Archivos</button>'}
+    <button type="close" class="btn btn-secondary ms-auto" onclick= resetView();>Cerrar</button>`;
+ 
+  responseDiv.innerHTML = content;
+
+}
+
+
+
+
+
+
+
+const loadDataTabla = async () => {
+    
+  try {
+      const solicitudesResponse = await axios.get('http://localhost:8080/movimientos/pendientes?size=10');
+      const solicitudes = solicitudesResponse.data.content;
+      
+      if (Array.isArray(solicitudes)) {
+          tableBody.innerHTML = ''; // Limpiar el cuerpo de la tabla
+          let rows = ''; // Variable para acumular las filas
+
+
+          // Llama a getNumero y almacena el valor
+          
+
+          // Iterar sobre cada solicitud
+          solicitudes.forEach(item => {
+              const botonesOpciones = getBotonesOpciones(item);
+              const estadoFormatted = item.estado
+                  .toLowerCase()
+                  .replace(/_/g, ' ')
+                  .replace(/\b\w/g, letra => letra.toUpperCase());
+
+              rows += `
+                  <tr>
+                      <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
+                      <td class="fila d-md-table-cell d-none">
+                          <ul class="list-group">
+                              <h3 class="title">Solicitud</h3>
+                              <li>${item.emisor}</li>
+                              <li class="list-group">${item.titulo}</li>
+                              <li class="list-group">${item.fechaSolicitud}</li>
+                              <li class="list-group">${estadoFormatted || 'No hay datos'}</li>
+                          </ul>
+                      </td>
+                      <td class="fila d-md-table-cell d-none">
+                          <ul class="list-group">
+                              <h3 class="title">Asignado a:</h3>
+                              ${item.nombreUnidad ? `
+                                  <li>${item.nombreUnidad}</li>
+                                  <li class="list-group">${'el ' + item.fechaAsignacion}</li>
+                                  <li class="list-group">${item.comentarioAsignacion}</li>
+                              ` : `
+                                  <li class="list-group">
+                                      ${item.rechazado ? `
+                                          <h5>${estadoFormatted}</h5>
+                                          <li class="list-group">${item.comentarioRechazado}</li>
+                                      ` : `
+                                          <label>
+                                              <input type="radio" name="action${item.id}" onchange="selectForm(1, ${item.id})">
+                                              Asignar Unidad
+                                          </label>
+                                          <label>
+                                              <input type="radio" name="action${item.id}" onchange="selectForm(2, ${item.id})">
+                                              Rechazar
+                                          </label>
+                                          <div id="formContainer${item.id}"></div>
+                                      `}
+                                  </li>
+                              `}
+                          </ul>
+                      </td>
+                         <td class="mb-3 fila d-md-table-cell d-none">
+          <ul class="mb-3 list-group">
+              <h3 class="title">Certificado</h3>
+              ${item.rechazado ? `
+                  <li class="list-group">${estadoFormatted}</li>
+              ` : `
+                  <li class="list-group">${item.certificado != null ? 'Certificado N° ' + item.certificado : ` 'Pendiente'
+                  `}
+                  </li>
+                  <li class="list-group"> ${item.fechaResuelto || ""}</li>
+                  <li class="list-group">${item.comentarioResuelto || ""}</li>
+              `}
+          </ul>
+      </td>
+                      <td>${botonesOpciones}</td>
+                      <td class="d-md-none">
+                          <div>
+                              <strong>Emisor:</strong> ${item.emisor} <br>
+                              <strong>Título:</strong> ${item.titulo} <br>
+                              <strong>Fecha Solicitud:</strong> ${item.fechaSolicitud} <br>
+                              <strong>Asignado a:</strong> ${item.nombreUsuario || 'No hay datos'} <br>
+                              <strong>Estado:</strong> ${estadoFormatted || 'No hay datos'} <br>
+                              <strong>Certificado N° </strong> ${item.certificado || 'No hay datos'} <br>
+                              <strong>Fecha Certificado:</strong> ${item.fechaResuelto || 'No hay datos'} <br>
+                          </div>
+                          <div class="btn-group">
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
+                              <ul class="dropdown-menu">
+                                  <li class="dropdown-item"><a class="dropdown-link text-success" onclick="" data-bs-toggle="modal" data-bs-target="#">ver</a></li>
+                                  <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${ultimoNumeroRespuesta1}" onclick="">ingresar Respuesta</a></li>
+                  
+                                  <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormCertificado"  data-unidad="${item.unidad}" data-nombreUnidad="${item.nombreUnidad}" data-movimiento="${item.id}"onclick="">ingresar Certificado </a></li>
+                              </ul>
+                          </div>
+                      </td>
+                  </tr>
+              `;
+          });
+
+          // Asignar todas las filas acumuladas a la tabla
+          tableBody.innerHTML = rows;
+      } else {
+          console.error('La propiedad `solicitudes` no es un array.');
+      }
+  } catch (error) {
+      console.error('Error:', error);
+      alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
+  }
+};
+
+
+// Función para mostrar el main y ocultar la tabla
+function resetView2() {
+  document.getElementById("mainContent").classList.remove("d-none");
+  loadDataTabla();
+  cerrarFormularioExistente();
+}

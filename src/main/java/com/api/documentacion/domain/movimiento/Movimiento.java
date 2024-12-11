@@ -5,6 +5,7 @@ import com.api.documentacion.domain.respuesta.Respuesta;
 import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.unidad.Unidad;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,18 +48,22 @@ public class Movimiento {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "solicitud_id")
+    @JsonManagedReference
     private Solicitud solicitud;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_id") // Nombre de la columna en la tabla movimientos
+    @JsonManagedReference
     private Unidad unidad; // Relación ManyToOne
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "certificado_id")
+    @JsonManagedReference
     private Certificado certificado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "respuesta_id")
+    @JsonManagedReference
     private Respuesta respuesta;
 
 

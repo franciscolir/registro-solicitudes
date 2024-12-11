@@ -24,7 +24,7 @@ function captarParametros(id, numeroSolicitud, nombreModal, nombreDiv) {
 document.addEventListener('DOMContentLoaded', () => {
         const tableBody = document.querySelector('#registros-table tbody');
 
-        const loadData2 = () => {
+        const loadDataEvento = () => {
         // Reemplaza esta URL con la URL de tu API
         const apiUrl = 'http://localhost:8080/eventos/proximos?size=2';
     
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    loadData2();
+    loadDataEvento();
 });
 
 // ULTIMA RESPUESTA ###################################

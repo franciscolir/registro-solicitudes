@@ -12,12 +12,6 @@ let data = []; // Variable global para almacenar los datos obtenidos
 let ultimoNumeroRespuesta;
 let unidad;
 
-//console.log(unidad+ "unidad al declarar variable")
-
-
-
-
-
 
 
 // Función para limpiar filtros
@@ -217,10 +211,15 @@ function getTableConfig(type) {
             break;
 
         case "respuestas":
-            config.apiUrl = `${baseUrl}movimientos/respuestas`;
+            config.apiUrl = `${baseUrl}movimientos/respuestas${paginacionUrl}&sort=respuesta,desc`;
             config.headers = ["N° Memo", "Titulo", "Descripcion", "Fecha Respuesta", "Salida de departamento", "N° de Solicitud respondida","Archivo"];
             config.title = "Respuestas";
-            config.formatRow = (registro) => `
+            config.formatRow = (registro) => {
+                 // Verificar si 'numeroRespuesta' no está definido o es null
+        if (!registro.numeroRespuesta) {
+            return ''; // Si no hay numeroRespuesta, no renderizamos la fila
+        }
+                return `
                 <td>${registro.numeroRespuesta}</td>
                 <td>${registro.titulo}</td>
                 <td>${registro.descripcion}</td>
@@ -231,6 +230,7 @@ function getTableConfig(type) {
                     <button id="archivoRespuestas" class="btn btn-link" type="button" onclick="fetchFiles('respuesta', ${registro.id});">ver imagenes</button>
                 </td>
             `;
+        };
             config.buttonHtml = /*`
 
     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Ingresar Respuesta </button>
@@ -703,29 +703,22 @@ function handleFile(file) {
 }
 
 
-/*
-
-// Función para obtener imágenes desde el API
-async function obtenerImagenes(tipoDoc, id) {
-        try {
-            const response = await axios.get(`${API_URL}/archivos/download/${tipoDoc}/${id}`);
-            return response.data; // Supongamos que la API devuelve un array de archivos
-        } catch (error) {
-            console.error('Error al obtener los archivos:', error);
-            throw error;
-        }
-    };
-*/
-
 
 // Función para obtener los archivos desde la API con parámetros dinámicos
 async function fetchFiles(tipoDoc, id) {
+
+    console.log("tipoDoc = "+ tipoDoc)
+    console.log("id = "+ id)
     try {
       
         // Aquí construimos la URL usando los parámetros dinámicos
         const response = await axios.get(`${API_URL}/archivos/download/${tipoDoc}/${id}`);
 
         console.log(response.data)
+        if (response.data == null || response.data.length === 0){
+           fileListElement.innerHTML = '<p>Error: la respuesta no es un arreglo de archivos.</p>';
+        }
+
         displayFiles(response.data);  // Pasamos los datos obtenidos a la función para mostrarlos
     } catch (error) {
         console.error('Error al obtener los archivos:', error);
@@ -853,9 +846,3 @@ function showAlert2(message, type, id) {
         alertDiv.remove();
     };
 };
-
-
-//showAlert2('Rechazo de solicitud éxitoso!', 'success', id);
-
-
-//showAlert2('Hubo un error al rechazar. Inténtalo de nuevo.', 'danger', id);
