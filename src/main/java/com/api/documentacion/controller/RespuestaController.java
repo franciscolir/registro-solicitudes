@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import java.util.Collections;
 @Controller
 @ResponseBody
 @RequestMapping("/respuestas")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class RespuestaController {
 
 
@@ -36,7 +38,7 @@ public class RespuestaController {
         DatosMuestraRespuesta registroRespuesta = null;
         registroRespuesta = respuestaService.registrar(datos);
         return ResponseEntity.ok(registroRespuesta);
-        }
+    }
 
     //Obtener una respuesta
     @GetMapping("/{id}")
@@ -62,6 +64,7 @@ public class RespuestaController {
 
         return ResponseEntity.ok(listaRespuestas);
     }
+
     //Actualizar respuesta
     @PutMapping
     @Transactional
@@ -73,6 +76,7 @@ public class RespuestaController {
 
     //Eliminar respuesta
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
     public ResponseEntity eliminaRespuesta(@RequestBody @Valid DatosEliminaRespuesta datos) {
         respuestaService.eliminarRespuesta(datos);

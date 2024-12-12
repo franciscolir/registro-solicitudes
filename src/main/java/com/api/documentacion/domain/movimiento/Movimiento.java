@@ -53,7 +53,8 @@ public class Movimiento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_id") // Nombre de la columna en la tabla movimientos
-    @JsonManagedReference
+
+
     private Unidad unidad; // Relación ManyToOne
 
     @OneToOne(fetch = FetchType.LAZY)

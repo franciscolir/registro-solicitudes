@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 @Controller
 @ResponseBody
 @RequestMapping("/certificados")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class CertificadoController {
 
 
@@ -74,7 +76,9 @@ public class CertificadoController {
 
     //Eliminar certificado
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
+
     public ResponseEntity<?> eliminaCertificado(@PathVariable Long id) {
         certificadoService.eliminarCertificado(id);
 
