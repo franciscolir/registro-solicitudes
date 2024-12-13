@@ -1,4 +1,4 @@
-package com.api.documentacion.infra.configuration.security;
+/*package com.api.documentacion.infra.configuration.security;
 
 import com.api.documentacion.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -42,3 +42,4 @@ public class SecurityFilter extends OncePerRequestFilter {
         return null;
     }
 }
+*/

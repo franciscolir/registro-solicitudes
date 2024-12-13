@@ -1,6 +1,8 @@
 package com.api.documentacion.infra.configuration.security;
 
+/*
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
+
 import com.api.documentacion.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,3 +24,4 @@ public class AutenticationService implements UserDetailsService {
         return usuarioRepository.findByCorreoElectronico(correoElectronico);
     }
 }
+*/
