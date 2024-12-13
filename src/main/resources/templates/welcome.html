@@ -6,8 +6,14 @@
     <title>Welcome</title>
 </head>
 <body>
+
 <h1>Welcome, <span th:text="${username}">User</span>!</h1>
 <p>You have successfully logged in.</p>
+<a class="navbar-brand" href="#" onclick="">
+    <!-- <img src="/static/img/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"> -->
+    <img th:src="@{/img/logo.png}" alt="Log" type="image/x-icon" rel="icon" class="img-fluid" style="max-width: 50px; height: auto;">
+</a>
+<a href="/index">DOCUMENTACION</a>
 <a href="/logout">Logout</a>
 </body>
 </html>

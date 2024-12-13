@@ -22,9 +22,9 @@ import java.util.List;
 public class InicioController {
 
     // Página de inicio (login)
-    @GetMapping("/hola")
+    @GetMapping("/")
     public String home() {
-        return "home"; // Esto devolverá la plantilla "home.html"
+        return "login"; // Esto devolverá la plantilla "home.html"
     }
 
     // Página de bienvenida después de iniciar sesión
@@ -38,6 +38,11 @@ public class InicioController {
         model.addAttribute("username", username);
 
         return "welcome"; // Esto devolverá la plantilla "welcome.html"
+    }
+
+    @GetMapping("/index")
+    public String index() {
+        return "index"; // Esto devolverá la plantilla "home.html"
     }
 
     // Página de error si el usuario no está autenticado
