@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Agregar los enlaces a los archivos de CSS de Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Login</h2>
+            <!-- Ejemplo en login.html -->
+            <div th:if="${param.logout}">
+                <p>¡Has cerrado sesión correctamente!</p>
+            </div>
+
+
+            <!-- Verificar si hay errores y mostrar el mensaje de error -->
+            <div th:if="${param.error}" class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i> Nombre de usuario o contraseña incorrectos.
+            </div>
+
+            <!-- Formulario de login -->
+            <form th:action="@{/login}" method="post" class="form-group">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+
+            <p class="text-center">
+                <a href="/register">No tienes cuenta? Regístrate aquí.</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Agregar los scripts de Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Agregar el script de Font Awesome para el icono -->
+<script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</body>
+</html>

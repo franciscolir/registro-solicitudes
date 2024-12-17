@@ -5,10 +5,12 @@ import com.api.documentacion.domain.unidad.Unidad;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -18,7 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +43,7 @@ public class Usuario {
     private LocalDateTime fechaIngresoSistema;
 
     @ManyToMany(mappedBy = "invitados",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Evento> eventos = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -72,4 +75,27 @@ public class Usuario {
                 ", activo=" + activo +
                 '}';
     }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (perfil != null) {
+            for (String role : perfil.getRoles()) {
+                authorities.add(new SimpleGrantedAuthority(role));
+            }
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return contraseña;
+    }
+
+    @Override
+    public String getUsername() {
+        return correoElectronico;
+    }
+
 }

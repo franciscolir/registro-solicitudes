@@ -1,34 +1,35 @@
 package com.api.documentacion.infra.configuration.security;
 
+import com.api.documentacion.domain.usuario.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.time.Duration;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
+@Autowired
+    UsuarioService usuarioService;
 
 
     @Bean
@@ -37,16 +38,27 @@ public class SecurityConfig {
                 //.csrf(AbstractHttpConfigurer::disable)  // Desactivar CSRF si es necesario (si no es necesario, se puede eliminar)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/login").permitAll()// Permitir acceso sin autenticación
+                                .requestMatchers("/login", "/logout").permitAll()
                                 .requestMatchers("/static/**").permitAll()
-                                .anyRequest().authenticated()  // Requiere autenticación para cualquier otra solicitud
-                )
+                                .requestMatchers("/register").hasRole("ADMIN")
+                                .requestMatchers("/").authenticated()
+                                .anyRequest().authenticated() )
                 .formLogin(formLogin ->
                         formLogin
-                                //.loginPage("/login")  // Página de login personalizada (descomentado)
-                                //.loginProcessingUrl("/login") // URL donde se procesará el login
+                                .loginPage("/login")  // Página de login personalizada (descomentado)
+                                .loginProcessingUrl("/login") // URL donde se procesará el login
+                                // .failureForwardUrl("/login?error=true")  // En caso de error, redirige a la página de login con un parámetro error
                                 .successHandler(successHandler())  // Redirige después de iniciar sesión
                                 .permitAll()  // Permitir acceso sin autenticación a la página de login
+                )  .logout(logout ->
+                        logout
+                                .logoutUrl("/logout") // URL para logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))  // Solicitud POST para logout
+                                .logoutSuccessUrl("/login?logout") // Redirigir a login después de logout
+                                .invalidateHttpSession(true) // Invalidar la sesión
+                                .clearAuthentication(true) // Limpia la autenticación del contexto de seguridad
+                                .permitAll()  // Permitir que cualquier usuario acceda a la URL de logout
+
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement
@@ -68,19 +80,29 @@ public AuthenticationSuccessHandler successHandler(){
         });
 }
 
-public SessionRegistry sessionRegistry(){
-        return  new SessionRegistryImpl();
-}
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder
+                .userDetailsService(usuarioService)
+                .passwordEncoder(passwordEncoder());
 
+        return authenticationManagerBuilder.build(); // Crear y devolver AuthenticationManager
 
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // Usamos BCrypt para encriptar las contraseñas
+    }
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Autenticación en memoria (usuario y contraseña en código)
-        auth.inMemoryAuthentication()
-                .withUser("user")
-                .password("{noop}password")  // {noop} es un prefijo que indica sin encriptar la contraseña
-                .roles("ROLE_USER");
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(usuarioService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
 }

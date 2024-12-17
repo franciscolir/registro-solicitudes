@@ -13,7 +13,12 @@
     <!-- <img src="/static/img/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"> -->
     <img th:src="@{/img/logo.png}" alt="Log" type="image/x-icon" rel="icon" class="img-fluid" style="max-width: 50px; height: auto;">
 </a>
-<a href="/index">DOCUMENTACION</a>
-<a href="/logout">Logout</a>
+<a href="/home">DOCUMENTACION</a>
+<!-- Enlace para cerrar sesión -->
+<a href="#" onclick="document.getElementById('logoutForm').submit();">Cerrar sesión</a>
+<!-- Formulario oculto para enviar la solicitud POST para el logout -->
+<form id="logoutForm" action="/logout" method="POST" style="display: none;">
+    <!-- El formulario estará oculto y no será visible al usuario -->
+</form>
 </body>
 </html>

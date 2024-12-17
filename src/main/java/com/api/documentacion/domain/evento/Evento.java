@@ -2,6 +2,7 @@ package com.api.documentacion.domain.evento;
 
 import com.api.documentacion.domain.emisor.Emisor;
 import com.api.documentacion.domain.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class Evento {
 
     @ManyToOne
     @JoinColumn(name = "emisor_id")
+    @JsonBackReference
     private Emisor emisor;
 
     @ManyToMany
@@ -41,6 +43,7 @@ public class Evento {
             joinColumns = @JoinColumn(name = "evento_id"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
+    @JsonBackReference
     private Set<Usuario> invitados = new HashSet<>();
 
     public Evento(Long id, CategoriaEvento categoriaEvento, String descripcion, LocalDateTime fecha, Emisor emisor) {
