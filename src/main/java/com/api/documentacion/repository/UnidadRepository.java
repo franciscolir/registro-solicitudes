@@ -13,5 +13,8 @@ public interface UnidadRepository extends JpaRepository<Unidad,Long> {
 
 
     Page<Unidad> findDistinctByActivoTrue(Pageable pageable);
+
+    boolean existsByIdAndActivoTrue(Long id);
+
     ;
 }

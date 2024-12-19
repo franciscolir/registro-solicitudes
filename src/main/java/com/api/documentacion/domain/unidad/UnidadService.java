@@ -4,6 +4,7 @@ import com.api.documentacion.domain.movimiento.EstadoMovimiento;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.unidad.dto.DatosMuestraListaUnidades;
+import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,13 @@ public class UnidadService {
         unidad.eliminarUnidad(id);
     }
     //______________________________________________________
+
+    //valida id de unidad
+    public void validaUnidad (Long id) {
+        if(!unidadRepository.existsByIdAndActivoTrue(id)){
+            throw new ValidacionDeIntegridad("unidad no existe");
+        }
+    }   //__________
 
 }
 

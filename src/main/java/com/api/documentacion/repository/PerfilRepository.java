@@ -15,4 +15,6 @@ public interface PerfilRepository extends JpaRepository<Perfil,Long> {
 
     @Query("SELECT p.id FROM Perfil p WHERE p.rol = :rol")
     Long findIdByRol(@Param("rol") Rol rol);
+
+    boolean existsById(Long id);
 }

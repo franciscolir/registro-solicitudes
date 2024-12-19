@@ -105,6 +105,12 @@ import org.springframework.web.bind.annotation.*;
         return "access-denied"; // Esto devolverá la plantilla "access-denied.html"
     }
 
+    // Página de registro usuario
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {

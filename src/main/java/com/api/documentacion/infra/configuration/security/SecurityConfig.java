@@ -30,7 +30,8 @@ public class SecurityConfig {
 
 @Autowired
     UsuarioService usuarioService;
-
+@Autowired
+PasswordService passwordService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -86,22 +87,24 @@ public AuthenticationSuccessHandler successHandler(){
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder
                 .userDetailsService(usuarioService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordService.passwordEncoder());
 
         return authenticationManagerBuilder.build(); // Crear y devolver AuthenticationManager
 
     }
 
+    /*
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Usamos BCrypt para encriptar las contraseñas
     }
+*/
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(usuarioService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordService.passwordEncoder());
         return authProvider;
     }
 
