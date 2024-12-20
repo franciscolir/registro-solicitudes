@@ -7,8 +7,8 @@
 </head>
 <body>
 
-<h1>Welcome, <span th:text="${username}">User</span>!</h1>
-<p>You have successfully logged in.</p>
+<h1>Bienvenido, <span th:text="${username}"></span>!</h1>
+<p>Haz entrado al departamento virtual de Servicios Generales.</p>
 <a class="navbar-brand" href="#" onclick="">
     <!-- <img src="/static/img/logo.png" class="img-fluid" style="max-width: 50px; height: auto;" alt="Logo"> -->
     <img th:src="@{/img/logo.png}" alt="Log" type="image/x-icon" rel="icon" class="img-fluid" style="max-width: 50px; height: auto;">
@@ -20,5 +20,8 @@
 <form id="logoutForm" action="/logout" method="POST" style="display: none;">
     <!-- El formulario estará oculto y no será visible al usuario -->
 </form>
+<p class="text-center">
+    <a href="/register">Regístrar usuario</a>
+</p>
 </body>
 </html>

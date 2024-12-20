@@ -6,7 +6,7 @@ import java.util.Arrays;
 public record DatosMuestraListaPerfiles(
 
         Long id,
-        String perfil
+        String rol
 ) {
 
     public DatosMuestraListaPerfiles(Perfil perfil) {
