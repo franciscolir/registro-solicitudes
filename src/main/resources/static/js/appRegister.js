@@ -3,6 +3,7 @@
 // Función para cargar perfiles y unidades
 function cargarSelects(URL) {
   // Cargar perfiles
+  /*
   axios.get(`http://localhost:8080/usuarios/perfiles`)
   .then(response => {
     const perfilSelect = document.getElementById('perfil');
@@ -19,7 +20,7 @@ function cargarSelects(URL) {
   })
   .catch(error => {
     console.error('Error al cargar perfiles:', error);
-  });
+  });*/
 
 
   // Cargar unidades
@@ -74,14 +75,14 @@ document.getElementById('registerForm').addEventListener('submit', function (eve
     nombre: document.getElementById('name').value,
     correoElectronico: document.getElementById('email').value,
     contraseña: document.getElementById('password').value,
-    perfil: document.getElementById('perfil').value,
+    //perfil: document.getElementById('perfil').value,
     unidad: document.getElementById('unidad').value,
     subrogante: document.getElementById('subrogante').checked,
     encargado: document.getElementById('encargado').checked,
     comentario: document.getElementById('comentario').value
   };
 
-  axios.post(`http://localhost:8080/usuarios`, formData)
+  axios.post(`http://localhost:8080/usuarios/registrar`, formData)
     .then(response => {
       alert('Registro exitoso!');
       // Redirigir o limpiar el formulario

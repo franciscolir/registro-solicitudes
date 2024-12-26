@@ -35,16 +35,16 @@ public class Perfil {
         // Obtener los roles asociados al perfil
         List<String> roles = new ArrayList<>();
         switch (rol) {
-            case ADMIN:
+            case ROLE_ADMIN:
                 roles.add("ROLE_ADMIN");
                 break;
-            case ENCARGADO:
+            case ROLE_ENCARGADO:
                 roles.add("ROLE_ENCARGADO");
                 break;
-            case USUARIO:
-                roles.add("ROLE_USUARIO");
+            case ROLE_USER:
+                roles.add("ROLE_USER");
                 break;
-            case SUBROGANTE:
+            case ROLE_SUBROGANTE:
                 roles.add("ROLE_SUBROGANTE");
                 break;
             // Agrega más casos según los roles que tengas

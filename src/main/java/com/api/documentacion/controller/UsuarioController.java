@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @ResponseBody
 @RequestMapping("/usuarios")
-@PreAuthorize("hasRole('ROLE_USER')")
+//@PreAuthorize("hasRole('ROLE_USER')")
+
 public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
 
-
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/registrar")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DatosMuestraUsuario> registraUsuario(DatosRegistraUsuario datos) {
         var usuario = usuarioService.registraUsuario(datos);
 
@@ -37,13 +38,14 @@ public class UsuarioController {
 
 
     //Obtener lista de usuarios
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<Page<DatosMuestraListaUsuarios>> listaUsuarios(Pageable paginacion) {
         var listaUsuarios = usuarioService.listaDeUsuarios(paginacion);
 
         return ResponseEntity.ok(listaUsuarios);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/encargados")
     public ResponseEntity<Page<DatosMuestraListaUsuarios>> listaUsuariosEncargados(Pageable paginacion) {
         var listaUsuarios = usuarioService.listaDeUsuariosEncargados(paginacion);
@@ -52,6 +54,7 @@ public class UsuarioController {
     }
 
     //Obtener lista de usuarios
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/perfiles")
     public ResponseEntity<Page<DatosMuestraListaPerfiles>> listaPerfiles(Pageable paginacion) {
         var listaPerfiles = usuarioService.listaDePerfiles(paginacion);

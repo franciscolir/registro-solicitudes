@@ -42,6 +42,7 @@ PasswordService passwordService;
                                 .requestMatchers("/login", "/logout").permitAll()
                                 .requestMatchers("/static/**").permitAll()
                                 .requestMatchers("/register").hasRole("ADMIN")
+                                .requestMatchers("/usuarios/**").hasRole("ADMIN")
                                 .requestMatchers("/").authenticated()
                                 .anyRequest().authenticated() )
                 .formLogin(formLogin ->

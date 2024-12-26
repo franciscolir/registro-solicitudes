@@ -41,12 +41,31 @@ public class UsuarioService implements UserDetailsService {
 
 // POST registrar usuario__________________________________________________
     public DatosMuestraUsuario registraUsuario(DatosRegistraUsuario datos) {
-        validaPerfil(datos.perfil());
-        var perfil = perfilRepository.getReferenceById(datos.perfil());
+        //validaPerfil(datos.perfil());
+        //var perfil = perfilRepository.getReferenceById(datos.perfil());
+
+        // Mapa que relaciona los roles con las acciones
+        Rol rol = null;
+
+        if (datos.encargado()) {
+            rol = Rol.ROLE_ENCARGADO;
+        } else if (datos.subrogante()) {
+            rol = Rol.ROLE_SUBROGANTE;
+        } else {
+            rol = Rol.ROLE_USER;
+        }
+
+        // Recuperar el perfil de una sola vez
+        var rolPerfil = perfilRepository.findIdByRol(rol);
+        var perfil = perfilRepository.getReferenceById(rolPerfil);
+
+
+
         var fechaIngreso = LocalDateTime.now();
         var contraseña = passwordService.encriptarContraseña(datos.contraseña());
         unidadService.validaUnidad(datos.unidad());
         var unidad = unidadRepository.getReferenceById(datos.unidad());
+
         var usuario = new Usuario(
                 null,
                 datos.nombre(),
