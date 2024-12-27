@@ -70,6 +70,10 @@ document.getElementById('registerForm').addEventListener('submit', function (eve
   if (!validarFormulario()) {
     return;
   }
+  const ninguno = document.getElementById('ninguno');
+  if (ninguno.checked) {
+    ninguno.disabled = true; // Deshabilitar temporalmente para evitar que se envíe
+  }
 
   const formData = {
     nombre: document.getElementById('name').value,
@@ -82,14 +86,38 @@ document.getElementById('registerForm').addEventListener('submit', function (eve
     comentario: document.getElementById('comentario').value
   };
 
-  axios.post(`http://localhost:8080/usuarios/registrar`, formData)
+  const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
+  const alertMessage2 = document.getElementById('mensaje');
+  axios.post(`http://localhost:8080/usuarios/registrar`, formData, {
+    headers: {
+        'X-CSRF-TOKEN': csrfToken
+    }
+})
     .then(response => {
-      alert('Registro exitoso!');
-      // Redirigir o limpiar el formulario
+         // Manejo de la respuesta exitosa
+         if (response.status === 200) {
+          alertMessage2.className = 'alert alert-success';
+          alertMessage2.textContent = 'Usuario registrado exitosamente';
+          alertMessage2.style.display = 'block';
+
+          // Agregar el contenido al div después de un pequeño retraso
+          setTimeout(() => {
+              alertMessage2.style.display = 'none';
+        
+              //responseDiv.innerHTML = content;  // Recargar el formulario
+              //document.getElementById("responseDiv").classList.add("d-none")
+              //resetView2();  // Ocultar formulario y volver al inicio
+              }, 1800);
+            }
+            else {
+              console.error('Error:', response.status, response.statusText);
+              mostrarError('Ocurrió un error al registrar el usuario. Intenta nuevamente.');
+            }
     })
     .catch(error => {
       console.error('Error al registrar usuario:', error);
-      mostrarError('Ocurrió un error al registrar el usuario. Intenta nuevamente.');
+      mostrarError('Ocurrió un error al registrar el usuario.');
     });
 });
 

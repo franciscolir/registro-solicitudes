@@ -45,6 +45,7 @@ public class UsuarioService implements UserDetailsService {
         //var perfil = perfilRepository.getReferenceById(datos.perfil());
 
         // Mapa que relaciona los roles con las acciones
+        System.out.println("################################# 3");
         Rol rol = null;
 
         if (datos.encargado()) {
@@ -80,7 +81,7 @@ public class UsuarioService implements UserDetailsService {
                 null,
                 unidad
         );
-
+        System.out.println("################################# 4");
         usuarioRepository.save(usuario);
         return new DatosMuestraUsuario(usuario);
     }

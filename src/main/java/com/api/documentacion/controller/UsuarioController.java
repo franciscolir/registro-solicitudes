@@ -5,16 +5,15 @@ import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import com.api.documentacion.domain.usuario.dto.DatosMuestraUsuario;
 import com.api.documentacion.domain.usuario.dto.DatosRegistraUsuario;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -30,9 +29,20 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registrar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DatosMuestraUsuario> registraUsuario(DatosRegistraUsuario datos) {
-        var usuario = usuarioService.registraUsuario(datos);
+    public ResponseEntity<DatosMuestraUsuario> registraUsuario(@RequestParam("nombre") String nombre,
+                                                               @RequestParam("correoElectronico") String correoElectronico,
+                                                               @RequestParam("contraseña") String contraseña,
+                                                               @RequestParam("unidad") Long unidad,
+                                                               @RequestParam("subrogante") boolean subrogante,
+                                                               @RequestParam("encargado") boolean encargado,
+                                                               @RequestParam("comentario") String comentario,
+                                                               HttpServletRequest request) {
 
+        var datos = new DatosRegistraUsuario(nombre,correoElectronico,contraseña,comentario,subrogante,encargado,unidad);
+
+        System.out.println("################################# 1");
+        var usuario = usuarioService.registraUsuario(datos);
+        System.out.println("################################# 2");
         return ResponseEntity.ok(usuario);
     }
 
