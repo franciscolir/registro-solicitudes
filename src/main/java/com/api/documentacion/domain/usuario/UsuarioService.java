@@ -133,5 +133,11 @@ public class UsuarioService implements UserDetailsService {
     }
 
 
+public void confirmPasswordMethod (String password, String confirmPassword){
+
+        if (!password.equals(confirmPassword)) {
+            throw new ValidacionDeIntegridad("Contraesñas no corresponden");
+        }
+}
 
 }

@@ -1,10 +1,7 @@
 package com.api.documentacion.controller;
 
-import com.api.documentacion.domain.usuario.dto.DatosMuestraListaPerfiles;
-import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
+import com.api.documentacion.domain.usuario.dto.*;
 import com.api.documentacion.domain.usuario.UsuarioService;
-import com.api.documentacion.domain.usuario.dto.DatosMuestraUsuario;
-import com.api.documentacion.domain.usuario.dto.DatosRegistraUsuario;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,22 +24,27 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
+
+    // Página de registro usuario
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/registrar")
+    public String registrarForm(Model model) {
+        model.addAttribute("register", new DatosSubmitFormUsuario());
+        return "register";
+    }
+
+
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registrar")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DatosMuestraUsuario> registraUsuario(@RequestParam("nombre") String nombre,
-                                                               @RequestParam("correoElectronico") String correoElectronico,
-                                                               @RequestParam("contraseña") String contraseña,
-                                                               @RequestParam("unidad") Long unidad,
-                                                               @RequestParam("subrogante") boolean subrogante,
-                                                               @RequestParam("encargado") boolean encargado,
-                                                               @RequestParam("comentario") String comentario,
-                                                               HttpServletRequest request) {
-
-        var datos = new DatosRegistraUsuario(nombre,correoElectronico,contraseña,comentario,subrogante,encargado,unidad);
+    public ResponseEntity<DatosMuestraUsuario> registraUsuario(@ModelAttribute DatosSubmitFormUsuario datos, Model model) {
 
         System.out.println("################################# 1");
-        var usuario = usuarioService.registraUsuario(datos);
+        model.addAttribute("register",datos);
+        usuarioService.confirmPasswordMethod(datos.contraseña, datos.confirmContraseña);
+        var datosRegistraUsuario = new DatosRegistraUsuario(datos.nombre, datos.correoElectronico, datos.comentario, datos.contraseña, datos.subrogante,datos.encargado, datos.unidad);
+        var usuario = usuarioService.registraUsuario(datosRegistraUsuario);
         System.out.println("################################# 2");
         return ResponseEntity.ok(usuario);
     }
