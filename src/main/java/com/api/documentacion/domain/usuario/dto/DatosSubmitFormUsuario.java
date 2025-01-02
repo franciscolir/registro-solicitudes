@@ -1,7 +1,11 @@
 package com.api.documentacion.domain.usuario.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DatosSubmitFormUsuario {
 
 
@@ -10,7 +14,9 @@ public class DatosSubmitFormUsuario {
     public String contraseña;
     public String confirmContraseña;
     public String comentario;
-    public Boolean subrogante;
-    public Boolean encargado;
+    public boolean subrogante;
+    public boolean encargado;
+    public boolean ninguno;
     public Long unidad;
+
 }

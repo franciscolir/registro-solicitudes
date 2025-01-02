@@ -6,7 +6,6 @@ import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
 import com.api.documentacion.domain.usuario.dto.DatosMuestraUsuario;
 import com.api.documentacion.domain.usuario.dto.DatosRegistraUsuario;
 import com.api.documentacion.infra.configuration.security.PasswordService;
-import com.api.documentacion.infra.configuration.security.SecurityConfig;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.PerfilRepository;
 import com.api.documentacion.repository.UnidadRepository;
@@ -40,14 +39,15 @@ public class UsuarioService implements UserDetailsService {
 
 
 // POST registrar usuario__________________________________________________
-    public DatosMuestraUsuario registraUsuario(DatosRegistraUsuario datos) {
-        //validaPerfil(datos.perfil());
+    public void registraUsuario(DatosRegistraUsuario datos) {
+        validaCorreoElectronico(datos.correoElectronico());
         //var perfil = perfilRepository.getReferenceById(datos.perfil());
 
         // Mapa que relaciona los roles con las acciones
         System.out.println("################################# 3");
         Rol rol = null;
-
+        System.out.println("################################# datos encargado" + datos.encargado());
+        System.out.println("################################# datos subrogante" + datos.subrogante());
         if (datos.encargado()) {
             rol = Rol.ROLE_ENCARGADO;
         } else if (datos.subrogante()) {
@@ -55,7 +55,7 @@ public class UsuarioService implements UserDetailsService {
         } else {
             rol = Rol.ROLE_USER;
         }
-
+        System.out.println("################################# rol" + rol);
         // Recuperar el perfil de una sola vez
         var rolPerfil = perfilRepository.findIdByRol(rol);
         var perfil = perfilRepository.getReferenceById(rolPerfil);
@@ -81,9 +81,9 @@ public class UsuarioService implements UserDetailsService {
                 null,
                 unidad
         );
-        System.out.println("################################# 4");
+        System.out.println("################################# usuario" + usuario);
         usuarioRepository.save(usuario);
-        return new DatosMuestraUsuario(usuario);
+        //new DatosMuestraUsuario(usuario);
     }
 
 
@@ -113,9 +113,9 @@ public class UsuarioService implements UserDetailsService {
     }   //__________
 
     //valida id de perfil
-    public void validaPerfil (Long id) {
-        if(!perfilRepository.existsById(id)){
-            throw new ValidacionDeIntegridad("perfil no existe");
+    public void validaCorreoElectronico (String correoElectronico) {
+        if(usuarioRepository.existsByCorreoElectronico(correoElectronico)){
+            throw new ValidacionDeIntegridad("Correo electronico ya fue registrado");
         }
     }   //__________
 
