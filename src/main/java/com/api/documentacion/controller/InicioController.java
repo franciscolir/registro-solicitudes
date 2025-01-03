@@ -98,9 +98,9 @@ import java.io.IOException;
        // return "index";
     //}
     @GetMapping("/home")
-    public void redirectToExternalSite(HttpServletResponse response) throws IOException {
-        //response.sendRedirect("https://www.example.com/home.html");
-        response.sendRedirect("file:///C:/Users/Francisco%20Lira/registro-documentacion/html/index.html");
+    public String showHomePage(Model model) {
+        // Aquí puedes agregar lógica de seguridad si es necesario
+        return "redirect:/html/index.html";  // Redirige a un archivo fuera de los recursos estáticos
     }
 
 

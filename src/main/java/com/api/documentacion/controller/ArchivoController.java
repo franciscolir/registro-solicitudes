@@ -21,7 +21,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/archivos")
-@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 public class ArchivoController {
 
     @Autowired

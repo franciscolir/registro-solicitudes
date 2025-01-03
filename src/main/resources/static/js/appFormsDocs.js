@@ -745,11 +745,17 @@ async function enviarFormularioArchivo(id, tipo) {
       // Elemento de alerta
       const alertMessage2 = document.getElementById('mensaje');
 
+        // Obtener el token CSRF
+        const csrfToken = getCsrfToken();
+        console.log("token "+ getCsrfToken);
+
       try {
           // Enviar los datos como FormData utilizando axios
           const response = await axios.post('http://localhost:8080/archivos/upload', formData, {
               headers: {
-                  'Content-Type': 'multipart/form-data' // Indicamos que estamos enviando archivos
+                  'Content-Type': 'multipart/form-data', // Indicamos que estamos enviando archivos
+                  
+            'X-CSRF-TOKEN': csrfToken  // Incluir el token CSRF en el header
               }
           });
 
@@ -887,12 +893,18 @@ console.log("FormJson:", formJson);
 const alertMessage = document.getElementById('mensaje');
 
 
+  // Obtener el token CSRF
+  const csrfToken = getCsrfToken();
+
 
   //############################################################
   try {
     // Enviar los datos del formulario a la API
     const response = await axios.post(`http://localhost:8080/${endpoint}`, formJson, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' ,
+        'X-CSRF-TOKEN': csrfToken,  // Incluir el token CSRF en el header
+        'Authorization': `Bearer ${token}` // Incluir el token de autenticación
+      }
     });
 
     // Si la respuesta es exitosa, devolverla
@@ -1110,3 +1122,9 @@ function resetView2() {
   loadDataTabla();
   cerrarFormularioExistente();
 }
+
+    // Función para obtener el token CSRF del meta tag
+    function getCsrfToken() {
+      console.log("token "+ document.querySelector('meta[name="_csrf"]').getAttribute('content'));
+      return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    }
