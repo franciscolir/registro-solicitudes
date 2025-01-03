@@ -14,9 +14,10 @@ public class DatosSubmitFormUsuario {
     public String contraseña;
     public String confirmContraseña;
     public String comentario;
-    public boolean subrogante;
-    public boolean encargado;
-    public boolean ninguno;
+    //public boolean subrogante;
+    //public boolean encargado;
+    //public boolean ninguno;
+    public String rol;
     public Long unidad;
 
 }

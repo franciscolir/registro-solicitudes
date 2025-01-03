@@ -1,6 +1,7 @@
 package com.api.documentacion.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 
 @Controller
@@ -90,9 +93,14 @@ import org.springframework.web.bind.annotation.*;
 
 
     // Página de bienvenida después de iniciar sesión
+    //@GetMapping("/home")
+    //public String home() {
+       // return "index";
+    //}
     @GetMapping("/home")
-    public String home() {
-        return "index";
+    public void redirectToExternalSite(HttpServletResponse response) throws IOException {
+        //response.sendRedirect("https://www.example.com/home.html");
+        response.sendRedirect("file:///C:/Users/Francisco%20Lira/registro-documentacion/html/index.html");
     }
 
 

@@ -1,10 +1,7 @@
 package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.unidad.UnidadService;
-import com.api.documentacion.domain.usuario.dto.DatosMuestraListaPerfiles;
-import com.api.documentacion.domain.usuario.dto.DatosMuestraListaUsuarios;
-import com.api.documentacion.domain.usuario.dto.DatosMuestraUsuario;
-import com.api.documentacion.domain.usuario.dto.DatosRegistraUsuario;
+import com.api.documentacion.domain.usuario.dto.*;
 import com.api.documentacion.infra.configuration.security.PasswordService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.PerfilRepository;
@@ -39,22 +36,27 @@ public class UsuarioService implements UserDetailsService {
 
 
 // POST registrar usuario__________________________________________________
-    public void registraUsuario(DatosRegistraUsuario datos) {
-        validaCorreoElectronico(datos.correoElectronico());
-        //var perfil = perfilRepository.getReferenceById(datos.perfil());
-
+    public void registraUsuario(DatosSubmitFormUsuario datosForm) {
+        System.out.println("################################# datos " + datosForm);
         // Mapa que relaciona los roles con las acciones
-        System.out.println("################################# 3");
         Rol rol = null;
-        System.out.println("################################# datos encargado" + datos.encargado());
-        System.out.println("################################# datos subrogante" + datos.subrogante());
-        if (datos.encargado()) {
+        boolean encargado = false;
+        boolean subrogante = false;
+
+        if (datosForm.rol.equals("encargado")) {
             rol = Rol.ROLE_ENCARGADO;
-        } else if (datos.subrogante()) {
+            encargado = true;
+        } else if (datosForm.rol.equals("subrogante")) {
             rol = Rol.ROLE_SUBROGANTE;
+            subrogante = true;
         } else {
             rol = Rol.ROLE_USER;
         }
+
+        var datos = new DatosRegistraUsuario(datosForm.nombre, datosForm.correoElectronico, datosForm.contraseña, datosForm.comentario, subrogante, encargado, datosForm.unidad);
+        validaCorreoElectronico(datos.correoElectronico());
+
+
         System.out.println("################################# rol" + rol);
         // Recuperar el perfil de una sola vez
         var rolPerfil = perfilRepository.findIdByRol(rol);
@@ -114,10 +116,18 @@ public class UsuarioService implements UserDetailsService {
 
     //valida id de perfil
     public void validaCorreoElectronico (String correoElectronico) {
+        System.out.println("################################# 2.5");
         if(usuarioRepository.existsByCorreoElectronico(correoElectronico)){
+            System.out.println("################################# 2.6");
             throw new ValidacionDeIntegridad("Correo electronico ya fue registrado");
         }
     }   //__________
+
+    public Usuario getByCorreoElectronico(String correoElectronico) {
+        return usuarioRepository.findByCorreoElectronico(correoElectronico)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + correoElectronico));
+    }
+
 
 
 
