@@ -659,20 +659,35 @@ resetView();
 
 
 
-document.getElementById('fileForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar el envío tradicional del formulario
-
-    // Obtener el archivo seleccionado
+function setupFileFormListener() {
+    const fileForm = document.getElementById('fileForm');
     const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
 
-    // Verificar si se ha seleccionado un archivo
-    if (file) {
-        handleFile(file);
+    if (fileForm && fileInput) {
+        fileForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Evitar el envío tradicional del formulario
+
+            // Obtener el archivo seleccionado
+            const file = fileInput.files[0];
+
+            // Verificar si se ha seleccionado un archivo
+            if (file) {
+                handleFile(file);
+            } else {
+                alert('Por favor selecciona un archivo.');
+            }
+        });
     } else {
-        alert('Por favor selecciona un archivo.');
+        console.error('No se encontró el formulario o el input de archivo en el DOM.');
     }
-});
+}
+
+// Llamar a la función en el contexto adecuado, por ejemplo, después de que el DOM haya sido completamente cargado
+document.addEventListener('DOMContentLoaded', setupFileFormListener);
+
+
+
+
 
 function handleFile(file) {
     const previewContainer = document.getElementById('imagePreview');

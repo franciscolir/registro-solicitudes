@@ -2,6 +2,9 @@ let ultimoNumeroRespuesta3;
 let documentoTipo;
 let documentoId;
 
+let pass;
+console.log ("token en declaracion de pass" + pass)
+
 function getFormConfig(formType) {
 
   
@@ -144,7 +147,7 @@ function getFormConfig(formType) {
 
 async function crearFormulario( formType, unidad = "",nombreUnidad = "", movimiento = "", respuesta = "", certificado = "") {
     
-  //console.log ("entra a crearForm ###############");
+ 
   cerrarFormularioExistente(); // Cerrar el formulario anterior, si existe
   
   document.getElementById("mainContent").classList.add("d-none");
@@ -259,9 +262,6 @@ if (invitadoField) {
             </form>
         </div>
     `;
-    //console.log(unidad + " segundo unidad dentro de creraForm y antes de loasd ###############");
-
-
     
   agregarManejadores(formularioDiv, formType, formConfig.url, movimiento );
   document.getElementById("formularioContainer").appendChild(formularioDiv);
@@ -270,66 +270,6 @@ if (invitadoField) {
   document.getElementById("tableSection").classList.add("d-none");
 }
 
-/*
-function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
-  const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
-  const form = formularioDiv.querySelector(`.${formType}Form`);
-  const mensajeDiv = formularioDiv.querySelector("#mensaje");
-
-
-
-
-  console.log(formularioDiv+"form")
-  if (btnCerrar) {
-    btnCerrar.addEventListener("click", () => {
-      formularioDiv.remove();
-      document.getElementById("mainContent").classList.remove("d-none");
-    });
-  }
-
-  if (form) {
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      try {
-        const resultado = await enviarFormulario2(form, endpoint, formularioDiv);
-       
-        if (response.status === 200) {
-        mensajeDiv.textContent = `${
-          formType.charAt(0).toUpperCase() + formType.slice(1)
-        } enviado con éxito a`;
-        mensajeDiv.style.display = "block";
-        mensajeDiv.className = 'alert alert-success';
-
-       
-/*
-        setTimeout(() => {
-          formularioDiv.remove();
-          console.log("aqui deberia eliminar formulario")
-          //document.getElementById("mainContent").classList.remove("d-none");
-        }, 1700); // Elimina el formulario después de 2 
-        */
-       // }
-        /*} 
-      else {
-
-        mensajeDiv.className = 'alert alert-danger';
-        mensajeDiv.textContent = errorMessage;
-        mensajeDiv.style.display = 'block';
-      }*//*
-      } catch (error) {
-        let errorMessage = 'INICIAL';
-        errorMessage = error.response.data || error.response.statusText || 'SEGUNDO';
-        mensajeDiv.textContent = `Error desconocido: ${error.message}`|| "Hubo un error al enviar el formulario";
-        mensajeDiv.style.display = "block";
-        mensajeDiv.className = 'alert alert-danger';
-      }
-    });
-  } else {
-    console.error(`No se encontró el formulario con la clase: ${formType}Form`);
-  }
-}*/
-
 document.body.addEventListener("click", async (event) => {
     //loadDataUltimaRespuesta3 ();
   const target = await event.target.closest(
@@ -337,14 +277,11 @@ document.body.addEventListener("click", async (event) => {
   );
 
   if (target) {
-    //const unidad = event.target.getAttribute("data-unidad");
     const unidad = Number(event.target.getAttribute("data-unidad"));
-
     const nombreUnidad = event.target.getAttribute("data-nombreUnidad");
     const movimiento = event.target.getAttribute("data-movimiento");
     //const respuesta = event.target.getAttribute("data-ultimaRespuesta");
 
-    //console.log(movimiento+" numero movimineto en form")
 
     switch (event.target.id) {
       case "abrirFormCertificado":
@@ -404,14 +341,12 @@ async function obtenerTipoEvento() {
 async function obtenerDatos(url) {
   try {
     const response = await axios.get(url);
-    //console.log(response.data.content+" obtener datos ############")
     return response.data.content; // Asume que los datos son un array de objetos con { id, nombre }
   } catch (error) {
     console.error(`Error al obtener datos de ${url}:`, error);
     return [];
   }
 }
-
 
 
 // Función para mostrar mensajes
@@ -435,8 +370,8 @@ const loadDataUltimaRespuesta3 = async () => {
       const response = await axios.get('http://localhost:8080/respuestas/last');
       
       // Obtener los datos de la respuesta directamente, si es un solo objeto
-      const item = response.data;  // Suponiendo que response.data es el objeto con la información de la última respuesta
-      
+      const item = response.data;  
+
       if (item && item.numeroRespuesta !== undefined) {
           // Obtener el número de respuesta y sumarle 1
           const ultimoNumeroRespuesta3 = item.numeroRespuesta + 1;
@@ -450,210 +385,6 @@ const loadDataUltimaRespuesta3 = async () => {
       alert('No se pudo cargar los datos. Verifica la URL y la conexión a Internet.');
   }
 };
-
-
-
-
-
-/*
-async function enviarFormulario2(form, endpoint, formularioDiv ) {
-  // Crear un objeto para almacenar los datos del formulario
-  const formData = new FormData(form);
-  const formJson = {};
-
-  // Recopilar los datos del formulario en un objeto
-  formData.forEach((value, key) => {
-    formJson[key] = value;
-  });
-
- 
-    documentoTipo = endpoint;  // Almacenar el value de "id"
-    console.log("tipo capturado:", documentoTipo);  // Opcional, solo para depuración
-  
-
-  // Verificar si el campo de invitados es múltiple
-  const invitadosField = form.querySelector('select[name="invitados"]');
-  if (invitadosField) {
-    // Convertir los valores seleccionados a un array de enteros
-    const invitados = Array.from(invitadosField.selectedOptions)
-      .map(option => parseInt(option.value, 10)) // Convertimos cada opción seleccionada a número
-      .filter(value => !isNaN(value)); // Filtrar valores no numéricos
-
-    // Asignamos el array de invitados al objeto formJson
-    formJson.invitados = invitados;
-  }
-
-  // Mostrar el objeto formJson en la consola para depuración
-  console.log("FormJson:", formJson);
-
-  // Elemento de alerta
-  const alertMessage = document.getElementById('mensaje');
-
-  try {
-    // Enviar los datos como JSON utilizando axios
-    const response = await axios.post(`http://localhost:8080/${endpoint}`, formJson, {
-      headers: {
-        'Content-Type': 'application/json' // Indicamos que estamos enviando JSON
-      }
-    });
-
-    // Manejo de la respuesta exitosa
-    if (response.status === 200) {
-      
-      alertMessage.className = 'alert alert-success';
-      alertMessage.textContent = 'Documento enviado exitosamente';
-      alertMessage.style.display = 'block';
-
-
-
-
-// Supongamos que response es el objeto JSON recibido
-if (typeof response === 'object' && response !== null) {
-  const responseDiv = document.getElementById('responseDiv');
-  const form = document.getElementById('formulario-contenido');
-  // Limpiar cualquier contenido previo del div
-  responseDiv.innerHTML = ''; 
-  
-  // Si 'data' existe en la respuesta, asignar los datos
-  const item = response.data || response;
-
-  // Crear el contenido que se agregará al div
-  let content = '<table class="table table-striped">';
-  
-  // Iniciar la tabla
-  content += `<thead>
-                  <tr>
-                    <th>
-                    <h1 class = > 
-                        ${
-                            endpoint === "certificados" ? `<strong>Certificado registrado: </strong>` : 
-                            endpoint === "respuestas" ? `<strong>Respuesta registrada: </strong>`:
-                            endpoint === "solicitudes" ? `<strong>Solicitud registrada: </strong>`:
-                            `<strong>Evento registrado : </strong>`
-                        }
-                    </h1>
-                    </th>
-                  </tr>
-              </thead>
-              <tbody class="table-group-divider">
-  `;
-  
-  // Recorrer las propiedades del objeto y agregarlas a la tabla
-  for (let key in item) {
-      if (item.hasOwnProperty(key)) {
-          let value = item[key];
-          
-          // Eliminar corchetes en caso de que el valor sea una lista o cadena con corchetes
-          if (typeof value === 'string') {
-              value = value.replace(/\[|\]/g, '');  // Eliminar los corchetes
-          }
-          
-          // Almacenar el valor de "id" en la variable documentoId
-      // Almacenar el valor de "id" en la variable documentoId
-      if (key === "id") {
-        documentoId = value;  // Almacenar el value de "id"
-        console.log("ID capturado:", documentoId);  // Opcional, solo para depuración
-      }
-          // Añadir una fila por cada clave-valor
-          // formatea campo invitado y elimina valor de id
-          content += `
-          
-                <tr>
-                  <td>
-                      ${
-                        key === "invitado" ? `<strong>Invitados: </strong>${value}` :
-                        key === "numeroSolicitud" ? `<strong>Solicitud N° </strong>${value}` :
-                        key === "numeroCertificado" ? `<strong>Certificado N° </strong>${value}` :
-                        key === "numeroRespuesta" ? `<strong>Respuesta N° </strong>${value}` :
-                        key === "id" ? "" :value
-                      }
-                  </td>
-                </tr>
-                  `;
-      }
-  }
-  //agregar form de imagenes
- /* content +=  ` <tr>
-                  <td>
-                    <div class="container__uploadForm">
-                      <h2>Guardar respaldo diguital</h2>
-                      <p>Subir imagen de documentos</p>
-                      <form id="uploadForm">
-                        <input type="file" id="filesInput" name="files" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"> <br>
-                        <button type="submit" class="btn btn-outline-success ms-auto">Subir Archivos</button>
-                      </form>
-                      <div id="message"></div>
-                    </div>
-                  </td>
-                </tr>
-                   `;*//*
-
-  content += `
-                <tr>
-                  <td>
-                    <h2>Guardar respaldo diguital</h2>
-                    <button type="" class="btn btn-primary ms-auto" onclick= enviarFormularioArchivo();>Subir Archivos</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button type="close" class="btn btn-secondary ms-auto" onclick= resetView(); loadData();>Cerrar</button>
-                  </td>
-                </tr>
-                
-                `;
-  // Cerrar la tabla
-  content += '</tbody> </table>';
-      
-  // Agregar el contenido al div
-  setTimeout(() => {
-    alertMessage.style.display = 'none';
-    //resetView();  // Ocultar formulario y volver al inicio
-    document.getElementById("tableSection").classList.add("d-none");
-    //document.getElementById("mainContent").classList.add("d-none");
-    //document.getElementById("responseDiv").style.display ="block";
-    formularioDiv.remove();
-    responseDiv.innerHTML = content;
-    //loadData();   // Recargar solo la tabla
-  }, 1800);
-  ;
-} else {
-  console.error("Response is not a valid object");
-}
-/*
-setTimeout(() => {
-  alertMessage.style.display = 'none';
-  //resetView();  // Ocultar formulario y volver al inicio
-  //document.getElementById("tableSection").classList.add("d-none");
-  document.getElementById("formularioContainer").classList.add("d-none");
-  document.getElementById("responseDiv").classList.add("d-none");
-  //loadData();   // Recargar solo la tabla
-}, 1800);
-*//*
-    } else {
-      console.error('Error:', response.status, response.statusText);
-    }
-    return response
-  } catch (error) {
-    console.error("Error al enviar el formulario:", error);
-    let errorMessage = 'Hubo un error al enviar el formulario. Intenta nuevamente.';
-
-    // Si el servidor responde con un error 400, mostrar el mensaje de error
-    if (error.response && error.response.status === 400 && error.response.data) {
-      errorMessage = `Error: ${error.response.data}`;
-    }
-
-    alertMessage.className = 'alert alert-danger';
-    alertMessage.textContent = errorMessage;
-    alertMessage.style.display = 'block';
-
-    setTimeout(() => {
-      alertMessage.style.display = 'none';
-    }, 3000);
-    return error
-  }
-}
-*/
 
 function formatText(text) {
   if (!text) return "";
@@ -745,9 +476,7 @@ async function enviarFormularioArchivo(id, tipo) {
       // Elemento de alerta
       const alertMessage2 = document.getElementById('mensaje');
 
-        // Obtener el token CSRF
-        const csrfToken = getCsrfToken();
-        console.log("token "+ getCsrfToken);
+      console.log("token dentro de post archivo" + pass)
 
       try {
           // Enviar los datos como FormData utilizando axios
@@ -755,7 +484,7 @@ async function enviarFormularioArchivo(id, tipo) {
               headers: {
                   'Content-Type': 'multipart/form-data', // Indicamos que estamos enviando archivos
                   
-            'X-CSRF-TOKEN': csrfToken  // Incluir el token CSRF en el header
+            'X-CSRF-TOKEN': pass  // Incluir el token CSRF en el header
               }
           });
 
@@ -798,12 +527,6 @@ async function enviarFormularioArchivo(id, tipo) {
 }
 
 
-
-//loadDataUltimaRespuesta3();
-
-
-
-
 // Función principal que maneja el formulario y los errores
 function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
   const btnCerrar = formularioDiv.querySelector(".btn-cerrar");
@@ -834,7 +557,12 @@ function agregarManejadores(formularioDiv, formType, endpoint, movimiento) {
             mostrarMensaje(mensajeDiv, `${formType.charAt(0).toUpperCase() + formType.slice(1)} enviado con éxito`, 'success');
             // Llamar a la función para renderizar contenido adicional
             setTimeout(() => {
+              console.log("######################## contenido adicional")
+              console.log("######################## resultado "+ resultado)
+              console.log("######################## formularioDiv "+ formularioDiv)
+              console.log("######################## endpoint "+ endpoint)
             mostrarContenidoAdicional(resultado, formularioDiv, endpoint);
+            console.log("######################## despues de funcion mostrar contenido")
           }, 1700); // Elimina el formulario después de 2 
             
        } else {
@@ -893,17 +621,15 @@ console.log("FormJson:", formJson);
 const alertMessage = document.getElementById('mensaje');
 
 
-  // Obtener el token CSRF
-  const csrfToken = getCsrfToken();
-
+console.log("token dentro de post form" + pass)
 
   //############################################################
   try {
     // Enviar los datos del formulario a la API
     const response = await axios.post(`http://localhost:8080/${endpoint}`, formJson, {
       headers: { 'Content-Type': 'application/json' ,
-        'X-CSRF-TOKEN': csrfToken,  // Incluir el token CSRF en el header
-        'Authorization': `Bearer ${token}` // Incluir el token de autenticación
+        'X-CSRF-TOKEN': pass,  // Incluir el token CSRF en el header
+   
       }
     });
 
@@ -936,6 +662,11 @@ function mostrarMensaje(mensajeDiv, mensaje, tipo) {
 
 // Función para manejar la visualización del contenido adicional
 function mostrarContenidoAdicional(resultado, formularioDiv, endpoint) {
+
+  console.log("************************ contenido adicional dentro de funcion contenido adicional")
+  console.log("************************ resultado "+ resultado)
+  console.log("************************ formularioDiv "+ formularioDiv)
+  console.log("************************ endpoint "+ endpoint)
   formularioDiv.remove();
   const responseDiv = document.getElementById('responseDiv');
  // const form = document.getElementById('formulario-contenido');
@@ -1124,7 +855,13 @@ function resetView2() {
 }
 
     // Función para obtener el token CSRF del meta tag
-    function getCsrfToken() {
-      console.log("token "+ document.querySelector('meta[name="_csrf"]').getAttribute('content'));
-      return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    async function getCsrfToken() {
+      const response = await fetch('/pass');
+      const data = await response.json();
+      const csrfToken = data.token;
+      console.log("token " + csrfToken);
+      pass = csrfToken;
+      return csrfToken;
     }
+    getCsrfToken()
+    

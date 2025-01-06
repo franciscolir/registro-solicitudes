@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -125,6 +127,15 @@ import java.io.IOException;
         // Devolver respuesta exitosa
         return ResponseEntity.ok("Logout exitoso");
     }
+
+
+    //test para enviar form desde index
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @GetMapping("/pass")
+    public ResponseEntity<CsrfToken> getCsrfToken(CsrfToken csrfToken) {
+        return ResponseEntity.ok(csrfToken);
+    }
+
 
 
 }

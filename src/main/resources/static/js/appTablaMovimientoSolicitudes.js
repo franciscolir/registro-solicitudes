@@ -6,6 +6,7 @@ let tableBody;
 let ultimoNumeroRespuesta1;
 // Importar la función para obtener el número de respuesta
 
+let pass2;
 
 const loadData = async () => {
     
@@ -244,6 +245,11 @@ const submitForm = async (event, formId, id) => {
 
     let data;
     const url = 'http://localhost:8080/movimientos';
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': pass2  // Incluir el token CSRF en el header
+    };
+
     
     if (formId === 'form1') {
         const unidad = document.getElementById('unidad').value;
@@ -258,7 +264,7 @@ const submitForm = async (event, formId, id) => {
         const endpoint = `${url}/asignar`;
         
         try {
-            const response = await axios.put(endpoint, data);
+            const response = await axios.put(endpoint, data, { headers });
             console.log('Respuesta del servidor (form1):', response.data);
             showAlert('Asignacion de solicitud éxitosa!', 'success', id);
             setTimeout(() => {
@@ -280,7 +286,7 @@ const submitForm = async (event, formId, id) => {
         const endpoint = `${url}/rechazar`;
 
         try {
-            const response = await axios.put(endpoint, data);
+            const response = await axios.put(endpoint, data, { headers });
             console.log('Respuesta del servidor (form2):', response.data);
             showAlert('Rechazo de solicitud éxitoso!', 'success', id);
             setTimeout(() => {
@@ -379,4 +385,13 @@ function obtenerImagenes(tipo, id) {
         });
   }
 
-  
+      // Función para obtener el token CSRF del meta tag
+      async function getCsrfToken() {
+        const response = await fetch('/pass');
+        const data = await response.json();
+        const csrfToken = data.token;
+        console.log("token " + csrfToken);
+        pass2 = csrfToken;
+        return csrfToken;
+      }
+      getCsrfToken()
