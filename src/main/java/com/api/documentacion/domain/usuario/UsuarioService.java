@@ -107,6 +107,8 @@ public class UsuarioService implements UserDetailsService {
 
     }
 
+
+
     //valida id de usuario
     public void validaSiExisteIdAndActivoTrue (Long id) {
         if(!usuarioRepository.existsByIdAndActivoTrue(id)){

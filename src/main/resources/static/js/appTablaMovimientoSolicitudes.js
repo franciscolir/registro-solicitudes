@@ -7,7 +7,7 @@ let ultimoNumeroRespuesta1;
 // Importar la función para obtener el número de respuesta
 
 let pass2;
-
+let roles;
 const loadData = async () => {
     
     try {
@@ -21,7 +21,8 @@ const loadData = async () => {
 
             // Llama a getNumero y almacena el valor
             
-
+            roles = await getRoles();
+            console.log("roles en loadData: " + roles)
             // Iterar sobre cada solicitud
             solicitudes.forEach(item => {
                 const botonesOpciones = getBotonesOpciones(item);
@@ -30,6 +31,7 @@ const loadData = async () => {
                     .replace(/_/g, ' ')
                     .replace(/\b\w/g, letra => letra.toUpperCase());
 
+                    
                 rows += `
                     <tr>
                         <th id="numeroSolicitud" scope="row">${item.solicitud}</th>
@@ -42,6 +44,10 @@ const loadData = async () => {
                                 <li class="list-group">${estadoFormatted || 'No hay datos'}</li>
                             </ul>
                         </td>
+
+
+
+                        
                         <td class="fila d-md-table-cell d-none">
                             <ul class="list-group">
                                 <h3 class="title">Asignado a:</h3>
@@ -55,6 +61,7 @@ const loadData = async () => {
                                             <h5>${estadoFormatted}</h5>
                                             <li class="list-group">${item.comentarioRechazado}</li>
                                         ` : `
+                                    ${roles === "ROLE_ENCARGADO" || roles === "ROLE_SUBROGANTE" ? `
                                             <label>
                                                 <input type="radio" name="action${item.id}" onchange="selectForm(1, ${item.id})">
                                                 Asignar Unidad
@@ -63,12 +70,20 @@ const loadData = async () => {
                                                 <input type="radio" name="action${item.id}" onchange="selectForm(2, ${item.id})">
                                                 Rechazar
                                             </label>
+                                            `: "No asignado" }
+
+
                                             <div id="formContainer${item.id}"></div>
                                         `}
                                     </li>
                                 `}
                             </ul>
-                        </td>
+                        </td> 
+
+
+
+
+
                            <td class="mb-3 fila d-md-table-cell d-none">
             <ul class="mb-3 list-group">
                 <h3 class="title">Certificado</h3>
@@ -126,7 +141,9 @@ const getBotonesOpciones = (item) => {
             <div class="btn-group d-md-table-cell d-none">
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
+                ${roles === "ROLE_ENCARGADO" || roles === "ROLE_SUBROGANTE" ? `
                     <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${ultimoNumeroRespuesta1}" onclick="">ingresar Respuesta</a></li>
+                    `: ""}
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
                 </ul>
             </div>
@@ -181,6 +198,8 @@ const selectForm = (formNumber, id) => {
         console.error(`No se encontró el contenedor para la solicitud ID: ${id}`);
     }
 };
+
+
 
 const getForm1 = (id) => `
 <form id="form1"> 
@@ -242,7 +261,8 @@ const loadUnidadOptions = async (id) => {
 
 const submitForm = async (event, formId, id) => {
     event.preventDefault();
-
+  
+    console.log("pass2 antes del IF: " + pass2)
     let data;
     const url = 'http://localhost:8080/movimientos';
     const headers = {
@@ -250,7 +270,7 @@ const submitForm = async (event, formId, id) => {
         'X-CSRF-TOKEN': pass2  // Incluir el token CSRF en el header
     };
 
-    
+
     if (formId === 'form1') {
         const unidad = document.getElementById('unidad').value;
         const comentarioAsignado = document.getElementById('inputComentarioAsignar').value;
@@ -392,6 +412,53 @@ function obtenerImagenes(tipo, id) {
         const csrfToken = data.token;
         console.log("token " + csrfToken);
         pass2 = csrfToken;
-        return csrfToken;
+        //return csrfToken;
+        return pass2
       }
       getCsrfToken()
+
+            
+// Función para obtener los roles con fetch y manejar el token CSRF
+async function getRoles() {
+    //const csrfToken = getCSRFToken();  // Obtener el token CSRF desde el meta tag
+    //console.log("Token CSRF:", csrfToken);
+
+    // Verificar si el token CSRF es válido
+    //if (!csrfToken) {
+      //  console.error("No se encontró el token CSRF.");
+        //return;
+    //}
+
+    try {
+        // Realizar la solicitud a la API para obtener los roles
+        const response = await fetch('/usuarios/roles', {
+            method: 'GET',  // Método GET para obtener los roles
+            headers: {
+                //'X-XSRF-TOKEN': csrfToken,  // Enviar el token CSRF en los encabezados
+                'Content-Type': 'application/json',  // Tipo de contenido
+            }
+        });
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error("Error al obtener los roles. Código de respuesta: " + response.status);
+        }
+
+        // Parsear la respuesta a JSON
+        const data = await response.json();
+        
+        // Asumir que los roles están dentro de un campo 'roles' en la respuesta
+        roles = data || []; // Si no existe 'roles', se asigna un arreglo vacío
+
+        console.log("Roles obtenidos:", roles);
+
+        // Retornar los roles obtenidos
+        return roles;
+
+    } catch (error) {
+        console.error("Error al obtener los roles:", error);
+        return [];  // Retornar un arreglo vacío en caso de error
+    }
+}
+
+
