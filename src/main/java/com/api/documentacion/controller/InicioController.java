@@ -88,6 +88,7 @@ import java.io.IOException;
 
 
     // Página de bienvenida después de iniciar sesión
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/welcome")
     public String welcome() {
         return "welcome";
@@ -99,6 +100,7 @@ import java.io.IOException;
     //public String home() {
        // return "index";
     //}
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/home")
     public String showHomePage(Model model) {
         // Aquí puedes agregar lógica de seguridad si es necesario
@@ -112,7 +114,7 @@ import java.io.IOException;
         return "access-denied"; // Esto devolverá la plantilla "access-denied.html"
     }
 
-
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         // Limpiar el contexto de seguridad
@@ -130,7 +132,7 @@ import java.io.IOException;
 
 
     //test para enviar form desde index
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/pass")
     public ResponseEntity<CsrfToken> getCsrfToken(CsrfToken csrfToken) {
         return ResponseEntity.ok(csrfToken);

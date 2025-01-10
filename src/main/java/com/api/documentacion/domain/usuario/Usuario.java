@@ -30,11 +30,22 @@ public class Usuario implements UserDetails {
     private String correoElectronico;
     private String contraseña;
     private String comentario;
-
+/*
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "perfil_id")
     @JsonManagedReference
     private Perfil perfil;
+*/
+    // asigna mas de un perfil por usuario
+
+    @ManyToMany(fetch = FetchType.EAGER)  // Relación ManyToMany para permitir varios perfiles
+    @JoinTable(
+            name = "usuario_perfil",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "perfil_id")
+    )
+    @JsonManagedReference
+    private Set<Perfil> perfiles = new HashSet<>();
 
     private Boolean activo;
     private Boolean subrogante;
@@ -52,13 +63,12 @@ public class Usuario implements UserDetails {
     private Unidad unidad;
 
 
-    public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Perfil perfil, Boolean activo, LocalDateTime fechaIngresoSistema) {
+    public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Boolean activo, LocalDateTime fechaIngresoSistema) {
         this.id = id;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
         this.comentario = comentario;
-        this.perfil = perfil;
         this.activo = activo;
         this.fechaIngresoSistema = fechaIngresoSistema;
     }
@@ -71,7 +81,7 @@ public class Usuario implements UserDetails {
                 ", correoElectronico='" + correoElectronico + '\'' +
                 ", contraseña='" + contraseña + '\'' +
                 ", comentario='" + comentario + '\'' +
-                ", perfil=" + perfil +
+
                 ", activo=" + activo +
                 '}';
     }
@@ -79,10 +89,12 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        if (perfil != null) {
-            for (String role : perfil.getRoles()) {
-                authorities.add(new SimpleGrantedAuthority(role));
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        if (perfiles != null) {
+            for (Perfil perfil : perfiles) {
+                for (String role : perfil.getRoles()) {
+                    authorities.add(new SimpleGrantedAuthority(role));
+                }
             }
         }
         return authorities;

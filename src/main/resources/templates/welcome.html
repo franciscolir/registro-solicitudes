@@ -21,6 +21,7 @@
 <!-- Formulario oculto para enviar la solicitud POST para el logout -->
 <form id="logoutForm" action="/logout" method="POST" style="display: none;">
     <!-- El formulario estará oculto y no será visible al usuario -->
+    <input type="hidden" name="_csrf" value="${_csrf.token}" />
 </form>
 <p class="text-center">
     <a href="/registrar">Regístrar usuario</a>

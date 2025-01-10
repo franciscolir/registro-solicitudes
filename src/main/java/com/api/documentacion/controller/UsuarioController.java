@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @ResponseBody
 @RequestMapping("/usuarios")
 //@PreAuthorize("hasRole('ROLE_USER')")
-@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class UsuarioController {
 
     @Autowired
@@ -46,7 +46,7 @@ public class UsuarioController {
     }
 
     //Obtener lista de usuarios
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/perfiles")
     public ResponseEntity<Page<DatosMuestraListaPerfiles>> listaPerfiles(Pageable paginacion) {
         var listaPerfiles = usuarioService.listaDePerfiles(paginacion);

@@ -21,7 +21,7 @@ const loadData = async () => {
 
             // Llama a getNumero y almacena el valor
             
-            roles = await getRoles();
+            //roles = await getRoles();
             console.log("roles en loadData: " + roles)
             // Iterar sobre cada solicitud
             solicitudes.forEach(item => {
@@ -61,7 +61,7 @@ const loadData = async () => {
                                             <h5>${estadoFormatted}</h5>
                                             <li class="list-group">${item.comentarioRechazado}</li>
                                         ` : `
-                                    ${roles === "ROLE_ENCARGADO" || roles === "ROLE_SUBROGANTE" ? `
+                                    ${roles.some(role => ['ROLE_ENCARGADO', 'ROLE_SUBROGANTE'].includes(role)) ? `
                                             <label>
                                                 <input type="radio" name="action${item.id}" onchange="selectForm(1, ${item.id})">
                                                 Asignar Unidad
@@ -135,13 +135,14 @@ const loadData = async () => {
 };
 
 const getBotonesOpciones = (item) => {
-    
+
+    console.log("roles en boton " +  roles);
     if (item.asignado === true && item.resuelto === true) {
         return `
             <div class="btn-group d-md-table-cell d-none">
                 <button class="btn btn-option btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"> Opciones </button>
                 <ul class="dropdown-menu">
-                ${roles === "ROLE_ENCARGADO" || roles === "ROLE_SUBROGANTE" ? `
+                ${roles.some(role => ['ROLE_ENCARGADO', 'ROLE_SUBROGANTE'].includes(role)) ? `
                     <li class="dropdown-item"><a class="dropdown-link text-primary" id="abrirFormRespuesta"  data-movimiento="${item.id}" data-ultimaRespuesta ="${ultimoNumeroRespuesta1}" onclick="">ingresar Respuesta</a></li>
                     `: ""}
                     <li class="dropdown-item"><a class="dropdown-link text-success" onclick="">ver archivos</a></li>
@@ -459,6 +460,7 @@ async function getRoles() {
         console.error("Error al obtener los roles:", error);
         return [];  // Retornar un arreglo vacío en caso de error
     }
+   
 }
-
+getRoles(); 
 

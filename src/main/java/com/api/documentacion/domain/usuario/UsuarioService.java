@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
@@ -39,7 +41,9 @@ public class UsuarioService implements UserDetailsService {
     public void registraUsuario(DatosSubmitFormUsuario datosForm) {
         System.out.println("################################# datos " + datosForm);
         // Mapa que relaciona los roles con las acciones
+         /*
         Rol rol = null;
+
         boolean encargado = false;
         boolean subrogante = false;
 
@@ -53,14 +57,21 @@ public class UsuarioService implements UserDetailsService {
             rol = Rol.ROLE_USER;
         }
 
+         */
+        // Validar y asignar el rol
+        Set<Perfil> perfiles = obtenerPerfilesPorRol(datosForm.rol);
+        System.out.println("################################# perfiles " + perfiles);
+        // Verificar si el rol contiene encargado o subrogante
+        boolean encargado = perfiles.stream().anyMatch(p -> p.getRol() == Rol.ROLE_ENCARGADO);
+        boolean subrogante = perfiles.stream().anyMatch(p -> p.getRol() == Rol.ROLE_SUBROGANTE);
+
+
         var datos = new DatosRegistraUsuario(datosForm.nombre, datosForm.correoElectronico, datosForm.contraseña, datosForm.comentario, subrogante, encargado, datosForm.unidad);
         validaCorreoElectronico(datos.correoElectronico());
 
 
-        System.out.println("################################# rol" + rol);
         // Recuperar el perfil de una sola vez
-        var rolPerfil = perfilRepository.findIdByRol(rol);
-        var perfil = perfilRepository.getReferenceById(rolPerfil);
+        //var perfil = perfilRepository.getReferenceById(rolPerfil);
 
 
 
@@ -75,7 +86,7 @@ public class UsuarioService implements UserDetailsService {
                 datos.correoElectronico(),
                 contraseña,
                 datos.comentario(),
-                perfil,
+                perfiles,
                 true,
                 datos.subrogante(),
                 datos.encargado(),
@@ -87,6 +98,33 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario);
         //new DatosMuestraUsuario(usuario);
     }
+
+
+    private Set<Perfil> obtenerPerfilesPorRol(String rol) {
+        Set<Perfil> perfiles = new HashSet<>();
+
+        switch (rol.toLowerCase()) {
+            case "encargado":
+                perfiles.add(perfilRepository.getReferenceById(perfilRepository.findIdByRol(Rol.ROLE_ENCARGADO)));
+                perfiles.add(perfilRepository.getReferenceById(perfilRepository.findIdByRol(Rol.ROLE_USER)));
+                break;
+            case "subrogante":
+                perfiles.add(perfilRepository.getReferenceById(perfilRepository.findIdByRol(Rol.ROLE_SUBROGANTE)));
+                perfiles.add(perfilRepository.getReferenceById(perfilRepository.findIdByRol(Rol.ROLE_USER)));
+                break;
+            default:
+                perfiles.add(perfilRepository.getReferenceById(perfilRepository.findIdByRol(Rol.ROLE_USER)));
+                break;
+        }
+        return perfiles;
+    }
+
+
+
+
+
+
+
 
 
     //GET_LISTA__________________________________________
