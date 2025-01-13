@@ -4,6 +4,7 @@ import aj.org.objectweb.asm.commons.Remapper;
 import com.api.documentacion.domain.movimiento.Movimiento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,5 @@ public interface MovimientoRepository extends JpaRepository<Movimiento,Long> {
 
     Movimiento findIdBySolicitudIdAndActivoTrue(Long id);
 
+    Page<Movimiento> findByActivoTrueAndRespuestaIdTrue(Pageable paginacion);
 }

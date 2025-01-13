@@ -38,15 +38,11 @@
                  <li class="nav-item"><a class="nav-link" href="#" onclick="resetView();">Pendientes</a></li>
                  <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('solicitudes')">Solicitudes</a></li>
                  <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('respuestas')">Respuestas</a></li>
-                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('certificados')">Certificados</a></li>
-                 <!--<li class="nav-item"><a class="nav-link" href="#" onclick="showTable('proyectos')">Proyectos</a></li>-->
                 <li class="nav-item"><a class="nav-link" href="#" onclick="showTable('eventos')">Eventos</a></li>
             </ul>
             <button id="abrirFormSolicitud" data-form="" class="btn btn-outline-secondary ms-auto">Ingresar Solicitud</button>
             <button type="submit" class="btn btn-outline-success ms-auto" data-bs-toggle="modal" data-bs-target="#searchModal">Buscar oficio</button>
-             <!-- Enlace para cerrar sesión -->
-             <a href="/welcome" class="text-danger text-decoration-none">Volver al Inicio...</a>
-
+            
          </div>
     </nav>
     
@@ -73,18 +69,7 @@
                       </table>
                 </div>
 
-                <div class="col-md-3 resumen">
-                    <div class="utmTime container-fluid">
-                        <div class="containerTime mb-3">
-                            <div class="clock-containerTime text-center"></div>
-                            <div class="date-containerTime text-center"></div>
-                        </div>
-                        <div class="ultimoMemo container-fluid">
-                            <div class="utm text-center">Último Memo</div>
-                            <div id="ultimaRespuesta" class="respuesta-container text-center"></div>
-                        </div>
-                    </div>
-                
+                <div class="col-md-3 resumen">             
                     <div class="p-3 text-dark eventos">
                         <h2 class="titulo text-center">Próximos Eventos</h2>
                         <div class="table-responsive">
@@ -291,19 +276,13 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- Javascript -->
-    <script src="/js/app.js"></script>
-    <script src="/js/appCreaTablas.js"></script>
-    <script src="/js/appTablaMovimientoSolicitudes.js"></script>
-    <script src="/js/appFormsDocs.js" defer></script>
-    <script src="/js/appTime.js"></script>
-    <script src="/js/appModalBuscadores.js"></script>
- <!--
-    <script type="text/javascript" th:src="@{/js/app.js}"></script>
-    <script type="text/javascript" th:src="@{/js/appCreaTablas.js}"></script>
-    <script type="text/javascript" th:src="@{/js/appTablaMovimientoSolicitudes.js}"></script>
-    <script type="text/javascript" th:src="@{/js/appFormsDocs.js}" defer></script>
-    <script type="text/javascript" th:src="@{/js/appTime.js}"></script>
-    <script type="text/javascript" th:src="@{/js/appModalBuscadores.js}"></script>-->
+    <script src="/js-lite/app.js"></script>
+    <script src="/js-lite/appCreaTablas.js"></script>
+    <script src="/js-lite/appTablaMovimientoSolicitudes.js"></script>
+    <script src="/js-lite/appFormsDocs.js" defer></script>
+    <script src="/js-lite/appTime.js"></script>
+    <script src="/js-lite/appModalBuscadores.js"></script>
+
 
 </body>
 

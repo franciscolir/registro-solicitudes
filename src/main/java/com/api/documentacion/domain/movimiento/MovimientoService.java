@@ -82,7 +82,7 @@ public class MovimientoService {
     //obtiene movimiento enfocado en respuestas
     public Page<DatosMuestraMovimientoRespuestas> obtenerListaDeMovimientosRespuestas(Pageable paginacion) {
 
-        return movimientoRepository.findByActivoTrue(paginacion).map(DatosMuestraMovimientoRespuestas::new);
+        return movimientoRepository.findByActivoTrueAndRespuestaIdTrue(paginacion).map(DatosMuestraMovimientoRespuestas::new);
     }
 
 

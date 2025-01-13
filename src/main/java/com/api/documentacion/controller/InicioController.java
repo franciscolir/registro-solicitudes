@@ -104,7 +104,7 @@ import java.io.IOException;
     @GetMapping("/home")
     public String showHomePage(Model model) {
         // Aquí puedes agregar lógica de seguridad si es necesario
-        return "redirect:/html/index.html";  // Redirige a un archivo fuera de los recursos estáticos
+        return "redirect:/html/index-lite.html";  // Redirige a un archivo fuera de los recursos estáticos
     }
 
 

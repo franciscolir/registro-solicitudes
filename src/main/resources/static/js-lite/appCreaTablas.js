@@ -92,8 +92,7 @@ function getFilterValues(modalType) {
         respuestas: {
             numeroRespuesta: document.getElementById("filterNumeroRespuesta")?.value,
             titulo: document.getElementById("filterTituloRespuesta")?.value.toLowerCase(),
-            descripcion: document.getElementById("filterDescripcionRespuesta")?.value.toLowerCase(),
-            solicitudId: document.getElementById("filterSolicitudRespuesta")?.value
+            numeroSolicitud: document.getElementById("filterSolicitudRespuesta")?.value
         },
         eventos: {
             tipo: document.getElementById("filterEvento")?.value.toLowerCase(),
@@ -111,6 +110,7 @@ function getFilterValues(modalType) {
 }
 
 function filterData(data, filters) {
+   
     return data.filter(item => {
         return Object.keys(filters).every(key => {
             const filterValue = filters[key]?.toString().trim().toLowerCase();
@@ -483,13 +483,13 @@ const filtroSolicitudes = `
             <div id="filtroDropdown" class="dropdown-filtro">
                         <form id="filterFormSolicitudes">
                             <div class="mb-3">
-                                <input type="number" class="form-control" id="filterNumeroRespuesta" placeholder="Buscar por N°">
+                                <input type="number" class="form-control" id="filterNumeroRespuesta" placeholder="Buscar por N° Memo">
                             </div>
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="filterTituloRespuesta" placeholder="Buscar por título">
                             </div>
                             <div class="mb-3">
-                                <input type="number" class="form-control" id="filterSolicitudRespuesta" placeholder="Buscar por N°">
+                                <input type="number" class="form-control" id="filterSolicitudRespuesta" placeholder="Buscar por N° Solicitud">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" onclick="applyFilters('respuestas')">Buscar</button>
