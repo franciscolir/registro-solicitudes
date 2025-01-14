@@ -39,28 +39,9 @@ public class UsuarioService implements UserDetailsService {
 
 // POST registrar usuario__________________________________________________
     public void registraUsuario(DatosSubmitFormUsuario datosForm) {
-        System.out.println("################################# datos " + datosForm);
-        // Mapa que relaciona los roles con las acciones
-         /*
-        Rol rol = null;
 
-        boolean encargado = false;
-        boolean subrogante = false;
-
-        if (datosForm.rol.equals("encargado")) {
-            rol = Rol.ROLE_ENCARGADO;
-            encargado = true;
-        } else if (datosForm.rol.equals("subrogante")) {
-            rol = Rol.ROLE_SUBROGANTE;
-            subrogante = true;
-        } else {
-            rol = Rol.ROLE_USER;
-        }
-
-         */
         // Validar y asignar el rol
         Set<Perfil> perfiles = obtenerPerfilesPorRol(datosForm.rol);
-        System.out.println("################################# perfiles " + perfiles);
         // Verificar si el rol contiene encargado o subrogante
         boolean encargado = perfiles.stream().anyMatch(p -> p.getRol() == Rol.ROLE_ENCARGADO);
         boolean subrogante = perfiles.stream().anyMatch(p -> p.getRol() == Rol.ROLE_SUBROGANTE);
@@ -68,12 +49,6 @@ public class UsuarioService implements UserDetailsService {
 
         var datos = new DatosRegistraUsuario(datosForm.nombre, datosForm.correoElectronico, datosForm.contraseña, datosForm.comentario, subrogante, encargado, datosForm.unidad);
         validaCorreoElectronico(datos.correoElectronico());
-
-
-        // Recuperar el perfil de una sola vez
-        //var perfil = perfilRepository.getReferenceById(rolPerfil);
-
-
 
         var fechaIngreso = LocalDateTime.now();
         var contraseña = passwordService.encriptarContraseña(datos.contraseña());
@@ -94,7 +69,6 @@ public class UsuarioService implements UserDetailsService {
                 null,
                 unidad
         );
-        System.out.println("################################# usuario" + usuario);
         usuarioRepository.save(usuario);
         //new DatosMuestraUsuario(usuario);
     }
@@ -156,9 +130,7 @@ public class UsuarioService implements UserDetailsService {
 
     //valida id de perfil
     public void validaCorreoElectronico (String correoElectronico) {
-        System.out.println("################################# 2.5");
         if(usuarioRepository.existsByCorreoElectronico(correoElectronico)){
-            System.out.println("################################# 2.6");
             throw new ValidacionDeIntegridad("Correo electronico ya fue registrado");
         }
     }   //__________

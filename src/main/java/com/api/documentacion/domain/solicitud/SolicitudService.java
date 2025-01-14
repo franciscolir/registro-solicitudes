@@ -1,14 +1,9 @@
 package com.api.documentacion.domain.solicitud;
 
-import com.api.documentacion.domain.archivo.Archivo;
-
 import com.api.documentacion.domain.emisor.Emisor;
 import com.api.documentacion.domain.movimiento.MovimientoService;
-
 import com.api.documentacion.domain.solicitud.dto.*;
-
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
-import com.api.documentacion.repository.ArchivoRepository;
 import com.api.documentacion.repository.EmisorRepository;
 import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.SolicitudRepository;
@@ -20,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 @Service
 public class SolicitudService {
@@ -35,15 +28,11 @@ public class SolicitudService {
     MovimientoService movimientoService;
     @Autowired
     MovimientoRepository movimientoRepository;
-    @Autowired
-    ArchivoRepository archivoRepository;
+
 
     //POST___________________________________________
         //registra solicitud
     public DatosMuestraSolicitud registrar(DatosRegistraSolicitud datos) throws IOException {
-
-        //var archivo = new Archivo();
-        //archivoRepository.save(archivo);
 
         var emisor = emisorRepository.getReferenceById(datos.emisor());
         var fechaSolicitud = dateFormatter(datos.fechaSolicitud());
@@ -60,9 +49,7 @@ public class SolicitudService {
         solicitudRepository.save(solicitud);
 
         //Crea Movimiento cuando se registra solicitud
-          // var datosMovimiento = new DatosRegistraMovimiento(solicitud.getId());
             movimientoService.registrar(solicitud);
-
 
         return new DatosMuestraSolicitud(solicitud);
     }
@@ -78,9 +65,7 @@ public class SolicitudService {
         var movimientoId = movimientoRepository.findIdBySolicitudIdAndActivoTrue(id).getId();
         var movimiento = movimientoRepository.getReferenceById(movimientoId);
 
-
         return new DatosMuestraSolicitudConMovimiento(
-
                 solicitud.getId(),
                 solicitud.getNumeroSolicitud(),
                 solicitud.getEmisor().getNombreEmisor(),
@@ -89,7 +74,6 @@ public class SolicitudService {
                 fechaSolicitud,
                 movimiento.getEstado().toString(),
                 movimiento.getFechaIngreso().toString()
-
         );
     }
     //___________________________________________________
@@ -155,7 +139,7 @@ public class SolicitudService {
     }//__________
 
 
-        //valida numeroSolicitud y emisorId. Obtiene id de registro y lo retorna
+        //valída numeroSolicitud y emisorId. Obtiene id de registro y lo retorna
     public Long validaYObtieneIdConNumeroSolicitud (Long numeroSolicitud, Long emisorId){
 
         if(!solicitudRepository.existsByNumeroSolicitud(numeroSolicitud)) {
@@ -173,31 +157,14 @@ public class SolicitudService {
         return solicitudRepository.findIdByNumeroSolicitudAndEmisorIdAndActivoTrue(numeroSolicitud, emisorId).getId();
     }
 
-
     //______________________________________________________
 
 
-
-
     //MODIFICADORES_ESTADO_FORMATO_FECHA____________________
-        //cambia string a formato fecha
-    public LocalDateTime dateTimeFormatter (String fecha){
-        var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-        return LocalDateTime.parse(fecha, formatter);
-    }//__________
-
-    //cambia formato fecha a string
-    public String stringFormatter (LocalDateTime fecha){
-        var outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        return fecha.format(outputFormatter);
-    }//__________
 
     //cambia string a formato fecha
     public LocalDate dateFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-        //var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
         return LocalDate.parse(fecha, formatter);
     }//__________

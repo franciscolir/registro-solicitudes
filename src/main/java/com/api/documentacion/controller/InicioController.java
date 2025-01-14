@@ -23,8 +23,7 @@ import java.io.IOException;
 
 
 @Controller
-//@RestController
-//@RequestMapping("/v1")
+
     public class InicioController {
 
         @Autowired
@@ -95,11 +94,6 @@ import java.io.IOException;
     }
 
 
-    // Página de bienvenida después de iniciar sesión
-    //@GetMapping("/home")
-    //public String home() {
-       // return "index";
-    //}
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/home")
     public String showHomePage(Model model) {
@@ -107,12 +101,6 @@ import java.io.IOException;
         return "redirect:/html/index-lite.html";  // Redirige a un archivo fuera de los recursos estáticos
     }
 
-
-    // Página de error si el usuario no está autenticado
-    @GetMapping("/access-denied")
-    public String accessDenied() {
-        return "access-denied"; // Esto devolverá la plantilla "access-denied.html"
-    }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/logout")

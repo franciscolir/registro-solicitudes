@@ -1,31 +1,24 @@
 package com.api.documentacion.domain.respuesta;
 
-import com.api.documentacion.domain.archivo.Archivo;
-import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosCierraMovimiento;
 import com.api.documentacion.domain.respuesta.dto.DatosActualizaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosEliminaRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosMuestraRespuesta;
 import com.api.documentacion.domain.respuesta.dto.DatosRegistraRespuesta;
-import com.api.documentacion.domain.solicitud.SolicitudService;
 import com.api.documentacion.domain.usuario.UsuarioService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
-import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.RespuestaRepository;
-import com.api.documentacion.repository.SolicitudRepository;
 import com.api.documentacion.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RespuestaService {
@@ -176,12 +169,6 @@ public class RespuestaService {
 
 
     //MODIFICADOR_FORMATO_FECHA-dia-hora____________________
-        //cambia string a formato fecha
-    public LocalDateTime dateTimeFormatter (String fecha){
-        var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-        return LocalDateTime.parse(fecha, formatter);
-    }   //__________
     //cambia string a formato fecha solo dia
     public LocalDate dateFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE;

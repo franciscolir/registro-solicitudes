@@ -9,6 +9,4 @@ public record DatosAsignarMovimiento(
         Long unidad,
         String comentarioAsignado
 ) {
-
-
 }

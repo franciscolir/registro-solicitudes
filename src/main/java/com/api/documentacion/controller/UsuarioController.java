@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Controller
 @ResponseBody
 @RequestMapping("/usuarios")
-//@PreAuthorize("hasRole('ROLE_USER')")
 @PreAuthorize("hasRole('ROLE_USER')")
 public class UsuarioController {
 
@@ -30,14 +29,14 @@ public class UsuarioController {
 
 
     //Obtener lista de usuarios
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<DatosMuestraListaUsuarios>> listaUsuarios(Pageable paginacion) {
         var listaUsuarios = usuarioService.listaDeUsuarios(paginacion);
 
         return ResponseEntity.ok(listaUsuarios);
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/encargados")
     public ResponseEntity<Page<DatosMuestraListaUsuarios>> listaUsuariosEncargados(Pageable paginacion) {
         var listaUsuarios = usuarioService.listaDeUsuariosEncargados(paginacion);
@@ -46,7 +45,6 @@ public class UsuarioController {
     }
 
     //Obtener lista de usuarios
-    //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/perfiles")
     public ResponseEntity<Page<DatosMuestraListaPerfiles>> listaPerfiles(Pageable paginacion) {
         var listaPerfiles = usuarioService.listaDePerfiles(paginacion);

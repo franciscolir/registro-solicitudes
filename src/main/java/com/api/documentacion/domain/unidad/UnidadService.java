@@ -1,8 +1,5 @@
 package com.api.documentacion.domain.unidad;
 
-import com.api.documentacion.domain.movimiento.EstadoMovimiento;
-import com.api.documentacion.domain.movimiento.Movimiento;
-import com.api.documentacion.domain.movimiento.dto.*;
 import com.api.documentacion.domain.unidad.dto.DatosMuestraListaUnidades;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
 import com.api.documentacion.repository.*;

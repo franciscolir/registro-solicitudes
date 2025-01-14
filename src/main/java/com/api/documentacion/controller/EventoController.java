@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @ResponseBody
 @RequestMapping("/eventos")
-@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class EventoController {
 
 

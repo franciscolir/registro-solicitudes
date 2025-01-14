@@ -54,7 +54,7 @@
             <div class="row mt-3">
 
        
-                <div class="col-md-9">
+                <div class="col-md-7">
                     <table class="table" id="tableIngreso">
                         <h2 class="titulo-principal">Solicitudes en proceso</h2>
                         <thead class="tableResumen" >
@@ -69,7 +69,7 @@
                       </table>
                 </div>
 
-                <div class="col-md-3 resumen">             
+                <div class="col-md-5 resumen">             
                     <div class="p-3 text-dark eventos">
                         <h2 class="titulo text-center">Próximos Eventos</h2>
                         <div class="table-responsive">
@@ -83,10 +83,27 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="container my-5">
+                        <h2 class="text-center">Calendario de Ausencias de Empleados</h2>
+                    
+                        <table class="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th>Empleado</th>
+                              <!-- Los días de la semana se añadirán dinámicamente aquí -->
+                            </tr>
+                          </thead>
+                          <tbody id="employeeTable">
+                            <!-- Fila de empleados se generará dinámicamente aquí -->
+                          </tbody>
+                        </table>
+                      </div>
                 </div>
                 
             </div>
         </section>
+
 
 
     </main>

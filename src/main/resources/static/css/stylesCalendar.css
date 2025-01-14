@@ -1,0 +1,21 @@
+/* Colores para las ausencias */
+.vacaciones {
+    background-color: #F0E68C; /* Amarillo claro */
+  }
+  
+  .permiso-administrativo {
+    background-color: #87CEEB; /* Azul claro */
+  }
+  
+  .licencia-medica {
+    background-color: #FF6347; /* Rojo tomate */
+  }
+  
+  .weekend {
+    background-color: #F5F5F5; /* Gris claro para fines de semana */
+  }
+  
+  .holiday {
+    background-color: #FFD700; /* Amarillo dorado para días festivos */
+  }
+  

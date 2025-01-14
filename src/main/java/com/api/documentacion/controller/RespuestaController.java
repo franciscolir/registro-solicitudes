@@ -76,7 +76,7 @@ public class RespuestaController {
 
     //Eliminar respuesta
     @DeleteMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     public ResponseEntity eliminaRespuesta(@RequestBody @Valid DatosEliminaRespuesta datos) {
         respuestaService.eliminarRespuesta(datos);

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
-import java.util.Set;
 
 
 public record DatosRegistraEvento(
@@ -18,9 +17,8 @@ public record DatosRegistraEvento(
         @NotNull(message = "establecimineto es obligatorio")
         Long establecimiento,
         @NotNull(message = "usuario es obligatorio")
-        //Set<Long> invitados ){
         List<Long> invitados) {
-        //List<String> invitados) {
+
 
 
 

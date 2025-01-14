@@ -2,7 +2,6 @@ package com.api.documentacion.domain.respuesta;
 
 import com.api.documentacion.domain.archivo.Archivo;
 import com.api.documentacion.domain.movimiento.Movimiento;
-import com.api.documentacion.domain.solicitud.Solicitud;
 import com.api.documentacion.domain.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -24,7 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

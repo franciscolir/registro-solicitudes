@@ -67,7 +67,4 @@ public record DatosMuestraMovimiento (
     private static String formatDate(LocalDate dateTime) {
         return dateTime != null ? dateTime.format(DATE_TIME_FORMATTER) : null;
     }
-
-
-
 }

@@ -56,7 +56,7 @@ public class SolicitudController {
     //Actualizar solicitud
     @PutMapping
     @Transactional
-    public ResponseEntity actualizaSolicitud(@RequestBody @Valid DatosActualizaSolicitud datos) {
+    public ResponseEntity<?> actualizaSolicitud(@RequestBody @Valid DatosActualizaSolicitud datos) {
         var response = solicitudService.actualizaSolicitud(datos);
 
         return ResponseEntity.ok(response);
@@ -67,7 +67,7 @@ public class SolicitudController {
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    public ResponseEntity eliminaSolicitud(@RequestBody @Valid DatosEliminaSolicitud datos) {
+    public ResponseEntity<?> eliminaSolicitud(@RequestBody @Valid DatosEliminaSolicitud datos) {
         solicitudService.eliminarSolicitud(datos);
 
         return ResponseEntity.noContent().build();

@@ -11,6 +11,4 @@ public record DatosActualizaCertificado(
         String descripcion,
         String fechaCertificado
 ) {
-
-
 }

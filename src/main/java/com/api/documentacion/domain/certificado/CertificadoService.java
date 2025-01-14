@@ -1,18 +1,11 @@
 package com.api.documentacion.domain.certificado;
 
-import com.api.documentacion.domain.archivo.Archivo;
-import com.api.documentacion.domain.archivo.ArchivoService;
 import com.api.documentacion.domain.certificado.dto.DatosActualizaCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosMuestraCertificado;
 import com.api.documentacion.domain.certificado.dto.DatosRegistraCertificado;
-import com.api.documentacion.domain.movimiento.EstadoMovimiento;
-import com.api.documentacion.domain.movimiento.Movimiento;
 import com.api.documentacion.domain.movimiento.MovimientoService;
 import com.api.documentacion.domain.movimiento.dto.DatosActualizaMovimiento;
-import com.api.documentacion.domain.solicitud.SolicitudService;
-import com.api.documentacion.domain.unidad.UnidadService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
-import com.api.documentacion.repository.MovimientoRepository;
 import com.api.documentacion.repository.CertificadoRepository;
 import com.api.documentacion.repository.UnidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CertificadoService {
@@ -44,7 +35,6 @@ public class CertificadoService {
 
     public DatosMuestraCertificado registrar(DatosRegistraCertificado datos) throws IOException {
         //crea el registro del archivo
-        var archivo = new Archivo();
         var unidad = unidadRepository.getReferenceById(datos.unidad());
 
         //Trae lista de numeros de certificado segun unidad. elije el ultimo y lo aumenta en uno
@@ -56,8 +46,6 @@ public class CertificadoService {
         if (!certificados.isEmpty() && certificados.get(0) != null) {
             lastCertificado = certificados.get(0) + 1;
         }
-        //var lastCertificado = certificados.isEmpty() ? 1L : certificados.get(0)+1;
-
 
         var fechaCertificado = LocalDate.now();
         var certificado = new Certificado(null,
@@ -80,8 +68,6 @@ public class CertificadoService {
             movimientoService.resolverMovimiento(datosMovimiento);
         }
 
-
-        System.out.println(certificado+"  certificado##################");
         return new DatosMuestraCertificado(certificado);
     }
 
@@ -156,13 +142,6 @@ public class CertificadoService {
     }   //__________
 
     //VALIDADORES____________________________________________
-    //valida id de registro
-    public void validaSiExisteNumeroCertificadoAndActivoTrue (Long id) {
-        if(certificadoRepository.existsByIdAndActivoTrue(id)){
-            throw new ValidacionDeIntegridad(" El numero de certificado ya fue registrado");
-        }
-    }   //__________
-
 
         //valida numeroCertificado. Obtiene id de registro y lo retorna
     public Long validaSiExisteYObtieneIdConNumeroCertificado (Long numeroCertificado) {
@@ -177,12 +156,7 @@ public class CertificadoService {
 
 
     //MODIFICADOR_FORMATO_FECHA-dia-hora____________________
-        //cambia string a formato fecha
-    public LocalDateTime dateTimeFormatter (String fecha){
-        var formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-        return LocalDateTime.parse(fecha, formatter);
-    }   //__________
     //cambia string a formato fecha solo dia
     public LocalDate dateFormatter (String fecha){
         var formatter = DateTimeFormatter.ISO_LOCAL_DATE;

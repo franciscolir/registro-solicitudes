@@ -4,8 +4,6 @@ package com.api.documentacion.domain.respuesta.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-import java.time.LocalDateTime;
-
 public record DatosActualizaRespuesta(
         @NotNull(message = "id es obligatorio")
         Long id,

@@ -55,7 +55,7 @@ public class EventoService {
         Set<Usuario> listaUsuarios = new HashSet<>();
         for (Long usuarioId : datos.invitados()) {
             var usuario = usuarioRepository.findById(usuarioId)
-                    .orElseThrow(() -> new RuntimeException("B not found"));
+                    .orElseThrow(() -> new RuntimeException("Usuario/evento no encontrado"));
             listaUsuarios.add(usuario);
         }
 

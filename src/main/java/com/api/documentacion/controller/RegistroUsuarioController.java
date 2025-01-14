@@ -21,7 +21,7 @@ public class RegistroUsuarioController {
 
 
     // Página de registro usuario
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/registrar")
     public String registrarForm(Model model) {
         model.addAttribute("register", new DatosSubmitFormUsuario());
@@ -29,7 +29,7 @@ public class RegistroUsuarioController {
         return "register";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping("/registrar")
     public String registraUsuario(@ModelAttribute DatosSubmitFormUsuario datos, Model model,RedirectAttributes redirectAttributes) {
 
