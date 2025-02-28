@@ -2,6 +2,9 @@ package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.unidad.Unidad;
+import com.api.documentacion.domain.ausencias.FeriadoLegal;
+import com.api.documentacion.domain.ausencias.Licencia;
+import com.api.documentacion.domain.ausencias.PermisoAdministrativo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +35,9 @@ public class Usuario implements UserDetails {
     private String comentario;
 /*
     @ManyToOne(fetch = FetchType.EAGER)
+
+
+
     @JoinColumn(name = "perfil_id")
     @JsonManagedReference
     private Perfil perfil;
@@ -62,6 +68,16 @@ public class Usuario implements UserDetails {
     @JsonManagedReference
     private Unidad unidad;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<FeriadoLegal> feriadoLegal;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PermisoAdministrativo> permisoAdministrativo;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Licencia> licencia;
+
+
 
     public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Boolean activo, LocalDateTime fechaIngresoSistema) {
         this.id = id;
@@ -73,6 +89,16 @@ public class Usuario implements UserDetails {
         this.fechaIngresoSistema = fechaIngresoSistema;
     }
 
+
+    public void actualizaAusencias (Long id,List<FeriadoLegal> feriadoLegal, List<PermisoAdministrativo> permisoAdministrativo, List<Licencia> licencia){
+        this.id = id;
+        if(feriadoLegal != null)
+            this.feriadoLegal = feriadoLegal;
+        if(permisoAdministrativo != null)
+            this.permisoAdministrativo = permisoAdministrativo;
+        if(licencia != null)
+            this.licencia = licencia;
+    }
     @Override
     public String toString() {
         return "Usuario{" +

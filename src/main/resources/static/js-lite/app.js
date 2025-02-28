@@ -130,3 +130,145 @@ async function mostrarCalendario() {
 
 // Llamar a la función para mostrar el calendario cuando se cargue la página
 mostrarCalendario();
+
+
+
+
+
+
+
+
+ 
+    const jsonHoliday = [
+      {
+        "id": 1,
+        "nombre": "Juan Pérez",
+        "feriado_legal": {
+          "id": 101,
+          "inicio": "2025-01-30T15:30:00Z",
+          "termino": "2025-01-31T15:30:00Z"
+        },
+        "dia_administrativo": {
+          "id": 201,
+          "fecha": "2025-02-04T15:30:00Z"
+        },
+        "licencia_medica": {
+          "id": 202,
+          "inicio": "2025-02-04T15:30:00Z",
+          "termino": "2025-02-05T15:30:00Z"
+        }
+      },
+      {
+        "id": 2,
+        "nombre": "María López",
+        "feriado_legal": {
+          "id": 102,
+          "inicio": "2025-02-04T15:30:00Z",
+          "termino": "2025-02-05T15:30:00Z"
+        },
+        "dia_administrativo": {
+          "id": 202,
+          "fecha": "2025-31-01T15:30:00Z"
+        }
+        
+      },
+      {
+        "id": 3,
+        "nombre": "Carlos García",
+        "feriado_legal": {
+          "id": 103,
+          "inicio": "2025-01-01T15:30:00Z",
+          "termino": "2025-01-02T15:30:00Z"
+        },
+        "dia_administrativo": {
+          "id": 203,
+          "fecha": "2025-05-01T15:30:00Z"
+        }
+      
+      },
+      {
+        "id": 4,
+        "nombre": "Roberto Perez",
+        "feriado_legal": {
+          "id": 103,
+          "inicio": "2025-01-01T15:30:00Z",
+          "termino": "2025-01-02T15:30:00Z"
+        },
+        "dia_administrativo": {
+          "id": 203,
+          "fecha": "2025-02-04T15:30:00Z"
+        }
+        
+      }
+    ];
+
+    const today = new Date();
+    const dayIndex = today.getDay();
+
+    // Función para verificar si hay un registro de feriado, día administrativo o licencia médica
+    function checkDayStatus(employee) {
+      const currentDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      // Inicializamos las variables para cada tipo de registro
+      const feriadoLegalInicio = employee.feriado_legal ? new Date(employee.feriado_legal.inicio) : null;
+      const feriadoLegalTermino = employee.feriado_legal ? new Date(employee.feriado_legal.termino) : null;
+      const diaAdministrativo = employee.dia_administrativo ? new Date(employee.dia_administrativo.fecha) : null;
+      const licenciaMedicaInicio = employee.licencia_medica ? new Date(employee.licencia_medica.inicio) : null;
+      const licenciaMedicaTermino = employee.licencia_medica ? new Date(employee.licencia_medica.termino) : null;
+
+      // Ajustar la hora de las fechas para comparaciones
+      if (feriadoLegalInicio) feriadoLegalInicio.setHours(0, 0, 0, 0);
+      if (feriadoLegalTermino) feriadoLegalTermino.setHours(0, 0, 0, 0);
+      if (diaAdministrativo) diaAdministrativo.setHours(0, 0, 0, 0);
+      if (licenciaMedicaInicio) licenciaMedicaInicio.setHours(0, 0, 0, 0);
+      if (licenciaMedicaTermino) licenciaMedicaTermino.setHours(0, 0, 0, 0);
+
+      // Verificar si existe alguna condición de feriado, licencia o día administrativo
+      if (licenciaMedicaInicio && currentDate >= licenciaMedicaInicio && currentDate <= licenciaMedicaTermino) {
+        return 'Licencia Médica';
+      } else if (feriadoLegalInicio && currentDate >= feriadoLegalInicio && currentDate <= feriadoLegalTermino) {
+        return 'Feriado';
+      } else if (diaAdministrativo && currentDate.getTime() === diaAdministrativo.getTime()) {
+        return 'Día Administrativo';
+      } else {
+        return 'En funciones'; // Si no existe ningún registro, se asume que está en funciones
+      }
+    }
+
+    // Renderizar la tabla con la información
+    function renderTable() {
+      const tableBody = document.getElementById('employee-table-body');
+      tableBody.innerHTML = ''; // Limpiar cualquier contenido previo
+
+      jsonHoliday.forEach(employee => {
+        const row = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = employee.nombre;
+
+        const dayStatusCell = document.createElement('td');
+        const dayStatus = checkDayStatus(employee);
+
+        // Agregar el estilo dependiendo de si es feriado, licencia médica, día administrativo o en funciones
+        if (dayStatus === 'Licencia Médica') {
+          dayStatusCell.textContent = dayStatus;
+          dayStatusCell.classList.add('licencia');
+        } else if (dayStatus === 'Feriado') {
+          dayStatusCell.textContent = dayStatus;
+          dayStatusCell.classList.add('feriado');
+        } else if (dayStatus === 'Día Administrativo') {
+          dayStatusCell.textContent = dayStatus;
+          dayStatusCell.style.fontWeight = 'bold'; // Día administrativo con negrita
+        } else {
+          dayStatusCell.textContent = dayStatus;
+        }
+
+        row.appendChild(nameCell);
+        row.appendChild(dayStatusCell);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Llamar a la función para renderizar la tabla cuando cargue la página
+    renderTable();

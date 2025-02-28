@@ -1,6 +1,14 @@
 package com.api.documentacion.domain.usuario;
 
+import com.api.documentacion.domain.ausencias.DatosActualizaAusencias;
+import com.api.documentacion.domain.ausencias.LicenciaService;
+import com.api.documentacion.domain.ausencias.PermisoAdministrativoService;
+import com.api.documentacion.domain.ausencias.dto.DatosRegistraLicencia;
+import com.api.documentacion.domain.ausencias.dto.DatosRegistraPermisoAdministrativo;
 import com.api.documentacion.domain.unidad.UnidadService;
+import com.api.documentacion.domain.ausencias.FeriadoLegalService;
+import com.api.documentacion.domain.ausencias.dto.DatosMuestraAusenciasUsuario;
+import com.api.documentacion.domain.ausencias.dto.DatosRegistraFeriadoLegal;
 import com.api.documentacion.domain.usuario.dto.*;
 import com.api.documentacion.infra.configuration.security.PasswordService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
@@ -17,8 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -35,9 +42,14 @@ public class UsuarioService implements UserDetailsService {
     UnidadRepository unidadRepository;
     @Autowired
     UnidadService unidadService;
+    @Autowired
+    FeriadoLegalService feriadoLegalService;
+    @Autowired
+    LicenciaService licenciaService;
+    @Autowired
+    PermisoAdministrativoService permisoAdministrativoService;
 
-
-// POST registrar usuario__________________________________________________
+    // POST registrar usuario__________________________________________________
     public void registraUsuario(DatosSubmitFormUsuario datosForm) {
 
         // Validar y asignar el rol
@@ -67,7 +79,10 @@ public class UsuarioService implements UserDetailsService {
                 datos.encargado(),
                 fechaIngreso,
                 null,
-                unidad
+                unidad,
+                null,
+                null,
+                null
         );
         usuarioRepository.save(usuario);
         //new DatosMuestraUsuario(usuario);
@@ -96,11 +111,6 @@ public class UsuarioService implements UserDetailsService {
 
 
 
-
-
-
-
-
     //GET_LISTA__________________________________________
     //obtiene una lista con todas las solicitudes
     public Page<DatosMuestraListaUsuarios> listaDeUsuarios(Pageable paginacion) {
@@ -118,6 +128,22 @@ public class UsuarioService implements UserDetailsService {
         return perfilRepository.findAll(paginacion).map(DatosMuestraListaPerfiles::new);
 
     }
+
+
+    //PUT
+
+    public DatosMuestraAusenciasUsuario actualizaAusencias (DatosActualizaAusencias datos){
+
+
+
+        var feriado = feriadoLegalService.registraFeriadoLegal(new DatosRegistraFeriadoLegal(datos.usuario(), datos.feriadoLegalInicio(), datos.feriadoLegalTermino()));
+        var permisoAdministrativo = permisoAdministrativoService.registraPermisoAdministrativo(new DatosRegistraPermisoAdministrativo(datos.usuario(), datos.permisoAdministrativoInicio(), datos.permisoAdministrativoTermino()));
+        var licencia = licenciaService.registraLicencia(new DatosRegistraLicencia(datos.usuario(), datos.licenciaInicio(), datos.licenciaTermino()));
+
+
+    }
+
+
 
 
 
@@ -155,11 +181,11 @@ public class UsuarioService implements UserDetailsService {
     }
 
 
-public void confirmPasswordMethod (String password, String confirmPassword){
+    public void confirmPasswordMethod (String password, String confirmPassword){
 
         if (!password.equals(confirmPassword)) {
             throw new ValidacionDeIntegridad("Contraesñas no corresponden");
         }
-}
+    }
 
 }

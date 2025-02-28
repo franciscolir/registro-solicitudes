@@ -15,6 +15,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/stylesAsistencia.css">
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
    <link rel="stylesheet" type="text/css" href="/css/styleTime.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -85,17 +86,15 @@
                     </div>
 
                     <div class="container my-5">
-                        <h2 class="text-center">Calendario de Ausencias de Empleados</h2>
-                    
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                           <thead>
                             <tr>
-                              <th>Empleado</th>
-                              <!-- Los días de la semana se añadirán dinámicamente aquí -->
+                              <th>Nombre</th>
+                              <th>Día</th>
                             </tr>
                           </thead>
-                          <tbody id="employeeTable">
-                            <!-- Fila de empleados se generará dinámicamente aquí -->
+                          <tbody id="employee-table-body">
+                            <!-- Las filas se generarán dinámicamente aquí -->
                           </tbody>
                         </table>
                       </div>
