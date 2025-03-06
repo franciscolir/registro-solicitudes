@@ -1,14 +1,6 @@
 package com.api.documentacion.domain.usuario;
 
-import com.api.documentacion.domain.ausencias.DatosActualizaAusencias;
-import com.api.documentacion.domain.ausencias.LicenciaService;
-import com.api.documentacion.domain.ausencias.PermisoAdministrativoService;
-import com.api.documentacion.domain.ausencias.dto.DatosRegistraLicencia;
-import com.api.documentacion.domain.ausencias.dto.DatosRegistraPermisoAdministrativo;
 import com.api.documentacion.domain.unidad.UnidadService;
-import com.api.documentacion.domain.ausencias.FeriadoLegalService;
-import com.api.documentacion.domain.ausencias.dto.DatosMuestraAusenciasUsuario;
-import com.api.documentacion.domain.ausencias.dto.DatosRegistraFeriadoLegal;
 import com.api.documentacion.domain.usuario.dto.*;
 import com.api.documentacion.infra.configuration.security.PasswordService;
 import com.api.documentacion.infra.errores.ValidacionDeIntegridad;
@@ -42,12 +34,7 @@ public class UsuarioService implements UserDetailsService {
     UnidadRepository unidadRepository;
     @Autowired
     UnidadService unidadService;
-    @Autowired
-    FeriadoLegalService feriadoLegalService;
-    @Autowired
-    LicenciaService licenciaService;
-    @Autowired
-    PermisoAdministrativoService permisoAdministrativoService;
+
 
     // POST registrar usuario__________________________________________________
     public void registraUsuario(DatosSubmitFormUsuario datosForm) {
@@ -131,7 +118,7 @@ public class UsuarioService implements UserDetailsService {
 
 
     //PUT
-
+/*
     public DatosMuestraAusenciasUsuario actualizaAusencias (DatosActualizaAusencias datos){
 
 
@@ -143,7 +130,7 @@ public class UsuarioService implements UserDetailsService {
 
     }
 
-
+*/
 
 
 

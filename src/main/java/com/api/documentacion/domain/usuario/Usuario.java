@@ -2,9 +2,6 @@ package com.api.documentacion.domain.usuario;
 
 import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.unidad.Unidad;
-import com.api.documentacion.domain.ausencias.FeriadoLegal;
-import com.api.documentacion.domain.ausencias.Licencia;
-import com.api.documentacion.domain.ausencias.PermisoAdministrativo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
