@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Ejemplo de estructura de API (ficticia)
-const apiUrl = 'https://api.ejemplo.com/ausencias';  // URL de la API
+const apiUrl = 'https://localhost:8080/ausencias';  // URL de la API
 
 // Función para obtener los datos de los empleados
 async function obtenerEmpleados() {

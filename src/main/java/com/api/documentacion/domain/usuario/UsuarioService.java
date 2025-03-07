@@ -67,8 +67,6 @@ public class UsuarioService implements UserDetailsService {
                 fechaIngreso,
                 null,
                 unidad,
-                null,
-                null,
                 null
         );
         usuarioRepository.save(usuario);

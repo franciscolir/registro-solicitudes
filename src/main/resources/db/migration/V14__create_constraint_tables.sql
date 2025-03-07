@@ -39,10 +39,12 @@ FOREIGN KEY (emisor_id) REFERENCES emisores(id);
 
 -- Constraint para la tabla usuarios
 ALTER TABLE usuarios
-ADD CONSTRAINT fk_usuarios_perfil
-FOREIGN KEY (perfil_id) REFERENCES perfiles(id),
+
 ADD CONSTRAINT fk_usuarios_unidad
 FOREIGN KEY (unidad_id) REFERENCES unidades(id);
+
+-- ADD CONSTRAINT fk_usuarios_perfil
+-- FOREIGN KEY (perfil_id) REFERENCES perfiles(id),
 
 -- Constraint para la tabla intermedia evento_usuario
 ALTER TABLE evento_usuario

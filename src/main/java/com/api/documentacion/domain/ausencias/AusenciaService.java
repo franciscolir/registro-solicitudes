@@ -1,20 +1,24 @@
 package com.api.documentacion.domain.ausencias;
 
+import com.api.documentacion.domain.ausencias.dto.DatosMuestraAusenciasUsuario;
 import com.api.documentacion.domain.ausencias.dto.DatosRegistraAusencias;
 import com.api.documentacion.repository.AusenciaRepository;
 import com.api.documentacion.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Service
 public class AusenciaService {
 
     @Autowired
-    AusenciaRepository feriadoLegalRepository;
+    AusenciaRepository ausenciaRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -22,7 +26,7 @@ public class AusenciaService {
 
     //POST
 
-    public Ausencia registraAusencia(DatosRegistraAusencias datos){
+    public DatosMuestraAusenciasUsuario registraAusencia(DatosRegistraAusencias datos){
 
         var inicio = dateFormatter(datos.fechaInicio());
         var termino = dateFormatter(datos.fechaTermino());
@@ -35,13 +39,21 @@ public class AusenciaService {
                 usuario,
                 tipo
         );
-        feriadoLegalRepository.save(feriado);
-return feriado;
-
+        ausenciaRepository.save(feriado);
+    return new DatosMuestraAusenciasUsuario(feriado);
     }
 
+    //GET___________________________________________
+    //obtiene lista de ausencia
+
+    public Page<DatosMuestraAusenciasUsuario> obtenerListaDeAusencias(Pageable paginacion) {
+
+        var hoy = LocalDate.now();
+        return ausenciaRepository.findAusenciasBetweenFechas(hoy,paginacion).map(DatosMuestraAusenciasUsuario::new);
+    }
 
     //PUT
+
 
 
 

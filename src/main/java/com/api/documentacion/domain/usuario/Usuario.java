@@ -1,5 +1,6 @@
 package com.api.documentacion.domain.usuario;
 
+import com.api.documentacion.domain.ausencias.Ausencia;
 import com.api.documentacion.domain.evento.Evento;
 import com.api.documentacion.domain.unidad.Unidad;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -66,14 +67,7 @@ public class Usuario implements UserDetails {
     private Unidad unidad;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FeriadoLegal> feriadoLegal;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PermisoAdministrativo> permisoAdministrativo;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Licencia> licencia;
-
+    private List<Ausencia> ausencias;
 
 
     public Usuario(Long id, String nombre, String correoElectronico, String contraseña, String comentario, Boolean activo, LocalDateTime fechaIngresoSistema) {
@@ -87,15 +81,6 @@ public class Usuario implements UserDetails {
     }
 
 
-    public void actualizaAusencias (Long id,List<FeriadoLegal> feriadoLegal, List<PermisoAdministrativo> permisoAdministrativo, List<Licencia> licencia){
-        this.id = id;
-        if(feriadoLegal != null)
-            this.feriadoLegal = feriadoLegal;
-        if(permisoAdministrativo != null)
-            this.permisoAdministrativo = permisoAdministrativo;
-        if(licencia != null)
-            this.licencia = licencia;
-    }
     @Override
     public String toString() {
         return "Usuario{" +
